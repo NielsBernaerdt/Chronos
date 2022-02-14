@@ -13,8 +13,6 @@ public:
 	CBase& operator=(const CBase& other) = delete;
 	CBase& operator=(CBase&& other) = delete;
 
-	GameObject* GetOwner() const { return m_OwnerObject; };
-
 	virtual void Update(float) {};
 	virtual void Render() const {};
 

@@ -3,8 +3,9 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "CBase.h"
-
-GameObject::~GameObject()
+#include "CText.h"
+template <typename T>
+GameObject<T>::~GameObject()
 {
 	for (auto e : m_pComponents)
 	{
@@ -13,7 +14,8 @@ GameObject::~GameObject()
 	}
 }
 
-void GameObject::Update(float deltaTime)
+template <typename T>
+void GameObject<T>::Update(float deltaTime)
 {
 	for (auto e : m_pComponents)
 	{
@@ -21,7 +23,8 @@ void GameObject::Update(float deltaTime)
 	}
 }
 
-void GameObject::Render() const
+template <typename T>
+void GameObject<T>::Render() const
 {
 	for (auto e : m_pComponents)
 	{
@@ -29,12 +32,27 @@ void GameObject::Render() const
 	}
 }
 
-void GameObject::SetPosition(float x, float y)
+template <typename T>
+void GameObject<T>::SetPosition(float x, float y)
 {
 	m_Transform.SetPosition(x, y, 0.0f);
 }
 
-void GameObject::AddComponent(CBase* component)
+template <typename T>
+void GameObject<T>::AddComponent(CBase* component)
 {
 	m_pComponents.push_back(component);
+}
+
+template <typename T>
+T GameObject<T>::GetComponent<T>() const
+{
+	for (auto e : m_pComponents)
+	{
+		CText* temp = dynamic_cast<CText*>(e);
+		if (temp)
+		{
+
+		}
+	}
 }

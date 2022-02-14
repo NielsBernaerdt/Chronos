@@ -4,7 +4,7 @@
 #include <vector>
 
 class CBase;
-
+template <typename T>
 class GameObject final : public SceneObject
 {
 public:
@@ -19,6 +19,7 @@ public:
 	void Render() const;
 	void SetPosition(float x, float y);
 	void AddComponent(CBase* component);
+	T GetComponent<T>() const;
 
 private:
 	Transform m_Transform;

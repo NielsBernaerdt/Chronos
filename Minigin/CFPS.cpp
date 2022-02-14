@@ -5,7 +5,7 @@
 void CFPS::Update(float deltaTime)
 {
 	//Get text & render components through owner object
-
+	m_OwnerObject
 	//set text of component to current fps
 
 	//set texture of render comp using this newly updated fps text
