@@ -2,12 +2,16 @@
 #include "CRender.h"
 #include "Texture2D.h"
 #include "Renderer.h"
-#include "Transform.h"
+#include "GameObject.h"
+#include "CTransform.h"
 
-CRender::CRender(std::shared_ptr<Texture2D> texture, Transform pos)
-	: m_Texture{ texture }
-	, m_Transform{ pos }
+CRender::CRender(std::shared_ptr<GameObject> gameObject, std::shared_ptr<Texture2D> texture)
+	: CBase (gameObject)
+	, m_Texture{ texture }
 {
+	// need this in an initalization function
+	//auto pos = dynamic_cast<CTransform>(m_OwnerObject->GetComponent<CTransform>());
+	//m_Transform = pos;
 }
 void CRender::Render() const
 {
@@ -20,8 +24,4 @@ void CRender::Render() const
 void CRender::SetTexture(std::shared_ptr<Texture2D> texture)
 {
 	m_Texture = texture;
-}
-void CRender::SetPosition(Transform pos)
-{
-	m_Transform = pos;
 }

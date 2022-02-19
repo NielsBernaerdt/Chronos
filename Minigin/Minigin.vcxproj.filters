@@ -66,6 +66,9 @@
     <ClInclude Include="CFPS.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="CTransform.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -111,6 +114,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="CFPS.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransform.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

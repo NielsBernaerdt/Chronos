@@ -6,7 +6,10 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "CText.h"
+#include "CRender.h"
+#include "CFPS.h"
 #include "GameObject.h"
+#include "Texture2D.h"
 #include "Scene.h"
 
 using namespace std;
@@ -59,13 +62,16 @@ void Minigin::LoadGame() const
 	//Make Game Object & set position
 	auto fpsCounter = std::make_shared<GameObject>();
 	fpsCounter->SetPosition(216, 180);
-	//Make Text Component & Add it to the Game Object
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto fpsCText = new CText{ "FPS Counter", font };
+	auto fpsCText = std::make_shared<CText>( fpsCounter, "FPS Counter", 36 );
 	fpsCounter->AddComponent(fpsCText);
+	auto fpcComp = std::make_shared<CFPS>(fpsCounter);
+	fpsCounter->AddComponent(fpcComp);
+	auto txture = ResourceManager::GetInstance().LoadTexture("logo.png");
+	auto renderComp = std::make_shared<CRender>(fpsCounter, txture);
+	fpsCounter->AddComponent(renderComp);
 	//Add the Game Object to the scene
 	scene.Add(fpsCounter);
-
+	
 	//auto go = std::make_shared<GameObject>();
 	//go->SetTexture("background.jpg");
 	//scene.Add(go);
@@ -74,6 +80,8 @@ void Minigin::LoadGame() const
 	//go->SetTexture("logo.png");
 	//go->SetPosition(216, 180);
 	//scene.Add(go);
+
+	InitializeObjects(scene.GetObjects());
 }
 
 void Minigin::Cleanup()
@@ -115,4 +123,12 @@ void Minigin::Run()
 	}
 
 	Cleanup();
+}
+
+void Minigin::InitializeObjects(std::vector < std::shared_ptr<SceneObject>>& objects) const
+{
+	for (auto e : objects)
+	{
+		e->Initialize();
+	}
 }

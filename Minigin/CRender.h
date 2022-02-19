@@ -7,7 +7,7 @@ class Texture2D;
 class CRender final : public CBase
 {
 public:
-	explicit CRender(std::shared_ptr<Texture2D> texture, Transform pos);
+	explicit CRender(std::shared_ptr<GameObject> gameObject, std::shared_ptr<Texture2D> texture);
 	virtual ~CRender() = default;
 	CRender(const CRender& other) = delete;
 	CRender(CRender&& other) = delete;
@@ -16,7 +16,6 @@ public:
 
 	void Render() const override;
 	void SetTexture(std::shared_ptr<Texture2D> texture);
-	void SetPosition(Transform pos);
 private:
 	std::shared_ptr<Texture2D> m_Texture;
 	Transform m_Transform;

@@ -7,6 +7,7 @@ class Scene
 	friend Scene& SceneManager::CreateScene(const std::string& name);
 public:
 	void Add(const std::shared_ptr<SceneObject>& object);
+	std::vector < std::shared_ptr<SceneObject>>& GetObjects() { return m_Objects; }
 
 	void Update(float deltaTime);
 	void Render() const;

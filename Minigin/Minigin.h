@@ -1,10 +1,12 @@
 #pragma once
 struct SDL_Window;
+class SceneObject;
 
 class Minigin
 {
 public:
 	void Initialize();
+	void InitializeObjects(std::vector < std::shared_ptr<SceneObject>>& objects) const;
 	void LoadGame() const;
 	void Cleanup();
 	void Run();
