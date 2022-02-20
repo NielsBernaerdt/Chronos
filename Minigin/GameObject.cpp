@@ -6,31 +6,43 @@
 
 void GameObject::Initialize()
 {
-	for (auto e : m_pComponents)
+	for(const auto& child : m_pChilds)
 	{
-		e->Initialize();
+		child->Initialize();
+	}
+	for (const auto& comp : m_pComponents)
+	{
+		comp->Initialize();
 	}
 }
 
 void GameObject::Update(float deltaTime)
 {
-	for (auto e : m_pComponents)
+	for (const auto& child : m_pChilds)
 	{
-		e->Update(deltaTime);
+		child->Update(deltaTime);
+	}
+	for (const auto& comp : m_pComponents)
+	{
+		comp->Update(deltaTime);
 	}
 }
 
 void GameObject::Render() const
 {
-	for (auto e : m_pComponents)
+	for (const auto& child : m_pChilds)
 	{
-		e->Render();
+		child->Render();
+	}
+	for (const auto& comp : m_pComponents)
+	{
+		comp->Render();
 	}
 }
 
-void GameObject::SetPosition(float x, float y)
+void GameObject::AddChild(GameObject* childObject)
 {
-	m_Transform.SetPosition(x, y, 0.0f);
+	m_pChilds.push_back(childObject);
 }
 
 void GameObject::AddComponent(std::shared_ptr<CBase> component)

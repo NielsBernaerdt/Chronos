@@ -4,8 +4,8 @@ class GameObject;
 class CBase
 {
 public:
-	explicit CBase(std::shared_ptr<GameObject> gameObject) : m_OwnerObject{ gameObject } {};
-	virtual ~CBase() {};
+	explicit CBase(GameObject* gameObject) : m_OwnerObject{ gameObject } {};
+	virtual ~CBase() = default;;
 
 	CBase(const CBase& other) = delete;
 	CBase(CBase&& other) = delete;
@@ -17,5 +17,5 @@ public:
 	virtual void Render() const {};
 
 protected:
-	std::shared_ptr<GameObject> m_OwnerObject;
+	GameObject* m_OwnerObject;
 };

@@ -1,16 +1,17 @@
 #include "MiniginPCH.h"
 #include "CTransform.h"
 
-CTransform::CTransform(std::shared_ptr<GameObject> gameObject, const Transform& pos)
+CTransform::CTransform(GameObject* gameObject, int x, int y)
 	: CBase(gameObject)
-	, m_Transform{ pos }
+	, m_Transform{ x, y, 0 }
 {
 }
-void CTransform::SetPosition(const Transform& pos)
+void CTransform::SetPosition(int x, int y)
 {
-	m_Transform = pos;
+	m_Transform.x = float(x);
+	m_Transform.y = float(y);
 }
-const Transform& CTransform::GetPosition() const
+const glm::vec3& CTransform::GetPosition() const
 {
 	return m_Transform;
 }

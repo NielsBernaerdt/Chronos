@@ -29,6 +29,17 @@ void ResourceManager::Init(const std::string& dataPath)
 	}
 }
 
+std::shared_ptr<Texture2D> ResourceManager::LoadEmptyTexture() const
+{
+	const auto fullPath = m_DataPath + m_DefaultImage;
+	auto texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	if (texture == nullptr)
+	{
+		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
+	}
+	return std::make_shared<Texture2D>(texture);
+}
+
 std::shared_ptr<Texture2D> ResourceManager::LoadTexture(const std::string& file) const
 {
 	const auto fullPath = m_DataPath + file;

@@ -7,7 +7,7 @@ class CRender;
 class CFPS final : public CBase
 {
 public:
-	CFPS(std::shared_ptr<GameObject> gameObject);
+	CFPS(GameObject* gameObject);
 	virtual ~CFPS() = default;
 	CFPS(const CFPS& other) = delete;
 	CFPS(CFPS&& other) = delete;
@@ -20,4 +20,7 @@ public:
 private:
 	std::shared_ptr<CText> m_pTextComponent;
 	std::shared_ptr<CRender> m_pRenderComponent;
+	int m_PreviousFPS = 0;
+	float m_Interval = 1.0f;
+	float m_AccTime;
 };
