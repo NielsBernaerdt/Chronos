@@ -8,7 +8,7 @@ class CFPS final : public CBase
 {
 public:
 	CFPS(GameObject* gameObject);
-	virtual ~CFPS() = default;
+	~CFPS() override = default;
 	CFPS(const CFPS& other) = delete;
 	CFPS(CFPS&& other) = delete;
 	CFPS& operator=(const CFPS& other) = delete;
@@ -18,8 +18,8 @@ public:
 	void Update(float deltaTime) override;
 	
 private:
-	std::shared_ptr<CText> m_pTextComponent;
-	std::shared_ptr<CRender> m_pRenderComponent;
+	std::shared_ptr<CText> m_pTextComponent{};
+	std::shared_ptr<CRender> m_pRenderComponent{};
 	int m_PreviousFPS = 0;
 	float m_Interval = 1.0f;
 	float m_AccTime;

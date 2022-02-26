@@ -3,7 +3,7 @@
 #include "Font.h"
 #include "ResourceManager.h"
 
-CText::CText(GameObject* gameObject, const std::string& text, int fontSize)
+CText::CText(GameObject* gameObject, const std::string& text, const int fontSize)
 	: CBase(gameObject)
 	, m_Text(text)
 	, m_Font(ResourceManager::GetInstance().LoadFont("Lingua.otf", fontSize))
