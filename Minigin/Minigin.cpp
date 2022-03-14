@@ -11,6 +11,7 @@
 #include "CFPS.h"
 #include "CTransform.h"
 #include "GameObject.h"
+#include "Texture2D.h"
 #include "Scene.h"
 
 using namespace std;
@@ -64,47 +65,47 @@ void Minigin::LoadGame() const
 	//auto parentObject = std::make_shared<GameObject>();
 
 	//Background image
-	const auto background = std::make_shared<GameObject>();
-	const auto bgCTransform = std::make_shared<CTransform>(background.get(), 0, 0);
+	auto background = std::make_shared<GameObject>();
+	auto bgCTransform = std::make_shared<CTransform>(background.get(), 0, 0);
 	background->AddComponent(bgCTransform);
 	auto bgTexture = ResourceManager::GetInstance().LoadTexture("background.jpg");
-	const auto bgCRender = std::make_shared<CRender>(background.get(), bgTexture);
+	auto bgCRender = std::make_shared<CRender>(background.get(), bgTexture);
 	background->AddComponent(bgCRender);
 	scene.Add(background);
 	//parentObject->AddChild(background.get());
 
 	//Make FPS object
-	const auto fpsCounter = std::make_shared<GameObject>();
-	const auto fpsCTransform = std::make_shared<CTransform>(fpsCounter.get(), 10, 10);
+	auto fpsCounter = std::make_shared<GameObject>();
+	auto fpsCTransform = std::make_shared<CTransform>(fpsCounter.get(), 10, 10);
 	fpsCounter->AddComponent(fpsCTransform);
-	const auto fpsCText = std::make_shared<CText>( fpsCounter.get(), "FPS Counter", 36 );
+	auto fpsCText = std::make_shared<CText>( fpsCounter.get(), "FPS Counter", 36 );
 	fpsCounter->AddComponent(fpsCText);
-	const auto fpsComp = std::make_shared<CFPS>(fpsCounter.get());
+	auto fpsComp = std::make_shared<CFPS>(fpsCounter.get());
 	fpsCounter->AddComponent(fpsComp);
 	auto fpsTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	const auto fpsCRender = std::make_shared<CRender>(fpsCounter.get(), fpsTexture);
+	auto fpsCRender = std::make_shared<CRender>(fpsCounter.get(), fpsTexture);
 	fpsCounter->AddComponent(fpsCRender);
 	scene.Add(fpsCounter);
 	//parentObject->AddChild(fpsCounter.get());
 
 	//Make logo object
-	const auto logo = std::make_shared<GameObject>();
-	const auto logoCTransform = std::make_shared<CTransform>(logo.get(), 216, 180);
+	auto logo = std::make_shared<GameObject>();
+	auto logoCTransform = std::make_shared<CTransform>(logo.get(), 216, 180);
 	logo->AddComponent(logoCTransform);
 	auto logoTexture = ResourceManager::GetInstance().LoadTexture("logo.png");
-	const auto logoCRender = std::make_shared<CRender>(logo.get(), logoTexture);
+	auto logoCRender = std::make_shared<CRender>(logo.get(), logoTexture);
 	logo->AddComponent(logoCRender);
 	scene.Add(logo);
 	//parentObject->AddChild(logo.get());
 
 	//Make title object
-	const auto title = std::make_shared<GameObject>();
-	const auto titleCTransform = std::make_shared<CTransform>(title.get(), 80, 20);
+	auto title = std::make_shared<GameObject>();
+	auto titleCTransform = std::make_shared<CTransform>(title.get(), 80, 20);
 	title->AddComponent(titleCTransform);
-	const auto titleCText = std::make_shared<CText>(title.get(), "Programming 4 Assignment", 36);
+	auto titleCText = std::make_shared<CText>(title.get(), "Programming 4 Assignment", 36);
 	title->AddComponent(titleCText);
 	auto titleTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	const auto titleCRender = std::make_shared<CRender>(title.get(), titleTexture);
+	auto titleCRender = std::make_shared<CRender>(title.get(), titleTexture);
 	title->AddComponent(titleCRender);
 	scene.Add(title);
 	//parentObject->AddChild(title.get());
@@ -132,7 +133,7 @@ void Minigin::Run()
 	LoadGame();
 
 	{
-		const auto& renderer = Renderer::GetInstance();
+		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
 
@@ -141,7 +142,7 @@ void Minigin::Run()
 		while (doContinue)
 		{
 			auto currentTime = std::chrono::high_resolution_clock::now();
-			const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
+			float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 			lastTime = currentTime;
 
 			doContinue = input.ProcessInput();
@@ -156,9 +157,9 @@ void Minigin::Run()
 	Cleanup();
 }
 
-void Minigin::InitializeObjects(const std::vector < std::shared_ptr<SceneObject>>& objects)
+void Minigin::InitializeObjects(std::vector < std::shared_ptr<SceneObject>>& objects) const
 {
-	for (const auto e : objects)
+	for (auto e : objects)
 	{
 		e->Initialize();
 	}

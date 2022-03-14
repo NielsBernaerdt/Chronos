@@ -14,9 +14,9 @@ public:
 	CText& operator=(CText&& other) = delete;
 
 	void SetText(const std::string& text);
-	[[nodiscard]] const std::string& GetText() const;
-	[[nodiscard]] std::shared_ptr<Font> GetFont() const;
+	const std::string& GetText() const;
+	std::shared_ptr<Font> GetFont() const;
 private:
-	std::string m_Text{};
-	std::shared_ptr<Font> m_Font{};
+	std::string m_Text;
+	std::shared_ptr<Font> m_Font;
 };
