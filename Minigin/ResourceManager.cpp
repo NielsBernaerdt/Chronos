@@ -1,4 +1,4 @@
-#include "MiniginPCH.h"
+#include "ChronosPCH.h"
 #include "ResourceManager.h"
 #include <SDL_image.h>
 #include <SDL_ttf.h>

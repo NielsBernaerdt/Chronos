@@ -1,6 +1,5 @@
 /// @ref core
 /// @file glm/detail/type_tvec4.inl
-
 namespace glm{
 namespace detail
 {

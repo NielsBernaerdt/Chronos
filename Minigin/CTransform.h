@@ -12,7 +12,8 @@ public:
 	CTransform& operator=(CTransform&& other) = delete;
 
 	void SetPosition( int x, int y );
-	const glm::vec3& GetPosition() const;
+	const glm::vec3& GetPosition();
 private:
-	 glm::vec3 m_Transform;
+	 glm::vec3 m_Transform{};
+	 glm::vec3 m_WorldTransform{};
 };
