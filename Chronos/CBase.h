@@ -12,6 +12,8 @@ public:
 	CBase& operator=(const CBase& other) = delete;
 	CBase& operator=(CBase&& other) = delete;
 
+	void SetOwner(GameObject* owner) { m_OwnerObject = owner; }
+
 	virtual void Initialize() {};
 	virtual void Update(float) {};
 	virtual void Render() const {};

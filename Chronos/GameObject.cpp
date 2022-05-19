@@ -1,5 +1,14 @@
 #include "ChronosPCH.h"
 #include "GameObject.h"
+#include "CTransform.h"
+
+
+GameObject::GameObject(std::string name)
+	:m_Name(name)
+{
+	std::shared_ptr<CTransform> pCTransform = std::make_shared<CTransform>(this);
+	AddComponent(pCTransform);
+}
 
 void GameObject::Initialize()
 {
@@ -41,6 +50,12 @@ void GameObject::AddComponent(std::shared_ptr<CBase> component)
 {
 	m_pComponents.push_back(component);
 }
+
+CTransform* GameObject::GetTransform() const
+{
+	return dynamic_cast<CTransform*>(GetComponent<CTransform>().get());
+}
+
 //SCENEGRAPH//
 std::shared_ptr<GameObject> GameObject::GetParent()
 {
@@ -48,12 +63,6 @@ std::shared_ptr<GameObject> GameObject::GetParent()
 }
 void GameObject::SetParent(std::shared_ptr<GameObject> parent)
 {
-	if(parent == nullptr)
-	{
-		//todo stuff
-		std::cout << "Help\n";
-	}
-
 	if (m_Parent)
 		m_Parent->RemoveChild(std::shared_ptr<GameObject>(this));
 	m_Parent = parent;

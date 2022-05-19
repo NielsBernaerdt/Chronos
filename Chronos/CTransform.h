@@ -4,7 +4,7 @@
 class CTransform final : public CBase
 {
 public:
-	explicit CTransform(GameObject* gameObject, int x, int y);
+	explicit CTransform(GameObject* gameObject, int x = 0, int y = 0);
 	~CTransform() override = default;
 	CTransform(const CTransform& other) = delete;
 	CTransform(CTransform&& other) = delete;
@@ -13,7 +13,13 @@ public:
 
 	void SetPosition( int x, int y );
 	const glm::vec3& GetPosition();
+
+	//void SetDirty(bool isDirty) { m_IsDirty = isDirty; }
+	//bool IsDirty() const { return m_IsDirty; }
+
+	void UpdateRelativeTransform();
 private:
-	 glm::vec3 m_Transform{};
-	 glm::vec3 m_WorldTransform{};
+	/*bool m_IsDirty = false;*/
+	glm::vec3 m_Pos{};
+	glm::vec3 m_WorldPos{};
 };

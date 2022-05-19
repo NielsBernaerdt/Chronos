@@ -13,15 +13,7 @@ CRender::CRender(GameObject* gameObject, std::shared_ptr<Texture2D> texture)
 }
 void CRender::Initialize()
 {
-	const auto pTransformComponent = std::dynamic_pointer_cast<CTransform>(m_OwnerObject->GetComponent<CTransform>());
-	if (pTransformComponent == nullptr)
-	{
-		std::cout << "Text not valid\n";
-	}
-	else
-	{
-		m_Transform = pTransformComponent->GetPosition();
-	}
+	UpdateRelativeTransform();
 }
 void CRender::Render() const
 {
@@ -34,4 +26,19 @@ void CRender::Render() const
 void CRender::SetTexture(std::shared_ptr<Texture2D> texture)
 {
 	m_Texture = texture;
+}
+
+void CRender::UpdateRelativeTransform()
+{
+	//todo this is not obvious
+
+	const auto pTransformComponent = m_OwnerObject->GetTransform();
+	if (pTransformComponent == nullptr)
+	{
+		std::cout << "CRender::Initialize: Transform not found\n";
+	}
+	else
+	{
+		m_Transform = pTransformComponent->GetPosition();
+	}
 }

@@ -1,13 +1,13 @@
 #pragma once
 struct SDL_Window;
-class SceneObject;
+class GameObject;
 class Scene;
 
 class Chronos
 {
 public:
 	void Initialize();
-	static void InitializeObjects(const std::vector < std::shared_ptr<SceneObject>>& objects);
+	static void InitializeObjects(const std::vector < std::shared_ptr<GameObject>>& objects);
 	void LoadGame() const;
 	void Cleanup();
 	void Run();

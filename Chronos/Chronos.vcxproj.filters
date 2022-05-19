@@ -45,9 +45,6 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="SceneObject.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Source Files</Filter>
     </ClInclude>
