@@ -21,7 +21,7 @@ public:
 	void AddComponent(std::shared_ptr<CBase> component);
 	template <typename T>
 	std::shared_ptr<CBase> GetComponent() const;
-	CTransform* GetTransform() const;
+	CTransform* GetTransform();
 
 	std::string GetName() { return m_Name; }
 
@@ -33,12 +33,15 @@ private:
 public:
 	std::shared_ptr<GameObject> GetParent();
 	void SetParent(std::shared_ptr<GameObject> parent);
+
+	std::vector<std::shared_ptr<GameObject>>& GetChildren() { return m_pChildren; }
 private:
 	void AddChild(std::shared_ptr<GameObject> child);
 	void RemoveChild(std::shared_ptr<GameObject> child);
 
-	std::shared_ptr<GameObject> m_Parent;
-	std::vector<std::shared_ptr<GameObject>> m_Children;
+	std::shared_ptr<GameObject> m_pParent;
+	std::vector<std::shared_ptr<GameObject>> m_pChildren;
+	CTransform* m_pCTransform = nullptr;
 };
 
 template <typename T>

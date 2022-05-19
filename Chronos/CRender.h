@@ -16,9 +16,6 @@ public:
 	void Initialize() override;
 	void Render() const override;
 	void SetTexture(std::shared_ptr<Texture2D> texture);
-
-	void UpdateRelativeTransform();
 private:
 	std::shared_ptr<Texture2D> m_Texture{};
-	glm::vec3 m_Transform{};
 };
