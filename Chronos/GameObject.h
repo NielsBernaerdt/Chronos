@@ -1,7 +1,5 @@
 #pragma once
-#include <vector>
 #include "CBase.h"
-#include "CTransform.h"
 
 class CTransform;
 

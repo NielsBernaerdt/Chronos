@@ -60,7 +60,7 @@ Fart::Fart(GameObject* actor)
 {
 }
 Fart::~Fart()
-{
+{ 
 	delete m_Actor;
 	m_Actor = nullptr;
 }

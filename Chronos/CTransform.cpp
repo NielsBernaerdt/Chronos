@@ -27,7 +27,6 @@ const glm::vec3& CTransform::GetPosition()
 void CTransform:: UpdateRelativeTransform()
 {
 	m_IsDirty = false;
-	std::cout << m_OwnerObject->GetName() << "; " << "Hai\n";
 
 	if (m_OwnerObject->GetParent() != nullptr)
 	{
