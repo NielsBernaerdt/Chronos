@@ -1,5 +1,8 @@
 #pragma once
 
+class Command;
+enum class ControllerButton;
+
 class InputManager
 {
 	class InputManagerImpl;
@@ -12,7 +15,7 @@ public:
 	InputManager& operator=(const InputManager& other) = delete;
 	InputManager& operator=(InputManager&& other) noexcept = delete;
 	//
-	void SetUpInput();
 	bool ProcessInput();
 	void HandleInput();
+	void BindCommandToButton(ControllerButton button, std::unique_ptr<Command> command);
 };

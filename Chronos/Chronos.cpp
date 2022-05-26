@@ -3,6 +3,7 @@
 #include <chrono>
 #include <thread>
 
+#include "CommandsBase.h"
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
@@ -74,8 +75,9 @@ void Chronos::Run()
 	{
 		const auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
-		auto input = InputManager(0);
-		input.SetUpInput();
+		m_Input = new InputManager(0);
+
+		ConfigureInput();
 
 		bool doContinue = true;
 		auto lastTime = std::chrono::high_resolution_clock::now();
@@ -85,9 +87,9 @@ void Chronos::Run()
 			const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 			lastTime = currentTime;
 
-			doContinue = input.ProcessInput();
+			doContinue = m_Input->ProcessInput();
 
-			input.HandleInput();
+			m_Input->HandleInput();
 			sceneManager.Update(deltaTime);
 			renderer.Render();
 

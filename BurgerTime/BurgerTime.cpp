@@ -7,7 +7,10 @@
 
 #include <string> 
 
+#include "InputManager.h"
 #include "CFPS.h"
+#include "Commands.h"
+#include "CommandsBase.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
@@ -106,4 +109,9 @@ void BurgerTime::SceneGraphTestScene(Scene& scene) const
 	//childObject->GetTransform()->UpdateRelativeTransform();
 
 	//logoCRender->UpdateRelativeTransform();
+}
+void BurgerTime::ConfigureInput()
+{
+	m_Input->BindCommandToButton(ControllerButton::ButtonA, std::make_unique<Fart>(new GameObject{ std::string{"temp"} }));
+	m_Input->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<Duck>(new GameObject{ std::string{"temp"} }));
 }

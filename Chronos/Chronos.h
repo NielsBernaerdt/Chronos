@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 
+class InputManager;
 struct SDL_Window;
 class GameObject;
 class Scene;
@@ -18,4 +19,8 @@ public:
 private:
 	static constexpr int m_MsPerFrame = 16; //16 for 60 fps, 33 for 30 fps
 	SDL_Window* m_Window{};
+
+	virtual void ConfigureInput() = 0;
+protected:
+	InputManager* m_Input = nullptr;
 };

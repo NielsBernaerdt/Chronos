@@ -20,11 +20,11 @@ private:
 	int m_ControllerIndex;
 	std::unique_ptr<GameObject> m_pJerry;
 
-	using ControllerCommandsMap = std::map<ControllerButton, Command*>;
+	using ControllerCommandsMap = std::map<ControllerButton, std::unique_ptr<Command>>;
 	ControllerCommandsMap m_ConsoleCommands{};
 
 public:
-	explicit InputManagerImpl(int controllerIndex)
+	explicit InputManagerImpl(int controllerIndex = 0)
 		:m_ControllerIndex{ controllerIndex }
 	{
 		ZeroMemory(&m_PreviousState, sizeof(XINPUT_STATE));
@@ -35,13 +35,7 @@ public:
 	InputManagerImpl(InputManagerImpl&& other) noexcept = delete;
 	InputManagerImpl& operator=(const InputManagerImpl& other) = delete;
 	InputManagerImpl& operator=(InputManagerImpl&& other) noexcept = delete;
-	//
-	void SetUp()
-	{
-		Fire* testFire = new Fire(m_pJerry.get());
-		std::pair<ControllerButton, Command*> test = std::make_pair<>(ControllerButton::ButtonA, testFire);
-		m_ConsoleCommands.emplace(test);
-	}
+
 	bool Process()
 	{
 		CopyMemory(&m_PreviousState, &m_CurrentState, sizeof(XINPUT_STATE));
@@ -56,11 +50,11 @@ public:
 	}
 	bool Pressed(unsigned int button) const
 	{
-		return (m_CurrentState.Gamepad.wButtons & button);
+		return (m_ButtonsPressedThisFrame & button);
 	}
 	bool Down(unsigned int button) const
 	{
-		return (m_ButtonsPressedThisFrame & button);
+		return (m_CurrentState.Gamepad.wButtons & button);
 	}
 	bool Released(unsigned int button) const
 	{
@@ -70,9 +64,13 @@ public:
 	{
 		for (const auto& e : m_ConsoleCommands)
 		{
-			if (Released(static_cast<unsigned int>(e.first)))
+			if (Pressed(static_cast<unsigned int>(e.first)))
 				e.second->Execute();
 		}
+	}
+	void CommandToButton(ControllerButton button, std::unique_ptr<Command> command)
+	{
+		m_ConsoleCommands.insert(std::make_pair<>(button, std::move(command)));
 	}
 };
 InputManager::InputManager(int controllerIndex)
@@ -85,10 +83,6 @@ InputManager::~InputManager()
 	delete m_pInputManagerImpl;
 }
 
-void InputManager::SetUpInput()
-{
-	m_pInputManagerImpl->SetUp();
-}
 bool InputManager::ProcessInput()
 {
 	return m_pInputManagerImpl->Process();
@@ -96,4 +90,8 @@ bool InputManager::ProcessInput()
 void InputManager::HandleInput()
 {
 	m_pInputManagerImpl->Handle();
+}
+void InputManager::BindCommandToButton(ControllerButton button, std::unique_ptr<Command> command)
+{
+	m_pInputManagerImpl->CommandToButton(button, std::move(command));
 }
