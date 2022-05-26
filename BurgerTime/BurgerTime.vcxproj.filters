@@ -17,10 +17,14 @@
     <ClCompile Include="BurgerTime.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
+    <ClCompile Include="Commands.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h">
       <Filter>Game Files</Filter>
     </ClInclude>
+    <ClInclude Include="Commands.h" />
   </ItemGroup>
 </Project>

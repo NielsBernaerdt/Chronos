@@ -1,31 +1,19 @@
-#include "ChronosPCH.h"
 #include "Commands.h"
 
-Command::Command(GameObject* actor)
-	: m_Actor(actor)
-{
-}
-Command::~Command()
-{
-}
-GameObject* Command::GetActor() const
-{
-	return m_Actor;
-}
 //----------------------------------FIRE----------------------------------
-Fire::Fire(GameObject* actor)
-	: Command(actor)
-{
-}
-Fire::~Fire()
-{
-	delete m_Actor;
-	m_Actor = nullptr;
-}
-void Fire::Execute()
-{
-	std::cout << "Fire\n";
-}
+//Fire::Fire(GameObject* actor)
+//	: Command(actor)
+//{
+//}
+//Fire::~Fire()
+//{
+//	delete m_Actor;
+//	m_Actor = nullptr;
+//}
+//void Fire::Execute()
+//{
+//	std::cout << "Fire\n";
+//}
 //----------------------------------DUCK----------------------------------
 Duck::Duck(GameObject* actor)
 	: Command(actor)
@@ -60,7 +48,7 @@ Fart::Fart(GameObject* actor)
 {
 }
 Fart::~Fart()
-{ 
+{
 	delete m_Actor;
 	m_Actor = nullptr;
 }

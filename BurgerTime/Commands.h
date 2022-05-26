@@ -1,26 +1,14 @@
 #pragma once
-#include "GameObject.h"
+#include "CommandsBase.h"
 
-class Command
-{
-protected:
-	GameObject* GetActor() const;
-public:
-	explicit Command(GameObject* actor);
-	virtual ~Command() = 0;
-
-	virtual void Execute() = 0;
-protected:
-	GameObject* m_Actor;
-};
-class Fire : public Command
-{
-public:
-	Fire(GameObject* actor);
-	~Fire() override;
-
-	void Execute() override;
-};
+//class Fire : public Command
+//{
+//public:
+//	Fire(GameObject* actor);
+//	~Fire() override;
+//
+//	void Execute() override;
+//};
 class Duck : public Command
 {
 public:

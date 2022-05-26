@@ -2,9 +2,10 @@
 #include "InputManager.h"
 //
 #define WIN32_LEAN_AND_MEAN
+#include <map>
 #include <Windows.h>
 #include <Xinput.h>
-#include "Commands.h"
+#include "CommandsBase.h"
 //
 
 class InputManager::InputManagerImpl
@@ -19,10 +20,8 @@ private:
 	int m_ControllerIndex;
 	std::unique_ptr<GameObject> m_pJerry;
 
-	std::unique_ptr<Command> buttonX;
-	std::unique_ptr<Command> buttonY;
-	std::unique_ptr<Command> buttonA;
-	std::unique_ptr<Command> buttonB;
+	using ControllerCommandsMap = std::map<ControllerButton, Command*>;
+	ControllerCommandsMap m_ConsoleCommands{};
 
 public:
 	explicit InputManagerImpl(int controllerIndex)
@@ -39,10 +38,9 @@ public:
 	//
 	void SetUp()
 	{
-		buttonA = std::unique_ptr<Jump>(std::make_unique<Jump>(m_pJerry.get()));
-		buttonB = std::unique_ptr<Duck>(std::make_unique<Duck>(m_pJerry.get()));
-		buttonX = std::unique_ptr<Fire>(std::make_unique<Fire>(m_pJerry.get()));
-		buttonY = std::unique_ptr<Fart>(std::make_unique<Fart>(m_pJerry.get()));
+		Fire* testFire = new Fire(m_pJerry.get());
+		std::pair<ControllerButton, Command*> test = std::make_pair<>(ControllerButton::ButtonA, testFire);
+		m_ConsoleCommands.emplace(test);
 	}
 	bool Process()
 	{
@@ -52,7 +50,7 @@ public:
 
 		auto buttonChanges = m_CurrentState.Gamepad.wButtons ^ m_PreviousState.Gamepad.wButtons;
 		m_ButtonsPressedThisFrame = buttonChanges & m_CurrentState.Gamepad.wButtons;
-		m_ButtonsReleasedThisFrame = buttonChanges & (m_CurrentState.Gamepad.wButtons);
+		m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
 
 		return !(m_CurrentState.Gamepad.wButtons & XINPUT_GAMEPAD_START);
 	}
@@ -67,6 +65,14 @@ public:
 	bool Released(unsigned int button) const
 	{
 		return (m_ButtonsReleasedThisFrame & button);
+	}
+	void Handle()
+	{
+		for (const auto& e : m_ConsoleCommands)
+		{
+			if (Released(static_cast<unsigned int>(e.first)))
+				e.second->Execute();
+		}
 	}
 };
 InputManager::InputManager(int controllerIndex)
@@ -87,16 +93,7 @@ bool InputManager::ProcessInput()
 {
 	return m_pInputManagerImpl->Process();
 }
-bool InputManager::IsPressed(ControllerButton button)
-{
-	return m_pInputManagerImpl->Released(static_cast<unsigned int>(button));
-	//return m_pInputManagerImpl->Pressed(button);
-	//return m_pInputManagerImpl->Pressed(button);
-}
 void InputManager::HandleInput()
 {
-	//if (IsPressed(ControllerButton::ButtonY)) buttonY->Execute();
-	//else if (IsPressed(ControllerButton::ButtonX)) buttonX->Execute();
-	//else if (IsPressed(ControllerButton::ButtonA)) buttonA->Execute();
-	//else if (IsPressed(ControllerButton::ButtonB)) buttonB->Execute();
+	m_pInputManagerImpl->Handle();
 }

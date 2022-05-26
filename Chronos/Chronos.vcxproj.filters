@@ -96,7 +96,7 @@
     <ClInclude Include="..\3rdParty\Imgui_1.86\imgui_plot.h">
       <Filter>Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Commands.h">
+    <ClInclude Include="CommandsBase.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -170,7 +170,7 @@
     <ClCompile Include="..\3rdParty\Imgui_1.86\imgui_plot.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Commands.cpp">
+    <ClCompile Include="CommandsBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
