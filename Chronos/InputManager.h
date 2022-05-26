@@ -1,5 +1,6 @@
 #pragma once
 
+class GameObject;
 class Command;
 enum class ControllerButton;
 
@@ -18,4 +19,5 @@ public:
 	bool ProcessInput();
 	void HandleInput();
 	void BindCommandToButton(ControllerButton button, std::unique_ptr<Command> command);
+	void SetPawn(GameObject* pPawn);
 };

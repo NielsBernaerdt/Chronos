@@ -12,6 +12,10 @@ GameObject* Command::GetActor() const
 {
 	return m_Actor;
 }
+void Command::SetOwner(GameObject* pPawn)
+{
+	m_Actor = pPawn;
+}
 
 Fire::Fire(GameObject* actor)
 	: Command(actor)

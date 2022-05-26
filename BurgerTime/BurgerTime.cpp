@@ -83,6 +83,15 @@ void BurgerTime::TutorialScene(Scene& scene) const
 	title->SetParent(parentObject);
 
 	scene.Add(parentObject);
+
+	//PAWN
+	const auto peterPepper = std::make_shared<GameObject>(std::string{ "Peter" });
+	peterPepper->GetTransform()->SetPosition(200, 200);
+	const auto peterTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	const auto peterCRender = std::make_shared<CRender>(peterPepper.get(), peterTexture);
+	peterPepper->AddComponent(peterCRender);
+	scene.Add(peterPepper);
+	m_Input->SetPawn(peterPepper.get());
 }
 void BurgerTime::SceneGraphTestScene(Scene& scene) const
 {
@@ -112,6 +121,6 @@ void BurgerTime::SceneGraphTestScene(Scene& scene) const
 }
 void BurgerTime::ConfigureInput()
 {
-	m_Input->BindCommandToButton(ControllerButton::ButtonA, std::make_unique<Fart>(new GameObject{ std::string{"temp"} }));
-	m_Input->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<Duck>(new GameObject{ std::string{"temp"} }));
+	m_Input->BindCommandToButton(ControllerButton::ButtonA, std::make_unique<Fart>(nullptr));
+	m_Input->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<Duck>(nullptr));
 }

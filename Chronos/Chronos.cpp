@@ -70,15 +70,14 @@ void Chronos::Run()
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
 
+	const auto& renderer = Renderer::GetInstance();
+	auto& sceneManager = SceneManager::GetInstance();
+	m_Input = new InputManager(0);
+
+	ConfigureInput();
 	LoadGame();
 
 	{
-		const auto& renderer = Renderer::GetInstance();
-		auto& sceneManager = SceneManager::GetInstance();
-		m_Input = new InputManager(0);
-
-		ConfigureInput();
-
 		bool doContinue = true;
 		auto lastTime = std::chrono::high_resolution_clock::now();
 		while (doContinue)

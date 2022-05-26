@@ -18,7 +18,7 @@ private:
 	WORD m_ButtonsReleasedThisFrame{};
 
 	int m_ControllerIndex;
-	std::unique_ptr<GameObject> m_pJerry;
+	GameObject* m_pPawn = nullptr;
 
 	using ControllerCommandsMap = std::map<ControllerButton, std::unique_ptr<Command>>;
 	ControllerCommandsMap m_ConsoleCommands{};
@@ -72,6 +72,14 @@ public:
 	{
 		m_ConsoleCommands.insert(std::make_pair<>(button, std::move(command)));
 	}
+	void Pawn(GameObject* pPawn)
+	{
+		m_pPawn = pPawn;
+		for(const auto& e : m_ConsoleCommands)
+		{
+			e.second->SetOwner(pPawn);
+		}
+	}
 };
 InputManager::InputManager(int controllerIndex)
 	:m_pInputManagerImpl{new InputManagerImpl{controllerIndex}}
@@ -94,4 +102,8 @@ void InputManager::HandleInput()
 void InputManager::BindCommandToButton(ControllerButton button, std::unique_ptr<Command> command)
 {
 	m_pInputManagerImpl->CommandToButton(button, std::move(command));
+}
+void InputManager::SetPawn(GameObject* pPawn)
+{
+	m_pInputManagerImpl->Pawn(pPawn);
 }

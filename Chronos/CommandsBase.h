@@ -26,6 +26,7 @@ protected:
 public:
 	explicit Command(GameObject* actor);
 	virtual ~Command() = 0;
+	void SetOwner(GameObject* actor);
 
 	virtual void Execute() = 0;
 protected:

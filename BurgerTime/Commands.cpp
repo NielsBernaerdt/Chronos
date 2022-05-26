@@ -1,4 +1,5 @@
 #include "Commands.h"
+#include "CTransform.h"
 
 //----------------------------------FIRE----------------------------------
 //Fire::Fire(GameObject* actor)
@@ -27,6 +28,8 @@ Duck::~Duck()
 void Duck::Execute()
 {
 	std::cout << "Duck\n";
+
+	m_Actor->GetTransform()->SetPosition(0, 100);
 }
 //----------------------------------JUMP----------------------------------
 Jump::Jump(GameObject* actor)
@@ -55,4 +58,6 @@ Fart::~Fart()
 void Fart::Execute()
 {
 	std::cout << "Fart\n";
+
+	m_Actor->GetTransform()->SetPosition(100, 0);
 }

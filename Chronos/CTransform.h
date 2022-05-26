@@ -1,4 +1,5 @@
 #pragma once
+#include "ChronosPCH.h"
 #include "CBase.h"
 
 class CTransform final : public CBase
