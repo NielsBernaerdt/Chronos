@@ -16,6 +16,9 @@
     <Filter Include="Imgui">
       <UniqueIdentifier>{47f319e4-b52c-4960-bf81-3d10ab1d4f84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Observers">
+      <UniqueIdentifier>{c27e00a9-847c-4be7-9eb0-52bb21092e7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Font.h">
@@ -99,6 +102,15 @@
     <ClInclude Include="CommandsBase.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="CHealth.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CPoints.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Observers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChronosPCH.cpp">
@@ -171,6 +183,12 @@
       <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="CommandsBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CHealth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CPoints.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

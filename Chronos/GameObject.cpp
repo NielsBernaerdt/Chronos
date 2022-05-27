@@ -3,8 +3,9 @@
 
 #include "CRender.h"
 #include "CTransform.h"
+#include "Observer.h"
 
-
+#pragma region Components
 GameObject::GameObject(std::string name)
 	:m_Name(name)
 {
@@ -61,8 +62,9 @@ CTransform* GameObject::GetTransform()
 	}
 	return m_pCTransform;
 }
+#pragma endregion Components
 
-//SCENEGRAPH//
+#pragma region Scenegraph
 std::shared_ptr<GameObject> GameObject::GetParent()
 {
 	return m_pParent;
@@ -97,3 +99,30 @@ void GameObject::RemoveChild(std::shared_ptr<GameObject> child)
 	// child->SetParent(nullptr); //this is not needed?? it gets set to new parent immediatly afterwards
 	//todo: opdate position/rotation/scale
 }
+#pragma endregion Scenegraph
+
+#pragma region Observers
+void GameObject::AddObserver(Observer* observer)
+{
+	m_pObservers.push_back(observer);
+}
+void GameObject::RemoveObserver(Observer* observer)
+{
+	const auto it = std::ranges::find(m_pObservers, observer);
+
+	if (it == m_pObservers.end())
+	{
+		std::cout << "GameObject::RemoveObserver - Observer to remove is not attached to this GameObject!" << std::endl;
+		return;
+	}
+
+	m_pObservers.erase(it);
+}
+void GameObject::Notify(GameObject* gameObject, Event event)
+{
+	for(auto observer : m_pObservers)
+	{
+		observer->Notify(gameObject, event);
+	}
+}
+#pragma endregion Observers

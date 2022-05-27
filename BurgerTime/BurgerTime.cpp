@@ -5,27 +5,31 @@
 #include <SDL.h>
 #pragma warning (pop)
 
-#include <string> 
-
 #include "InputManager.h"
-#include "CFPS.h"
 #include "Commands.h"
 #include "CommandsBase.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "GameObject.h"
+#include "Scene.h"
+//components
+#include "CPoints.h"
+#include "CFPS.h"
+#include "CHealth.h"
 #include "CRender.h"
 #include "CText.h"
 #include "CTransform.h"
-#include "GameObject.h"
-#include "Scene.h"
+//Observers
+#include "Achievements.h"
 
 void BurgerTime::LoadGame() const
 {
 	Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	TutorialScene(scene);
+	//TutorialScene(scene);
 	//SceneGraphTestScene(scene);
+	ObserverScene(scene);
 
 	InitializeObjects(scene.GetObjects());
 }
@@ -119,6 +123,37 @@ void BurgerTime::SceneGraphTestScene(Scene& scene) const
 
 	//logoCRender->UpdateRelativeTransform();
 }
+void BurgerTime::ObserverScene(Scene& scene) const
+{
+	//Achievements Observer
+	std::shared_ptr<Achievements> achievements = std::make_shared<Achievements>();
+
+	// PlayerObject
+	auto peterPawn = std::make_shared<GameObject>(std::string{"PawnObject"});
+		//HealthComponent
+		std::shared_ptr<CHealth> pawnCHealth = std::make_shared<CHealth>(peterPawn.get());
+		pawnCHealth->SetHealth(3);
+		//PointsComponent
+		std::shared_ptr<CPoints> pawnCPoints = std::make_shared<CPoints>(peterPawn.get());
+
+	peterPawn->AddComponent(pawnCHealth);
+	peterPawn->AddComponent(pawnCPoints);
+
+	peterPawn->AddObserver(achievements.get());
+
+	scene.Add(peterPawn);
+
+	///
+	std::cout << "Current HP: " << pawnCHealth->GetHealth() << std::endl;
+	std::cout << "Current Points: " << pawnCPoints->GetPoints() << std::endl;
+	pawnCHealth->SetHealth(1);
+	std::cout << "First Reduction to 1HP: " << pawnCHealth->GetHealth() << std::endl;
+	std::cout << "Current Points: " << pawnCPoints->GetPoints() << std::endl;
+	pawnCHealth->SetHealth(0);
+	std::cout << "Second Reduction to 0HP: " << pawnCHealth->GetHealth() << std::endl;
+	std::cout << "Current Points: " << pawnCPoints->GetPoints() << std::endl;
+}
+
 void BurgerTime::ConfigureInput()
 {
 	m_Input->BindCommandToButton(ControllerButton::ButtonA, std::make_unique<Fart>(nullptr));

@@ -3,6 +3,8 @@
 #include <vector>
 #include "CBase.h"
 
+enum class Event;
+class Observer;
 class CTransform;
 
 class GameObject final
@@ -42,6 +44,16 @@ private:
 	std::shared_ptr<GameObject> m_pParent;
 	std::vector<std::shared_ptr<GameObject>> m_pChildren;
 	CTransform* m_pCTransform = nullptr;
+
+	//Observers
+public:
+	void AddObserver(Observer* observer);
+	void RemoveObserver(Observer* observer);
+
+	void Notify(GameObject* gameObject, Event event);
+
+private:
+	std::vector<Observer*> m_pObservers;
 };
 
 template <typename T>

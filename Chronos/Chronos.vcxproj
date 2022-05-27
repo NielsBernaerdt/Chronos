@@ -206,7 +206,9 @@
     <ClInclude Include="..\3rdParty\Imgui_1.86\imstb_truetype.h" />
     <ClInclude Include="CBase.h" />
     <ClInclude Include="CFPS.h" />
+    <ClInclude Include="CHealth.h" />
     <ClInclude Include="CommandsBase.h" />
+    <ClInclude Include="CPoints.h" />
     <ClInclude Include="CRender.h" />
     <ClInclude Include="CTransform.h" />
     <ClInclude Include="Font.h" />
@@ -214,6 +216,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Chronos.h" />
     <ClInclude Include="ChronosPCH.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
@@ -273,7 +276,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CFPS.cpp" />
+    <ClCompile Include="CHealth.cpp" />
     <ClCompile Include="CommandsBase.cpp" />
+    <ClCompile Include="CPoints.cpp" />
     <ClCompile Include="CRender.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Font.cpp" />

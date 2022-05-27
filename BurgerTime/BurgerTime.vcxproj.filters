@@ -20,11 +20,15 @@
     <ClCompile Include="Commands.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
+    <ClCompile Include="Achievements.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h">
       <Filter>Game Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands.h" />
+    <ClInclude Include="Achievements.h" />
   </ItemGroup>
 </Project>

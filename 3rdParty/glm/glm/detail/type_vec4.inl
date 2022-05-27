@@ -150,7 +150,6 @@ namespace detail
 		}
 	};
 }//namespace detail
-
 	// -- Implicit basic constructors --
 
 #	if !GLM_HAS_DEFAULTED_FUNCTIONS || !defined(GLM_FORCE_NO_CTOR_INIT)
@@ -176,7 +175,6 @@ namespace detail
 	{}
 
 	// -- Explicit basic constructors --
-
 	template <typename T, precision P>
 	GLM_FUNC_QUALIFIER GLM_CONSTEXPR_SIMD tvec4<T, P>::tvec4(ctor)
 	{}

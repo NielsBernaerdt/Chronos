@@ -15,5 +15,6 @@ public:
 private:
 	void TutorialScene(Scene& scene) const;
 	void SceneGraphTestScene(Scene& scene) const;
+	void ObserverScene(Scene& scene) const;
 	void ConfigureInput() override;
 };
