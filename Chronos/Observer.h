@@ -6,7 +6,7 @@ class Observer
 {
 public:
 	Observer() = default;
-	~Observer() = default;
+	virtual ~Observer() = default;
 	Observer(const Observer& other) = delete;
 	Observer(Observer&& other) noexcept = delete;
 	Observer& operator=(const Observer& other) = delete;

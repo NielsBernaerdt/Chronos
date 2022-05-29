@@ -212,6 +212,7 @@
     <ClInclude Include="CRender.h" />
     <ClInclude Include="CTransform.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Chronos.h" />

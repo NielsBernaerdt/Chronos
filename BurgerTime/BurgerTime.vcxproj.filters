@@ -28,7 +28,11 @@
     <ClInclude Include="BurgerTime.h">
       <Filter>Game Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands.h" />
-    <ClInclude Include="Achievements.h" />
+    <ClInclude Include="Achievements.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

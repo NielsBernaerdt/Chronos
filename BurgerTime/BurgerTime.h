@@ -1,20 +1,17 @@
 #pragma once
-#include "Chronos.h"
+#include "Game.h"
 
-class BurgerTime : public Chronos
+class BurgerTime : public Game
 {
-public:
-	BurgerTime() = default;
-	~BurgerTime() = default;
-	BurgerTime(const BurgerTime& other) = delete;
-	BurgerTime(BurgerTime&& other) noexcept = delete;
-	BurgerTime& operator=(const BurgerTime& other) = delete;
-	BurgerTime& operator=(BurgerTime&& other) noexcept = delete;
-
-	void LoadGame() const override;
 private:
 	void TutorialScene(Scene& scene) const;
 	void SceneGraphTestScene(Scene& scene) const;
-	void ObserverScene(Scene& scene) const;
-	void ConfigureInput() override;
+	void ObserverScene(Scene& scene) const;	
+
+public:
+	void SetupObjects(Scene& scene) override
+	{
+		ObserverScene(scene);
+	};
+	void ConfigureInput(InputManager* input) override;
 };

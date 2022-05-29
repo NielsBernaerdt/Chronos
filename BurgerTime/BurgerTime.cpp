@@ -23,17 +23,6 @@
 //Observers
 #include "Achievements.h"
 
-void BurgerTime::LoadGame() const
-{
-	Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
-
-	//TutorialScene(scene);
-	//SceneGraphTestScene(scene);
-	ObserverScene(scene);
-
-	InitializeObjects(scene.GetObjects());
-}
-
 //OWN SCENES//
 void BurgerTime::TutorialScene(Scene& scene) const
 {
@@ -95,7 +84,7 @@ void BurgerTime::TutorialScene(Scene& scene) const
 	const auto peterCRender = std::make_shared<CRender>(peterPepper.get(), peterTexture);
 	peterPepper->AddComponent(peterCRender);
 	scene.Add(peterPepper);
-	m_Input->SetPawn(peterPepper.get());
+	//todo m_Input->SetPawn(peterPepper.get());
 }
 void BurgerTime::SceneGraphTestScene(Scene& scene) const
 {
@@ -154,8 +143,8 @@ void BurgerTime::ObserverScene(Scene& scene) const
 	std::cout << "Current Points: " << pawnCPoints->GetPoints() << std::endl;
 }
 
-void BurgerTime::ConfigureInput()
+void BurgerTime::ConfigureInput(InputManager* input)
 {
-	m_Input->BindCommandToButton(ControllerButton::ButtonA, std::make_unique<Fart>(nullptr));
-	m_Input->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<Duck>(nullptr));
+	input->BindCommandToButton(ControllerButton::ButtonA, std::make_unique<Fart>(nullptr));
+	input->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<Duck>(nullptr));
 }

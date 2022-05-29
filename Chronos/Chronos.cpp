@@ -3,12 +3,13 @@
 #include <chrono>
 #include <thread>
 
-#include "CommandsBase.h"
+#include "Game.h"
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
+#include "Scene.h"
 
 
 void PrintSDLVersion()
@@ -53,7 +54,14 @@ void Chronos::Initialize()
  * Code constructing the scene world starts here
  */
 
- // void Chronos::LoadGame() const {}
+ void Chronos::LoadGame() const
+{
+	 Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
+
+	 m_pGame->SetupObjects(scene);
+
+	 InitializeObjects(scene.GetObjects());
+}
 
 void Chronos::Cleanup()
 {
@@ -61,6 +69,8 @@ void Chronos::Cleanup()
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
 	SDL_Quit();
+	delete m_pGame;
+	m_pGame = nullptr;
 }
 
 void Chronos::Run()

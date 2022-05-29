@@ -5,9 +5,11 @@
 #endif
 
 #include "BurgerTime.h"
+#include "Chronos.h"
 
 int main(int, char* []) {
-	BurgerTime engine;
+	BurgerTime* pGame = new BurgerTime{};
+	Chronos engine{ pGame };
 	engine.Run();
 	return 0;
 }
