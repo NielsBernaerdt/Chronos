@@ -24,7 +24,7 @@
 #include "Achievements.h"
 
 //OWN SCENES//
-void BurgerTime::TutorialScene(Scene& scene) const
+void BurgerTime::TutorialScene(Scene& scene)
 {
 	auto parentObject = std::make_shared<GameObject>(std::string{ "TutorialParent" });
 	parentObject->GetTransform()->SetPosition(300, 200);
@@ -84,7 +84,9 @@ void BurgerTime::TutorialScene(Scene& scene) const
 	const auto peterCRender = std::make_shared<CRender>(peterPepper.get(), peterTexture);
 	peterPepper->AddComponent(peterCRender);
 	scene.Add(peterPepper);
-	//todo m_Input->SetPawn(peterPepper.get());
+
+	m_pPlayerPawn = peterPepper.get();
+
 }
 void BurgerTime::SceneGraphTestScene(Scene& scene) const
 {
@@ -147,4 +149,6 @@ void BurgerTime::ConfigureInput(InputManager* input)
 {
 	input->BindCommandToButton(ControllerButton::ButtonA, std::make_unique<Fart>(nullptr));
 	input->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<Duck>(nullptr));
+
+	input->SetPawn(m_pPlayerPawn);
 }

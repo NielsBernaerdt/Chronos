@@ -29,7 +29,7 @@ void Renderer::Init(SDL_Window * window)
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
-
+	
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());

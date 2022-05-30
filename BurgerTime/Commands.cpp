@@ -1,4 +1,6 @@
 #include "Commands.h"
+
+#include "Audio.h"
 #include "CTransform.h"
 
 //----------------------------------FIRE----------------------------------
@@ -30,6 +32,8 @@ void Duck::Execute()
 	std::cout << "Duck\n";
 
 	m_Actor->GetTransform()->SetPosition(0, 100);
+
+	Audio::GetInstance().PlaySound("../Data/Clock.wav", 1);
 }
 //----------------------------------JUMP----------------------------------
 Jump::Jump(GameObject* actor)
@@ -60,4 +64,5 @@ void Fart::Execute()
 	std::cout << "Fart\n";
 
 	m_Actor->GetTransform()->SetPosition(100, 0);
+	Audio::GetInstance().PlaySound("../Data/Lock.wav", 1);
 }
