@@ -10,7 +10,8 @@ public:
 	CText(GameObject* gameObject = nullptr
 		, const std::string& text = "Default Text"
 		, int fontSize = 18
-		, SDL_Color color = SDL_Color{255, 255, 255});
+		, SDL_Color color = SDL_Color{255, 255, 255}
+		, bool renderText = true);
 	~CText() override = default;
 	CText(const CText& other) = delete;
 	CText(CText&& other) = delete;
@@ -30,6 +31,7 @@ private:
 	std::string m_Text{};
 	std::shared_ptr<Font> m_Font{};
 	SDL_Color m_Color{};
+	bool m_RenderText{};
 
 	std::shared_ptr<CRender> m_pRenderComponent{};
 };

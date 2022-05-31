@@ -9,11 +9,12 @@
 #include "CRender.h"
 #include "Texture2D.h"
 
-CText::CText(GameObject* gameObject, const std::string& text, int fontSize, SDL_Color color)
+CText::CText(GameObject* gameObject, const std::string& text, int fontSize, SDL_Color color, bool renderText)
 	: CBase(gameObject)
 	, m_Text(text)
 	, m_Font(ResourceManager::GetInstance().LoadFont("Lingua.otf", fontSize))
 	, m_Color(color)
+	, m_RenderText(renderText)
 {
 }
 
@@ -38,6 +39,9 @@ void CText::SetColor(const SDL_Color& color)
 
 void CText::Initialize()
 {
+	if (m_RenderText == false)
+		return;
+
 	m_pRenderComponent = std::dynamic_pointer_cast<CRender>(m_OwnerObject->GetComponent<CRender>());
 	if (m_pRenderComponent == nullptr)
 	{

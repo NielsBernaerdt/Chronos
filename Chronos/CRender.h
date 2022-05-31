@@ -14,7 +14,7 @@ public:
 	CRender& operator=(CRender&& other) = delete;
 
 	void Initialize() override;
-	void Render() const override;
+	void Render() const;
 	void SetTexture(std::shared_ptr<Texture2D> texture);
 private:
 	std::shared_ptr<Texture2D> m_Texture{};

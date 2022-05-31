@@ -16,7 +16,6 @@ public:
 
 	virtual void Initialize() {}
 	virtual void Update(float) {}
-	virtual void Render() const {}
 
 protected:
 	GameObject* m_OwnerObject;

@@ -43,10 +43,10 @@ void GameObject::Render() const
 	{
 		obj->Render();
 	}
-	for (const auto& comp : m_pComponents)
-	{
-		comp->Render();
-	}
+	//todo dont dynamiccast on hot code path
+	CBase* renderComp = GetComponent<CRender>().get();
+	if (renderComp)
+		dynamic_cast<CRender*>(renderComp)->Render();
 }
 
 void GameObject::AddComponent(std::shared_ptr<CBase> component)
