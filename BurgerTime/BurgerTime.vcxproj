@@ -159,16 +159,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Chronos\CHealth.cpp" />
+    <ClCompile Include="..\Chronos\CPoints.cpp" />
     <ClCompile Include="Achievements.cpp" />
     <ClCompile Include="BurgerTime.cpp" />
-    <ClCompile Include="Commands.cpp" />
+    <ClCompile Include="InputCommands.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PlayerState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Chronos\CHealth.h" />
+    <ClInclude Include="..\Chronos\CPoints.h" />
     <ClInclude Include="Achievements.h" />
     <ClInclude Include="BurgerTime.h" />
-    <ClInclude Include="Commands.h" />
+    <ClInclude Include="InputCommands.h" />
     <ClInclude Include="PlayerState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

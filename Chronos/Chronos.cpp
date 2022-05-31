@@ -49,7 +49,7 @@ void Chronos::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
-	Audio::GetInstance().Initialize();
+	Audio::GetInstance().Init();
 }
 
 /**

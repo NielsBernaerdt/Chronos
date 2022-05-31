@@ -6,8 +6,8 @@
 #pragma warning (pop)
 
 #include "InputManager.h"
-#include "Commands.h"
-#include "CommandsBase.h"
+#include "InputCommands.h"
+#include "BCommand.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"

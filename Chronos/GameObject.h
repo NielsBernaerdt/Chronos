@@ -5,7 +5,7 @@
 #include "CBase.h"
 
 enum class Event;
-class Observer;
+class BObserver;
 class CTransform;
 class PlayerState;
 
@@ -49,13 +49,13 @@ private:
 
 	//Observers
 public:
-	void AddObserver(Observer* observer);
-	void RemoveObserver(Observer* observer);
+	void AddObserver(BObserver* observer);
+	void RemoveObserver(BObserver* observer);
 
 	void Notify(GameObject* gameObject, Event event);
 
 private:
-	std::vector<Observer*> m_pObservers;
+	std::vector<BObserver*> m_pObservers;
 
 	//State
 private:

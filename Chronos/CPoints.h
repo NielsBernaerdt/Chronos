@@ -1,5 +1,6 @@
 #pragma once
 #include "CBase.h"
+
 class CPoints : public CBase
 {
 public:

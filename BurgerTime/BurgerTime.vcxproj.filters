@@ -1,44 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Components">
+      <UniqueIdentifier>{089b2a0c-f3e7-49cd-aff9-c2b19dc586ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game Files">
+    <Filter Include="Commands">
+      <UniqueIdentifier>{20930498-716d-471f-91a3-947e141fe570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{0b3365fc-b952-44ea-9a36-7221543f13d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Observers">
+      <UniqueIdentifier>{17a59172-3843-44c5-ad1b-5765481a8936}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>Game Files</Filter>
+      <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="BurgerTime.cpp">
-      <Filter>Game Files</Filter>
+      <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Commands.cpp">
-      <Filter>Game Files</Filter>
+    <ClCompile Include="..\Chronos\CHealth.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Achievements.cpp">
-      <Filter>Game Files</Filter>
+    <ClCompile Include="..\Chronos\CPoints.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="InputCommands.cpp">
+      <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="PlayerState.cpp">
-      <Filter>Game Files</Filter>
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="Achievements.cpp">
+      <Filter>Observers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h">
-      <Filter>Game Files</Filter>
+      <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Achievements.h">
-      <Filter>Game Files</Filter>
+    <ClInclude Include="..\Chronos\CHealth.h">
+      <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Commands.h">
-      <Filter>Game Files</Filter>
+    <ClInclude Include="..\Chronos\CPoints.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="InputCommands.h">
+      <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="PlayerState.h">
-      <Filter>Game Files</Filter>
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="Achievements.h">
+      <Filter>Observers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

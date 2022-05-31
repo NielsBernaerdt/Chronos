@@ -20,12 +20,6 @@ public:
 	PlayerState(PlayerState&& other) noexcept = delete;
 	PlayerState& operator=(const PlayerState& other) = delete;
 	PlayerState& operator=(PlayerState&& other) noexcept = delete;
-
-	void HandleInput() override {}
-	void Update() override {}
-
-	void OnEnter() override {}
-	void OnExit() override {}
 };
 
 class IdleState : public PlayerState

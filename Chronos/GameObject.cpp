@@ -3,7 +3,7 @@
 
 #include "CRender.h"
 #include "CTransform.h"
-#include "Observer.h"
+#include "BObserver.h"
 
 #pragma region Components
 GameObject::GameObject(std::string name)
@@ -102,11 +102,11 @@ void GameObject::RemoveChild(std::shared_ptr<GameObject> child)
 #pragma endregion Scenegraph
 
 #pragma region Observers
-void GameObject::AddObserver(Observer* observer)
+void GameObject::AddObserver(BObserver* observer)
 {
 	m_pObservers.push_back(observer);
 }
-void GameObject::RemoveObserver(Observer* observer)
+void GameObject::RemoveObserver(BObserver* observer)
 {
 	const auto it = std::ranges::find(m_pObservers, observer);
 

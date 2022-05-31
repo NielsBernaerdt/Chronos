@@ -4,11 +4,8 @@
 
 #include "Game.h"
 
-class Game;
-class InputManager;
-struct SDL_Window;
 class GameObject;
-class Scene;
+struct SDL_Window;
 
 class Chronos
 {
@@ -26,10 +23,10 @@ private:
 	SDL_Window* m_Window{};
 	Game* m_pGame = nullptr;
 
-	virtual void ConfigureInput()
-	{
+	virtual void ConfigureInput() {
 		m_pGame->ConfigureInput(m_Input);
 	}
+
 protected:
 	InputManager* m_Input = nullptr;
 };

@@ -5,7 +5,7 @@
 #include <map>
 #include <Windows.h>
 #include <Xinput.h>
-#include "CommandsBase.h"
+#include "BCommand.h"
 //
 
 class InputManager::InputManagerImpl
@@ -20,7 +20,7 @@ private:
 	int m_ControllerIndex;
 	GameObject* m_pPawn = nullptr;
 
-	using ControllerCommandsMap = std::map<ControllerButton, std::unique_ptr<Command>>;
+	using ControllerCommandsMap = std::map<ControllerButton, std::unique_ptr<BCommand>>;
 	ControllerCommandsMap m_ConsoleCommands{};
 
 public:
@@ -68,7 +68,7 @@ public:
 				e.second->Execute();
 		}
 	}
-	void CommandToButton(ControllerButton button, std::unique_ptr<Command> command)
+	void CommandToButton(ControllerButton button, std::unique_ptr<BCommand> command)
 	{
 		m_ConsoleCommands.insert(std::make_pair<>(button, std::move(command)));
 	}
@@ -99,7 +99,7 @@ void InputManager::HandleInput()
 {
 	m_pInputManagerImpl->Handle();
 }
-void InputManager::BindCommandToButton(ControllerButton button, std::unique_ptr<Command> command)
+void InputManager::BindCommandToButton(ControllerButton button, std::unique_ptr<BCommand> command)
 {
 	m_pInputManagerImpl->CommandToButton(button, std::move(command));
 }

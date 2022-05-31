@@ -13,9 +13,8 @@ private:
 	GameObject* m_pPlayerPawn = nullptr;
 
 public:
-	void SetupObjects(Scene& scene) override
-	{
+	void SetupObjects(Scene& scene) override {
 		TutorialScene(scene);
-	};
+	}
 	void ConfigureInput(InputManager* input) override;
 };

@@ -1,15 +1,15 @@
 #pragma once
-#include "CommandsBase.h"
+#include "BCommand.h"
 
-//class Fire : public Command
-//{
-//public:
-//	Fire(GameObject* actor);
-//	~Fire() override;
-//
-//	void Execute() override;
-//};
-class Duck : public Command
+class Fire : public BCommand
+{
+public:
+	Fire(GameObject* actor);
+	~Fire() override;
+
+	void Execute() override;
+};
+class Duck : public BCommand
 {
 public:
 	Duck(GameObject* actor);
@@ -17,7 +17,7 @@ public:
 
 	void Execute() override;
 };
-class Jump : public Command
+class Jump : public BCommand
 {
 public:
 	Jump(GameObject* actor);
@@ -25,7 +25,7 @@ public:
 
 	void Execute() override;
 };
-class Fart : public Command
+class Fart : public BCommand
 {
 public:
 	Fart(GameObject* actor);

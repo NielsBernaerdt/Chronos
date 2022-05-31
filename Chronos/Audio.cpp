@@ -5,7 +5,7 @@ void my_audio_callback(void* userdata, Uint8* stream, int len);
 static Uint8* audio_pos; // global pointer to the audio buffer to be played
 static Uint32 audio_len; // remaining length of the sample we have to play
 
-void Audio::Initialize()
+void Audio::Init()
 {
 	m_Head = 0;
 	m_Tail = 0;

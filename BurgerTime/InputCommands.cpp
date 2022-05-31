@@ -1,26 +1,26 @@
-#include "Commands.h"
+#include "InputCommands.h"
 
 #include "Audio.h"
 #include "CTransform.h"
 #include "PlayerState.h"
 
 //----------------------------------FIRE----------------------------------
-//Fire::Fire(GameObject* actor)
-//	: Command(actor)
-//{
-//}
-//Fire::~Fire()
-//{
-//	delete m_Actor;
-//	m_Actor = nullptr;
-//}
-//void Fire::Execute()
-//{
-//	std::cout << "Fire\n";
-//}
+Fire::Fire(GameObject* actor)
+	: BCommand(actor)
+{
+}
+Fire::~Fire()
+{
+	delete m_Actor;
+	m_Actor = nullptr;
+}
+void Fire::Execute()
+{
+	std::cout << "Fire\n";
+}
 //----------------------------------DUCK----------------------------------
 Duck::Duck(GameObject* actor)
-	: Command(actor)
+	: BCommand(actor)
 {
 }
 Duck::~Duck()
@@ -40,7 +40,7 @@ void Duck::Execute()
 }
 //----------------------------------JUMP----------------------------------
 Jump::Jump(GameObject* actor)
-	: Command(actor)
+	: BCommand(actor)
 {
 }
 Jump::~Jump()
@@ -54,7 +54,7 @@ void Jump::Execute()
 }
 //----------------------------------FART----------------------------------
 Fart::Fart(GameObject* actor)
-	: Command(actor)
+	: BCommand(actor)
 {
 }
 Fart::~Fart()

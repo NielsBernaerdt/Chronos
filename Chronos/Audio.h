@@ -20,7 +20,7 @@ struct WAV
 class Audio : public Singleton<Audio>
 {
 public:
-	void Initialize();
+	void Init();
 	void PlaySound(SoundId id, int volume);
 	void Update();
 

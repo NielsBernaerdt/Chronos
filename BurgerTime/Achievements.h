@@ -1,11 +1,8 @@
 #pragma once
 #include <iostream>
 
-//todo remove
-#include "CPoints.h"
-//
 #include "GameObject.h"
-#include "Observer.h"
+#include "BObserver.h"
 
 enum class Event
 {
@@ -17,7 +14,7 @@ enum class Achievement
 	FirstBlood
 };
 
-class Achievements : public Observer
+class Achievements : public BObserver
 {
 public:
 	void Notify(GameObject* object, Event event) override
@@ -30,10 +27,8 @@ public:
 		}
 	}
 private:
-	void Unlock(Achievement achievement, GameObject* object)
+	void Unlock(Achievement achievement, GameObject*)
 	{
 		std::cout << "unlocked achievement: " << int(achievement) << std::endl;
-
-		dynamic_cast<CPoints*>(object->GetComponent<CPoints>().get())->SetPoints(200);
 	}
 };

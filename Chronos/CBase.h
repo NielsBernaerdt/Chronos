@@ -5,7 +5,7 @@ class CBase
 {
 public:
 	explicit CBase(GameObject* gameObject) : m_OwnerObject{ gameObject } {};
-	virtual ~CBase() = default;;
+	virtual ~CBase() = default;
 
 	CBase(const CBase& other) = delete;
 	CBase(CBase&& other) = delete;
@@ -14,9 +14,9 @@ public:
 
 	void SetOwner(GameObject* owner) { m_OwnerObject = owner; }
 
-	virtual void Initialize() {};
-	virtual void Update(float) {};
-	virtual void Render() const {};
+	virtual void Initialize() {}
+	virtual void Update(float) {}
+	virtual void Render() const {}
 
 protected:
 	GameObject* m_OwnerObject;

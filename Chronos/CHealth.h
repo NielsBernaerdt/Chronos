@@ -1,7 +1,6 @@
 #pragma once
 #include "CBase.h"
 #include "GameObject.h"
-#include "../BurgerTime/Achievements.h"
 
 class CHealth : public CBase
 {
@@ -13,14 +12,7 @@ public:
 	CHealth& operator=(const CHealth& other) = delete;
 	CHealth& operator=(CHealth&& other) noexcept = delete;
 
-	void SetHealth(int hp)
-	{
-		m_Health = hp;
-		if(m_Health <= 0)
-		{
-			m_OwnerObject->Notify(m_OwnerObject, Event::ActorDied);
-		}
-	}
+	void SetHealth(int hp);
 	int GetHealth() const { return m_Health; }
 
 private:
