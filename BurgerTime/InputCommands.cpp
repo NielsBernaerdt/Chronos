@@ -1,6 +1,6 @@
 #include "InputCommands.h"
 
-#include "Audio.h"
+#include "AudioManager.h"
 #include "CTransform.h"
 #include "PlayerState.h"
 
@@ -36,7 +36,7 @@ void Duck::Execute()
 
 	m_Actor->SetState(new IdleState{});
 
-	//Audio::GetInstance().PlaySound("../Data/Clock.wav", 1);
+	AudioManager::GetInstance().PlaySound("../Data/Clock.wav", 1);
 }
 //----------------------------------JUMP----------------------------------
 Jump::Jump(GameObject* actor)
@@ -69,5 +69,5 @@ void Fart::Execute()
 	m_Actor->SetState(new WalkingState{});
 
 	m_Actor->GetTransform()->SetPosition(100, 0);
-	//Audio::GetInstance().PlaySound("../Data/Lock.wav", 1);
+	AudioManager::GetInstance().PlaySound("../Data/Clock.wav", 1);
 }

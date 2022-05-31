@@ -7,6 +7,9 @@
 #include "Texture2D.h"
 #include "Font.h"
 
+////todo check
+//#include "Audio.h"
+
 void ResourceManager::Init(const std::string& dataPath)
 {
 	m_DataPath = dataPath;
@@ -54,4 +57,24 @@ std::shared_ptr<Texture2D> ResourceManager::LoadTexture(const std::string& file)
 std::shared_ptr<Font> ResourceManager::LoadFont(const std::string& file, unsigned int size) const
 {
 	return std::make_shared<Font>(m_DataPath + file, size);
+}
+
+WAV ResourceManager::LoadWAV(const std::string& file) const
+{
+	const auto fullPath = m_DataPath + file;
+
+	WAV params;
+	if (SDL_LoadWAV(fullPath.c_str(), &params.spec, &params.buffer, &params.length) == NULL)
+	{
+		std::cout << "ERROR AUDIO::UPDATE\n";
+	}
+
+	// set the callback function
+	params.spec.callback = Audio::AudioCallBack;
+	params.spec.userdata = NULL;
+	// set our global static variables
+	Audio::audio_pos = params.buffer; // copy sound buffer
+	Audio::audio_len = params.length; // copy file length
+
+	return params;
 }

@@ -3,7 +3,7 @@
 #include <chrono>
 #include <thread>
 
-#include "Audio.h"
+#include "AudioManager.h"
 #include "Game.h"
 #include "InputManager.h"
 #include "SceneManager.h"
@@ -49,7 +49,7 @@ void Chronos::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
-	Audio::GetInstance().Init();
+	AudioManager::GetInstance().Init();
 }
 
 /**
@@ -103,7 +103,7 @@ void Chronos::Run()
 			m_Input->HandleInput();
 			sceneManager.Update(deltaTime);
 			renderer.Render();
-			Audio::GetInstance().Update();
+			AudioManager::GetInstance().Update();
 
 			auto sleepTime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime + std::chrono::milliseconds(m_MsPerFrame) - std::chrono::high_resolution_clock::now());
 			std::this_thread::sleep_for(sleepTime);

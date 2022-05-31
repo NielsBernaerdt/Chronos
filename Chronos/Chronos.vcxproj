@@ -196,6 +196,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="BState.h" />
     <ClInclude Include="CBase.h" />
     <ClInclude Include="CFPS.h" />
@@ -220,6 +221,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="CFPS.cpp" />
     <ClCompile Include="CRender.cpp" />
     <ClCompile Include="CTransform.cpp" />

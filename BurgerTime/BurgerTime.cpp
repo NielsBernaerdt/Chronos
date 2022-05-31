@@ -108,7 +108,7 @@ void BurgerTime::SceneGraphTestScene(Scene& scene) const
 	childObject->SetParent(parentObject);
 	parentObject->SetParent(secondParentObject);
 
-	//todo fix changing parent runtime
+	//todo Cant fix parent at runtime
 	//childObject->SetParent(secondParentObject);
 	//childObject->GetTransform()->UpdateRelativeTransform();
 
