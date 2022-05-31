@@ -68,19 +68,20 @@ void Audio::OpenAudioDevice(WAV resource)
 {
 	if (SDL_OpenAudio(&resource.spec, NULL) < 0) {
 		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
-		exit(-1);
+		//exit(-1);
 	}
-
+	
 	SDL_PauseAudio(0);
 
 	// wait until we're don't playing
-	//while (audio_len > 0) {
-	//	SDL_Delay(100);
-	//}
+	while (audio_len > 0) {
+		std::cout << "Audio Length: " << audio_len << std::endl;
+		SDL_Delay(100);
+	}
 
 	// shut everything down
-	//SDL_CloseAudio();
-	//SDL_FreeWAV(resource.buffer);
+	SDL_CloseAudio();
+	SDL_FreeWAV(resource.buffer);
 }
 
 void my_audio_callback(void*, Uint8* stream, int len) {

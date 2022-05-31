@@ -19,6 +19,9 @@
     <Filter Include="Observers">
       <UniqueIdentifier>{c27e00a9-847c-4be7-9eb0-52bb21092e7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{4e18decb-117a-4311-823d-407c540973ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Font.h">
@@ -116,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BState.h">
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,9 @@
     <ClCompile Include="Achievements.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h">
@@ -32,6 +35,9 @@
       <Filter>Game Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
       <Filter>Game Files</Filter>
     </ClInclude>
   </ItemGroup>

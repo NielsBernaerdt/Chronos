@@ -163,11 +163,13 @@
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PlayerState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Achievements.h" />
     <ClInclude Include="BurgerTime.h" />
     <ClInclude Include="Commands.h" />
+    <ClInclude Include="PlayerState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

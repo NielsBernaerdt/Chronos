@@ -2,6 +2,7 @@
 
 #include "Audio.h"
 #include "CTransform.h"
+#include "PlayerState.h"
 
 //----------------------------------FIRE----------------------------------
 //Fire::Fire(GameObject* actor)
@@ -33,7 +34,9 @@ void Duck::Execute()
 
 	m_Actor->GetTransform()->SetPosition(0, 100);
 
-	Audio::GetInstance().PlaySound("../Data/Clock.wav", 1);
+	m_Actor->SetState(new IdleState{});
+
+	//Audio::GetInstance().PlaySound("../Data/Clock.wav", 1);
 }
 //----------------------------------JUMP----------------------------------
 Jump::Jump(GameObject* actor)
@@ -63,6 +66,8 @@ void Fart::Execute()
 {
 	std::cout << "Fart\n";
 
+	m_Actor->SetState(new WalkingState{});
+
 	m_Actor->GetTransform()->SetPosition(100, 0);
-	Audio::GetInstance().PlaySound("../Data/Lock.wav", 1);
+	//Audio::GetInstance().PlaySound("../Data/Lock.wav", 1);
 }

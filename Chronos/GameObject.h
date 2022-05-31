@@ -1,11 +1,13 @@
 #pragma once
 #include <iostream>
 #include <vector>
+
 #include "CBase.h"
 
 enum class Event;
 class Observer;
 class CTransform;
+class PlayerState;
 
 class GameObject final
 {
@@ -54,6 +56,14 @@ public:
 
 private:
 	std::vector<Observer*> m_pObservers;
+
+	//State
+private:
+	PlayerState* m_State = nullptr;
+
+public:
+	void SetState(PlayerState* state) { m_State = state; }
+	PlayerState* GetState() const { return m_State; }
 };
 
 template <typename T>
