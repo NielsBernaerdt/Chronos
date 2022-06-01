@@ -1,7 +1,6 @@
 #include "ChronosPCH.h"
 #include "Chronos.h"
 #include <chrono>
-#include <thread>
 
 #include "AudioManager.h"
 #include "Game.h"
@@ -11,7 +10,6 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Scene.h"
-
 
 void PrintSDLVersion()
 {
@@ -85,7 +83,7 @@ void Chronos::Run()
 	const auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	m_Input = new InputManager(0);
-
+	
 	LoadGame();
 	ConfigureInput();
 
@@ -104,7 +102,7 @@ void Chronos::Run()
 			sceneManager.Update(deltaTime);
 			renderer.Render();
 			AudioManager::GetInstance().Update();
-
+			
 			auto sleepTime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime + std::chrono::milliseconds(m_MsPerFrame) - std::chrono::high_resolution_clock::now());
 			std::this_thread::sleep_for(sleepTime);
 		}

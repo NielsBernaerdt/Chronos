@@ -1,4 +1,7 @@
 #pragma once
+#include <future>
+#include <mutex>
+
 #include "Singleton.h"
 #include "Audio.h"
 
@@ -15,5 +18,9 @@ private:
 	int m_Head{};
 	int m_Tail{};
 
+	std::mutex m_Mutex;
+	std::vector<std::future<void>> m_Threads;
+
 	void OpenAudioDevice(WAV resource);
+	void CleanThreads();
 };

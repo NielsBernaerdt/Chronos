@@ -1,5 +1,6 @@
 #include "ChronosPCH.h"
 #include "AudioManager.h"
+
 #include "ResourceManager.h"
 
 void AudioManager::Init()
@@ -15,6 +16,8 @@ void AudioManager::Init()
 
 void AudioManager::PlaySound(std::string id, int volume)
 {
+	m_Mutex.lock();
+
 	//either aggregate here, check for optimization -> maybe in update? since that's on a seperate thread
 	for (size_t i = m_Head; i != m_Tail; i = (i + 1) % m_MaxPending)
 	{
@@ -22,6 +25,7 @@ void AudioManager::PlaySound(std::string id, int volume)
 		{
 			m_PendingMessages[i].volume = std::max(volume, m_PendingMessages[i].volume);
 
+			m_Mutex.unlock();
 			return;
 		}
 	}
@@ -31,6 +35,8 @@ void AudioManager::PlaySound(std::string id, int volume)
 	m_PendingMessages[m_Tail].id = id;
 	m_PendingMessages[m_Tail].volume = volume;
 	m_Tail = (m_Tail + 1) % m_MaxPending;
+
+	m_Mutex.unlock();
 }
 
 void AudioManager::Update() //todo call this from dedicated audio thread
@@ -38,9 +44,17 @@ void AudioManager::Update() //todo call this from dedicated audio thread
 	if (m_Head == m_Tail) return;
 
 	WAV resource = ResourceManager::GetInstance().LoadWAV(m_PendingMessages[m_Head].id);
-	OpenAudioDevice(resource);
+
+	m_Threads.push_back(std::async(std::launch::async, &AudioManager::OpenAudioDevice, this, std::ref(resource)));
+
+	for(size_t i{}; i < m_Threads.size(); ++i)
+	{
+		std::cout << i << std::endl;
+	}
 
 	m_Head = (m_Head + 1) % m_MaxPending;
+
+	CleanThreads();
 }
 
 void AudioManager::OpenAudioDevice(WAV resource)
@@ -61,4 +75,21 @@ void AudioManager::OpenAudioDevice(WAV resource)
 	// shut everything down
 	SDL_CloseAudio();
 	SDL_FreeWAV(resource.buffer);
+}
+
+void AudioManager::CleanThreads()
+{
+	using namespace std::chrono_literals;
+
+	const auto it = std::ranges::find_if(m_Threads.begin(), m_Threads.end(), 
+		[](const std::future<void>& s)
+		{
+			return s.wait_for(0ms) == std::future_status::ready;
+		});
+
+	if (it != m_Threads.end())
+	{
+		std::cout << "FOUND ONE ONE\n";
+		m_Threads.erase(it);
+	}
 }
