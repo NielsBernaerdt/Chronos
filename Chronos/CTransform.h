@@ -13,6 +13,7 @@ public:
 	CTransform& operator=(CTransform&& other) = delete;
 
 	void SetPosition( int x, int y );
+	void SetPosition(glm::vec3 pos);
 	const glm::vec3& GetPosition();
 
 	void SetDirty(bool isDirty) { m_IsDirty = isDirty; }

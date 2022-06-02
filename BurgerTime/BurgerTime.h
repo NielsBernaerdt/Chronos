@@ -6,7 +6,7 @@ class GameObject;
 class BurgerTime : public Game
 {
 private:
-	void TutorialScene(Scene& scene);
+	void SandboxScene(Scene& scene);
 	void SceneGraphTestScene(Scene& scene) const;
 	void ObserverScene(Scene& scene) const;	
 
@@ -14,7 +14,7 @@ private:
 
 public:
 	void SetupObjects(Scene& scene) override {
-		TutorialScene(scene);
+		SandboxScene(scene);
 	}
 	void ConfigureInput(InputManager* input) override;
 };

@@ -40,6 +40,12 @@
     <ClCompile Include="Achievements.cpp">
       <Filter>Observers</Filter>
     </ClCompile>
+    <ClCompile Include="CPeterPepper.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CBurgerIngredient.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h">
@@ -59,6 +65,12 @@
     </ClInclude>
     <ClInclude Include="Achievements.h">
       <Filter>Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="CPeterPepper.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CBurgerIngredient.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

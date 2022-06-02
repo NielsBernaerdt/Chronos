@@ -64,7 +64,7 @@ public:
 	{
 		for (const auto& e : m_ConsoleCommands)
 		{
-			if (Pressed(static_cast<unsigned int>(e.first)))
+			if (Down(static_cast<unsigned int>(e.first)))
 				e.second->Execute();
 		}
 	}

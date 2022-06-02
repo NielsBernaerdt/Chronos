@@ -8,8 +8,6 @@
 #include "InputManager.h"
 #include "InputCommands.h"
 #include "BCommand.h"
-#include "SceneManager.h"
-#include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Scene.h"
@@ -22,9 +20,11 @@
 #include "CTransform.h"
 //Observers
 #include "Achievements.h"
+#include "CBurgerIngredient.h"
+#include "CPeterPepper.h"
 
 //OWN SCENES//
-void BurgerTime::TutorialScene(Scene& scene)
+void BurgerTime::SandboxScene(Scene& scene)
 {
 	auto parentObject = std::make_shared<GameObject>(std::string{ "TutorialParent" });
 	parentObject->GetTransform()->SetPosition(300, 200);
@@ -77,12 +77,52 @@ void BurgerTime::TutorialScene(Scene& scene)
 
 	scene.Add(parentObject);
 
+	//PATTY 0
+	const auto pattyParent = std::make_shared<GameObject>(std::string{ "PattyOne" });
+	pattyParent->GetTransform()->SetPosition(0, 0);
+	//COMMON RESOURCES
+	const auto pattyTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	//PATTY 0.0
+	const auto pattyChild0 = std::make_shared<GameObject>(std::string{ "PattyOneChildZero" });
+	const auto pattyCRender = std::make_shared<CRender>(pattyChild0.get(), pattyTexture);
+	pattyChild0->AddComponent(pattyCRender);
+	const auto pattyCBurgerIngredient = std::make_shared<CBurgerIngredient>(pattyChild0.get(), Ingredient::BunBottom, 0);
+	pattyChild0->AddComponent(pattyCBurgerIngredient);
+	scene.Add(pattyChild0);
+	pattyChild0->SetParent(pattyParent);
+	//PATTY 0.1
+	const auto pattyChild1 = std::make_shared<GameObject>(std::string{ "PattyOneChildZero" });
+	const auto pattyCRender1 = std::make_shared<CRender>(pattyChild1.get(), pattyTexture);
+	pattyChild1->AddComponent(pattyCRender1);
+	const auto pattyCBurgerIngredient1 = std::make_shared<CBurgerIngredient>(pattyChild1.get(), Ingredient::BunBottom, 1);
+	pattyChild1->AddComponent(pattyCBurgerIngredient1);
+	scene.Add(pattyChild1);
+	pattyChild1->SetParent(pattyParent);
+	//PATTY 0.2
+	const auto pattyChild2 = std::make_shared<GameObject>(std::string{ "PattyOneChildZero" });
+	const auto pattyCRender2 = std::make_shared<CRender>(pattyChild2.get(), pattyTexture);
+	pattyChild2->AddComponent(pattyCRender2);
+	const auto pattyCBurgerIngredient2 = std::make_shared<CBurgerIngredient>(pattyChild2.get(), Ingredient::BunBottom, 2);
+	pattyChild2->AddComponent(pattyCBurgerIngredient2);
+	scene.Add(pattyChild2);
+	pattyChild2->SetParent(pattyParent);
+	//PATTY 0.3
+	const auto pattyChild3 = std::make_shared<GameObject>(std::string{ "PattyOneChildZero" });
+	const auto pattyCRender3 = std::make_shared<CRender>(pattyChild3.get(), pattyTexture);
+	pattyChild3->AddComponent(pattyCRender3);
+	const auto pattyCBurgerIngredient3 = std::make_shared<CBurgerIngredient>(pattyChild3.get(), Ingredient::BunBottom, 3);
+	pattyChild3->AddComponent(pattyCBurgerIngredient3);
+	scene.Add(pattyChild3);
+	pattyChild3->SetParent(pattyParent);
+
 	//PAWN
 	const auto peterPepper = std::make_shared<GameObject>(std::string{ "Peter" });
 	peterPepper->GetTransform()->SetPosition(200, 200);
 	const auto peterTexture = ResourceManager::GetInstance().LoadEmptyTexture();
 	const auto peterCRender = std::make_shared<CRender>(peterPepper.get(), peterTexture);
 	peterPepper->AddComponent(peterCRender);
+	const auto peterCPeterPepper = std::make_shared<CPeterPepper>(peterPepper.get());
+	peterPepper->AddComponent(peterCPeterPepper);
 	scene.Add(peterPepper);
 
 	m_pPlayerPawn = peterPepper.get();
@@ -147,8 +187,10 @@ void BurgerTime::ObserverScene(Scene& scene) const
 
 void BurgerTime::ConfigureInput(InputManager* input)
 {
-	input->BindCommandToButton(ControllerButton::ButtonA, std::make_unique<Fart>(nullptr));
-	input->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<Duck>(nullptr));
+	input->BindCommandToButton(ControllerButton::DPadRight, std::make_unique<MoveRight>());
+	input->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveLeft>());
+	input->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<ClimbUp>());
+	input->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<ClimbDown>());
 
 	input->SetPawn(m_pPlayerPawn);
 }
