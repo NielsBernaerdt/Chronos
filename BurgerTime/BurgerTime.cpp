@@ -84,7 +84,8 @@ void BurgerTime::SandboxScene(Scene& scene)
 	const auto pattyTexture = ResourceManager::GetInstance().LoadEmptyTexture();
 	//PATTY 0.0
 	const auto pattyChild0 = std::make_shared<GameObject>(std::string{ "PattyOneChildZero" });
-	const auto pattyCRender = std::make_shared<CRender>(pattyChild0.get(), pattyTexture);
+	pattyChild0->GetTransform()->SetScale(100, 100);
+	const auto pattyCRender = std::make_shared<CRender>(pattyChild0.get(), pattyTexture, true);
 	pattyChild0->AddComponent(pattyCRender);
 	const auto pattyCBurgerIngredient = std::make_shared<CBurgerIngredient>(pattyChild0.get(), Ingredient::BunBottom, 0);
 	pattyChild0->AddComponent(pattyCBurgerIngredient);

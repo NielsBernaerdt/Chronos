@@ -16,6 +16,10 @@ public:
 	void SetPosition(glm::vec3 pos);
 	const glm::vec3& GetPosition();
 
+	void SetScale(int x, int y);
+	void SetScale(glm::vec3 scale);
+	const glm::vec3& GetScale() const;
+
 	void SetDirty(bool isDirty) { m_IsDirty = isDirty; }
 	bool IsDirty() const { return m_IsDirty; }
 
@@ -24,4 +28,6 @@ private:
 	bool m_IsDirty = true;
 	glm::vec3 m_Pos{};
 	glm::vec3 m_WorldPos{};
+
+	glm::vec3 m_Scale{};
 };

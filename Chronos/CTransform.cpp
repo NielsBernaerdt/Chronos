@@ -31,6 +31,19 @@ const glm::vec3& CTransform::GetPosition()
 
 	return m_WorldPos;
 }
+void CTransform::SetScale(int x, int y)
+{
+	m_Scale.x = (float)x;
+	m_Scale.y = (float)y;
+}
+void CTransform::SetScale(glm::vec3 scale)
+{
+	m_Scale = scale;
+}
+const glm::vec3& CTransform::GetScale() const
+{
+	return m_Scale;
+}
 void CTransform:: UpdateRelativeTransform()
 {
 	m_IsDirty = false;
