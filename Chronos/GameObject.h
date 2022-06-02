@@ -7,7 +7,6 @@
 enum class Event;
 class BObserver;
 class CTransform;
-class PlayerState;
 
 class GameObject final
 {
@@ -56,14 +55,6 @@ public:
 
 private:
 	std::vector<BObserver*> m_pObservers;
-
-	//State
-private:
-	PlayerState* m_State = nullptr;
-
-public:
-	void SetState(PlayerState* state) { m_State = state; }
-	PlayerState* GetState() const { return m_State; }
 };
 
 template <typename T>

@@ -18,14 +18,24 @@ void CBurgerIngredient::Initialize()
 
 	glm::vec3 pos;
 	pos.x += m_Index * m_OwnerObject->GetTransform()->GetScale().x;
+
 	m_OwnerObject->GetTransform()->SetPosition(pos);
 }
 void CBurgerIngredient::Update(float)
 {
-	CCollisionBox* box = dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>().get());
-	for(const auto e : box->GetOverlappingObjects(CollisionGroup::Pawn))
+	if (m_HasBeenTriggered == false)
 	{
-		std::cout << "Me, " << m_OwnerObject->GetName() << " touched " << e->GetName() << std::endl;
+		CCollisionBox* box = dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>().get());
+		if (box->GetOverlappingObjects(CollisionGroup::Pawn).size() >= 1)
+		{
+			m_HasBeenTriggered = true;
+
+			glm::vec3 pos{};
+			pos.x += m_Index * m_OwnerObject->GetTransform()->GetScale().x;
+			pos.y += m_OwnerObject->GetTransform()->GetScale().y / 2;
+
+			m_OwnerObject->GetTransform()->SetPosition(pos);
+		}
 	}
 }
 

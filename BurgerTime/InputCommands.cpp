@@ -3,7 +3,6 @@
 #include "CPeterPepper.h"
 #include "AudioManager.h"
 #include "CTransform.h"
-#include "PlayerState.h"
 
 //#define SHOW_DEBUG
 
@@ -87,8 +86,6 @@ void Fire::Execute()
 #ifdef SHOW_DEBUG
 	std::cout << "Fire\n";
 #endif
-
-	m_Actor->SetState(new WalkingState{});
 
 	m_Actor->GetTransform()->SetPosition(100, 0);
 	//AudioManager::GetInstance().PlaySound("../Data/Clock.wav", 1);

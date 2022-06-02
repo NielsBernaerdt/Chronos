@@ -28,6 +28,7 @@ private:
 	Ingredient m_Ingredient;
 	int m_SideLength{ 8 };
 	int m_Index;
+	bool m_HasBeenTriggered = false;
 
 	void SetTexture();
 };

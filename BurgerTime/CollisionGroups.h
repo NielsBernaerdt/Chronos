@@ -6,5 +6,7 @@ enum class CollisionGroup
 	NPC,
 	Burger,
 	Plate,
+	Ladder,
+	Ground,
 	Default
 };

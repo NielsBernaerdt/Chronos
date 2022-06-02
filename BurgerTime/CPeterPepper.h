@@ -3,8 +3,10 @@
 #pragma warning(push, 0)
 #include <glm/glm.hpp>
 #pragma warning (pop)
+#include "PlayerState.h"
 
 class CTransform;
+class PlayerState;
 
 class CPeterPepper : public CBase
 {
@@ -21,14 +23,22 @@ public:
 	void MoveHorizontally(int moveRight);
 	void ClimbLadder(int moveUp);
 
+	void SetAnimSpriteRow(int rowNr);
+
 private:
 	float m_MovSpeed{200};
-	glm::vec3 m_AccMovement;
+	glm::vec3 m_AccMovement{};
 
 	CTransform* m_PawnTransform;
 
+	float m_AccTime{};
+	float m_AnimationDuration{ 0.125f };
 	int m_SrcLength{ 16 };
 	int m_AnimationIndex{ 0 };
-	int m_CurrentState{ 0 };
+	int m_AnimSpriteRow{ 0 };
 	void SetTexture();
+
+	//State
+private:
+	PlayerState* m_State;
 };

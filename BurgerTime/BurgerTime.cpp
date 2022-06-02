@@ -23,28 +23,20 @@
 #include "Achievements.h"
 #include "CBurgerIngredient.h"
 #include "CCollisionBox.h"
-#include "CCollisionBox.h"
 #include "CPeterPepper.h"
 
 //OWN SCENES//
 void BurgerTime::SandboxScene(Scene& scene)
-{
-	auto parentObject = std::make_shared<GameObject>(std::string{ "TutorialParent" });
-	parentObject->GetTransform()->SetPosition(300, 200);
-
-	//Background image
+{	//Background image
 	const auto background = std::make_shared<GameObject>(std::string{ "Background" });
-	background->GetTransform()->SetPosition(0, 0);
-	auto bgTexture = ResourceManager::GetInstance().LoadTexture("background.jpg");
-	const auto bgCRender = std::make_shared<CRender>(background.get(), bgTexture);
+	background->GetTransform()->SetScale(1280, 720);
+	auto bgTexture = ResourceManager::GetInstance().LoadTexture("level0.png");
+	const auto bgCRender = std::make_shared<CRender>(background.get(), bgTexture, true);
 	background->AddComponent(bgCRender);
 	scene.Add(background);
 
-	background->SetParent(parentObject);
-
 	//Make FPS object
 	const auto fpsCounter = std::make_shared<GameObject>(std::string{ "FPSCounter" });
-	fpsCounter->GetTransform()->SetPosition(100, 100);
 	const auto fpsCText = std::make_shared<CText>(fpsCounter.get(), "FPS Counter", 36);
 	fpsCounter->AddComponent(fpsCText);
 	const auto fpsComp = std::make_shared<CFPS>(fpsCounter.get());
@@ -54,35 +46,31 @@ void BurgerTime::SandboxScene(Scene& scene)
 	fpsCounter->AddComponent(fpsCRender);
 	scene.Add(fpsCounter);
 
-	fpsCounter->SetParent(parentObject);
+	//LADDER
+	const auto ladder = std::make_shared<GameObject>(std::string{ "Ladder" });
+	ladder->GetTransform()->SetPosition(50, 240);
+	ladder->GetTransform()->SetScale(50, 200);
+	const auto ladderCCollision = std::make_shared<CCollisionBox>(ladder.get(), CollisionGroup::Ladder);
+	ladder->AddComponent(ladderCCollision);
+	const auto ladderTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	const auto ladderCRender = std::make_shared<CRender>(ladder.get(), ladderTexture, true);
+	ladder->AddComponent(ladderCRender);
+	scene.Add(ladder);
 
-	//Make logo object
-	const auto logo = std::make_shared<GameObject>(std::string{ "Logo" });
-	logo->GetTransform()->SetPosition(216, 180);
-	auto logoTexture = ResourceManager::GetInstance().LoadTexture("logo.png");
-	const auto logoCRender = std::make_shared<CRender>(logo.get(), logoTexture);
-	logo->AddComponent(logoCRender);
-	scene.Add(logo);
-
-	logo->SetParent(parentObject);
-
-	//Make title object
-	const auto title = std::make_shared<GameObject>(std::string{ "Title" });
-	title->GetTransform()->SetPosition(80, 20);
-	const auto titleCText = std::make_shared<CText>(title.get(), "Programming 4 Assignment", 36);
-	title->AddComponent(titleCText);
-	auto titleTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	const auto titleCRender = std::make_shared<CRender>(title.get(), titleTexture);
-	title->AddComponent(titleCRender);
-	scene.Add(title);
-
-	title->SetParent(parentObject);
-
-	scene.Add(parentObject);
+	//GROUND
+	const auto ground = std::make_shared<GameObject>(std::string{ "Ladder" });
+	ground->GetTransform()->SetPosition(0, 240);
+	ground->GetTransform()->SetScale(1280, 10);
+	const auto groundCCollision = std::make_shared<CCollisionBox>(ground.get(), CollisionGroup::Ground);
+	ground->AddComponent(groundCCollision);
+	const auto groundTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	const auto groundCTexture = std::make_shared<CRender>(ground.get(), groundTexture, true);
+	ground->AddComponent(groundCTexture);
+	scene.Add(ground);
 
 	//PATTY 0
 	const auto pattyParent = std::make_shared<GameObject>(std::string{ "PattyOne" });
-	pattyParent->GetTransform()->SetPosition(0, 0);
+	pattyParent->GetTransform()->SetPosition(95, 500);
 	//COMMON RESOURCES
 	const auto pattyTexture = ResourceManager::GetInstance().LoadTexture("BurgerIngredients.png");
 	//PATTY 0.0
