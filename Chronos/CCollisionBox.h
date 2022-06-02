@@ -1,11 +1,14 @@
 #pragma once
 #include "CBase.h"
 #include "Rect.h"
+#include "ChronosPCH.h"
+
+enum class CollisionGroup;
 
 class CCollisionBox : public CBase
 {
 public:
-	CCollisionBox(GameObject* gameObject, Rect rect, bool enableOverlap = false);
+	CCollisionBox(GameObject* gameObject, CollisionGroup group);
 	~CCollisionBox() override = default;
 	CCollisionBox(const CCollisionBox& other) = delete;
 	CCollisionBox(CCollisionBox&& other) noexcept = delete;
@@ -13,13 +16,15 @@ public:
 	CCollisionBox& operator=(CCollisionBox&& other) noexcept = delete;
 
 	static std::vector<CCollisionBox*> m_pCollisionBoxes;
-	std::vector<GameObject*> GetOverlappingObjects();
+	std::vector<GameObject*> GetOverlappingObjects(CollisionGroup filter);
+	CollisionGroup GetCollisinoGroup() { return m_CollisionGroup; }
 
+	void Initialize() override;
 	void Update(float) override;
 
 private:
-	Rect m_Rect;
-	bool m_IsOverlapEnabled = false;
+	Rect m_Rect{ 0,0,0,0 };
+	CollisionGroup m_CollisionGroup;
 
 	bool IsRectOverlapping(glm::vec2 topLeft, glm::vec2 bottomRight, glm::vec2 topLeft2, glm::vec2 bottomRight2);
 };

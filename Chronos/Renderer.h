@@ -1,4 +1,5 @@
 #pragma once
+#include "Rect.h"
 #include "Singleton.h"
 
 class Texture2D;
@@ -15,8 +16,8 @@ public:
 	void Render() const;
 	void Destroy();
 
-	void RenderTexture(const Texture2D& texture, float x, float y) const;
-	void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
+	void RenderTexture(const Texture2D& texture, float x, float y, Rect srcRect = { 0,0,0,0 }) const;
+	void RenderTexture(const Texture2D& texture, float x, float y, float width, float height, Rect srcRect = { 0 ,0,0,0 }) const;
 
 	SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
 

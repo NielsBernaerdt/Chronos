@@ -3,12 +3,12 @@
 
 enum class Ingredient
 {
-	BunTop,
-	BunBottom,
-	Patty,
-	Cheese,
-	Lettuce,
-	Tomato
+	BunTop		= 0,
+	BunBottom	= 1,
+	Cheese		= 2,
+	Patty		= 3,
+	Tomato		= 4,
+	Lettuce		= 5
 };
 
 class CBurgerIngredient : public CBase
@@ -26,8 +26,8 @@ public:
 
 private:
 	Ingredient m_Ingredient;
+	int m_SideLength{ 8 };
 	int m_Index;
-	int m_Up{};
-	float m_Diff{20.f};
-	float m_accTime{};
+
+	void SetTexture();
 };

@@ -16,6 +16,7 @@ public:
 	CPeterPepper& operator=(const CPeterPepper& other) = delete;
 	CPeterPepper& operator=(CPeterPepper&& other) noexcept = delete;
 
+	void Initialize() override;
 	void Update(float) override;
 	void MoveHorizontally(int moveRight);
 	void ClimbLadder(int moveUp);
@@ -25,4 +26,9 @@ private:
 	glm::vec3 m_AccMovement;
 
 	CTransform* m_PawnTransform;
+
+	int m_SrcLength{ 16 };
+	int m_AnimationIndex{ 0 };
+	int m_CurrentState{ 0 };
+	void SetTexture();
 };

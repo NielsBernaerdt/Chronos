@@ -175,6 +175,7 @@
     <ClInclude Include="Achievements.h" />
     <ClInclude Include="BurgerTime.h" />
     <ClInclude Include="CBurgerIngredient.h" />
+    <ClInclude Include="CollisionGroups.h" />
     <ClInclude Include="CPeterPepper.h" />
     <ClInclude Include="InputCommands.h" />
     <ClInclude Include="PlayerState.h" />

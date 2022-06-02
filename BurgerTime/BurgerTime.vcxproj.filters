@@ -72,5 +72,8 @@
     <ClInclude Include="CBurgerIngredient.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionGroups.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

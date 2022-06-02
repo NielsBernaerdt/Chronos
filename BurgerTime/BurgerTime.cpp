@@ -5,6 +5,7 @@
 #include <SDL.h>
 #pragma warning (pop)
 
+#include "CollisionGroups.h"
 #include "InputManager.h"
 #include "InputCommands.h"
 #include "BCommand.h"
@@ -21,6 +22,7 @@
 //Observers
 #include "Achievements.h"
 #include "CBurgerIngredient.h"
+#include "CCollisionBox.h"
 #include "CCollisionBox.h"
 #include "CPeterPepper.h"
 
@@ -82,42 +84,56 @@ void BurgerTime::SandboxScene(Scene& scene)
 	const auto pattyParent = std::make_shared<GameObject>(std::string{ "PattyOne" });
 	pattyParent->GetTransform()->SetPosition(0, 0);
 	//COMMON RESOURCES
-	const auto pattyTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	const auto pattyTexture = ResourceManager::GetInstance().LoadTexture("BurgerIngredients.png");
 	//PATTY 0.0
 	const auto pattyChild0 = std::make_shared<GameObject>(std::string{ "PattyOneChildZero" });
-	pattyChild0->GetTransform()->SetScale(100, 100);
+	pattyChild0->GetTransform()->SetScale(50, 50);
 
-	auto pos = pattyParent->GetTransform()->GetPosition();
-	const auto pattyChild0Collision = std::make_shared<CCollisionBox>(pattyChild0.get(), Rect{(int)pos.x, (int)pos.y, 100, 100}, false);
+	const auto pattyChild0Collision = std::make_shared<CCollisionBox>(pattyChild0.get(), CollisionGroup::Burger);
 	pattyChild0->AddComponent(pattyChild0Collision);
 
 	const auto pattyCRender = std::make_shared<CRender>(pattyChild0.get(), pattyTexture, true);
 	pattyChild0->AddComponent(pattyCRender);
-	const auto pattyCBurgerIngredient = std::make_shared<CBurgerIngredient>(pattyChild0.get(), Ingredient::BunBottom, 0);
+	const auto pattyCBurgerIngredient = std::make_shared<CBurgerIngredient>(pattyChild0.get(), Ingredient::Cheese, 0);
 	pattyChild0->AddComponent(pattyCBurgerIngredient);
 	scene.Add(pattyChild0);
 	pattyChild0->SetParent(pattyParent);
 	//PATTY 0.1
-	const auto pattyChild1 = std::make_shared<GameObject>(std::string{ "PattyOneChildZero" });
-	const auto pattyCRender1 = std::make_shared<CRender>(pattyChild1.get(), pattyTexture);
+	const auto pattyChild1 = std::make_shared<GameObject>(std::string{ "PattyOneChildOne" });
+	pattyChild1->GetTransform()->SetScale(50, 50);
+
+	const auto pattyChild1Collision = std::make_shared<CCollisionBox>(pattyChild1.get(), CollisionGroup::Burger);
+	pattyChild1->AddComponent(pattyChild1Collision);
+
+	const auto pattyCRender1 = std::make_shared<CRender>(pattyChild1.get(), pattyTexture, true);
 	pattyChild1->AddComponent(pattyCRender1);
-	const auto pattyCBurgerIngredient1 = std::make_shared<CBurgerIngredient>(pattyChild1.get(), Ingredient::BunBottom, 1);
+	const auto pattyCBurgerIngredient1 = std::make_shared<CBurgerIngredient>(pattyChild1.get(), Ingredient::Cheese, 1);
 	pattyChild1->AddComponent(pattyCBurgerIngredient1);
 	scene.Add(pattyChild1);
 	pattyChild1->SetParent(pattyParent);
 	//PATTY 0.2
-	const auto pattyChild2 = std::make_shared<GameObject>(std::string{ "PattyOneChildZero" });
-	const auto pattyCRender2 = std::make_shared<CRender>(pattyChild2.get(), pattyTexture);
+	const auto pattyChild2 = std::make_shared<GameObject>(std::string{ "PattyChildTwo" });
+	pattyChild2->GetTransform()->SetScale(50, 50);
+
+	const auto pattyChild2Collision = std::make_shared<CCollisionBox>(pattyChild2.get(), CollisionGroup::Burger);
+	pattyChild2->AddComponent(pattyChild2Collision);
+
+	const auto pattyCRender2 = std::make_shared<CRender>(pattyChild2.get(), pattyTexture, true);
 	pattyChild2->AddComponent(pattyCRender2);
-	const auto pattyCBurgerIngredient2 = std::make_shared<CBurgerIngredient>(pattyChild2.get(), Ingredient::BunBottom, 2);
+	const auto pattyCBurgerIngredient2 = std::make_shared<CBurgerIngredient>(pattyChild2.get(), Ingredient::Cheese, 2);
 	pattyChild2->AddComponent(pattyCBurgerIngredient2);
 	scene.Add(pattyChild2);
 	pattyChild2->SetParent(pattyParent);
 	//PATTY 0.3
-	const auto pattyChild3 = std::make_shared<GameObject>(std::string{ "PattyOneChildZero" });
-	const auto pattyCRender3 = std::make_shared<CRender>(pattyChild3.get(), pattyTexture);
+	const auto pattyChild3 = std::make_shared<GameObject>(std::string{ "PattyOneChildThree" });
+	pattyChild3->GetTransform()->SetScale(50, 50);
+
+	const auto pattyChild3Collision = std::make_shared<CCollisionBox>(pattyChild3.get(), CollisionGroup::Burger);
+	pattyChild3->AddComponent(pattyChild3Collision);
+
+	const auto pattyCRender3 = std::make_shared<CRender>(pattyChild3.get(), pattyTexture, true);
 	pattyChild3->AddComponent(pattyCRender3);
-	const auto pattyCBurgerIngredient3 = std::make_shared<CBurgerIngredient>(pattyChild3.get(), Ingredient::BunBottom, 3);
+	const auto pattyCBurgerIngredient3 = std::make_shared<CBurgerIngredient>(pattyChild3.get(), Ingredient::Cheese, 3);
 	pattyChild3->AddComponent(pattyCBurgerIngredient3);
 	scene.Add(pattyChild3);
 	pattyChild3->SetParent(pattyParent);
@@ -126,12 +142,11 @@ void BurgerTime::SandboxScene(Scene& scene)
 	const auto peterPepper = std::make_shared<GameObject>(std::string{ "Peter" });
 	peterPepper->GetTransform()->SetPosition(200, 200);
 
-	auto postwo = peterPepper->GetTransform()->GetPosition();
-	const auto peterCollision = std::make_shared<CCollisionBox>(peterPepper.get(), Rect{ (int)postwo.x, (int)postwo.y, 100, 100 }, true);
+	const auto peterCollision = std::make_shared<CCollisionBox>(peterPepper.get(), CollisionGroup::Pawn);
 	peterPepper->AddComponent(peterCollision);
 
-	const auto peterTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	const auto peterCRender = std::make_shared<CRender>(peterPepper.get(), peterTexture);
+	const auto peterTexture = ResourceManager::GetInstance().LoadTexture("PeterSprites.png");
+	const auto peterCRender = std::make_shared<CRender>(peterPepper.get(), peterTexture, true);
 	peterPepper->AddComponent(peterCRender);
 	const auto peterCPeterPepper = std::make_shared<CPeterPepper>(peterPepper.get());
 	peterPepper->AddComponent(peterCPeterPepper);

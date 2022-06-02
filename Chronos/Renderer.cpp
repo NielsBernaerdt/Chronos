@@ -45,21 +45,46 @@ void Renderer::Destroy()
 	}
 }
 
-void Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
+void Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, Rect srcRect) const
 {
 	SDL_Rect dst{};
 	dst.x = static_cast<int>(x);
 	dst.y = static_cast<int>(y);
 	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+
+	if (srcRect.width == 0 || srcRect.height == 0) //Invalid sourceRect
+	{
+		SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+	}
+	else
+	{
+		SDL_Rect src{};
+		src.x = static_cast<int>(srcRect.left);
+		src.y = static_cast<int>(srcRect.bottom);
+		src.w = static_cast<int>(srcRect.width);
+		src.h = static_cast<int>(srcRect.height);
+		SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst);
+	}
 }
 
-void Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
+void Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height, Rect srcRect) const
 {
 	SDL_Rect dst{};
 	dst.x = static_cast<int>(x);
 	dst.y = static_cast<int>(y);
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+	if (srcRect.width == 0 || srcRect.height == 0) //Invalid sourceRect
+	{
+		SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+	}
+	else
+	{
+		SDL_Rect src{};
+		src.x = static_cast<int>(srcRect.left);
+		src.y = static_cast<int>(srcRect.bottom);
+		src.w = static_cast<int>(srcRect.width);
+		src.h = static_cast<int>(srcRect.height);
+		SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst);
+	}
 }

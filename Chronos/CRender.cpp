@@ -4,6 +4,7 @@
 #include "CRender.h"
 #include "Renderer.h"
 #include "CTransform.h"
+#include "Texture2D.h"
 
 CRender::CRender(GameObject* gameObject, std::shared_ptr<Texture2D> texture, bool scaleToObject)
 	: CBase (gameObject)
@@ -22,15 +23,19 @@ void CRender::Render() const
 		const auto& pos = m_OwnerObject->GetTransform()->GetPosition();
 		if (m_ScaleToObject)
 		{
-			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, m_Scale.x, m_Scale.y);
+			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, m_Scale.x, m_Scale.y, m_SourceRect);
 		}
 		else
 		{
-			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, m_SourceRect);
 		}
 	}
 }
 void CRender::SetTexture(std::shared_ptr<Texture2D> texture)
 {
 	m_Texture = texture;
+}
+void CRender::SetSourceRect(Rect rect)
+{
+	m_SourceRect = rect;
 }

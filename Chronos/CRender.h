@@ -1,5 +1,7 @@
 #pragma once
 #include "CBase.h"
+#include "Rect.h"
+#include "ChronosPCH.h"
 
 class Texture2D;
 
@@ -16,8 +18,10 @@ public:
 	void Initialize() override;
 	void Render() const;
 	void SetTexture(std::shared_ptr<Texture2D> texture);
+	void SetSourceRect(Rect rect);
 private:
 	std::shared_ptr<Texture2D> m_Texture{};
 	bool m_ScaleToObject{};
 	glm::vec3 m_Scale{};
+	Rect m_SourceRect{0,0,0,0};
 };

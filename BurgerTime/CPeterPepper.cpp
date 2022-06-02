@@ -1,6 +1,9 @@
 #include "CPeterPepper.h"
+
+#include "CRender.h"
 #include "GameObject.h"
 #include "CTransform.h"
+#include "Rect.h"
 
 CPeterPepper::CPeterPepper(GameObject* gameObject)
 	: CBase(gameObject)
@@ -8,6 +11,10 @@ CPeterPepper::CPeterPepper(GameObject* gameObject)
 {
 	if (m_OwnerObject)
 		m_PawnTransform = m_OwnerObject->GetTransform();
+}
+void CPeterPepper::Initialize()
+{
+	SetTexture();
 }
 void CPeterPepper::Update(float deltaTime)
 {
@@ -30,4 +37,14 @@ void CPeterPepper::ClimbLadder(int moveUp)
  */
 {
 	m_AccMovement.y -= moveUp * m_MovSpeed;
+}
+
+void CPeterPepper::SetTexture()
+{
+	glm::vec2 bottomLeft{};
+	bottomLeft.x = float(m_AnimationIndex * m_SrcLength);
+	bottomLeft.y = float(int(m_CurrentState) * m_SrcLength);
+	Rect src{ (int)bottomLeft.x, (int)bottomLeft.y, m_SrcLength, m_SrcLength };
+
+	dynamic_cast<CRender*>(m_OwnerObject->GetComponent<CRender>().get())->SetSourceRect(src);
 }

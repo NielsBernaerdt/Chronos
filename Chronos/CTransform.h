@@ -29,5 +29,5 @@ private:
 	glm::vec3 m_Pos{};
 	glm::vec3 m_WorldPos{};
 
-	glm::vec3 m_Scale{};
+	glm::vec3 m_Scale{50, 50, 1};
 };
