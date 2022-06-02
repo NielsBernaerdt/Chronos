@@ -5,6 +5,8 @@
 #include "CTransform.h"
 #include "PlayerState.h"
 
+//#define SHOW_DEBUG
+
 //----------------------------------MOVERIGHT----------------------------------
 MoveRight::MoveRight(GameObject* actor)
 	: BCommand(actor)
@@ -16,7 +18,10 @@ MoveRight::~MoveRight()
 }
 void MoveRight::Execute()
 {
+#ifdef SHOW_DEBUG
 	std::cout << "MoveRight\n";
+	#endif
+
 	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>().get());
 	CPepper->MoveHorizontally(1);
 }
@@ -30,7 +35,10 @@ MoveLeft::~MoveLeft()
 }
 void MoveLeft::Execute()
 {
+#ifdef SHOW_DEBUG
 	std::cout << "MoveLeft\n";
+#endif
+	
 	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>().get());
 	CPepper->MoveHorizontally(-1);
 }
@@ -44,7 +52,9 @@ ClimbUp::~ClimbUp()
 }
 void ClimbUp::Execute()
 {
+#ifdef SHOW_DEBUG
 	std::cout << "ClimbUp\n";
+#endif
 	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>().get());
 	CPepper->ClimbLadder(1);
 }
@@ -58,7 +68,9 @@ ClimbDown::~ClimbDown()
 }
 void ClimbDown::Execute()
 {
-	std::cout << "ClimbDown\n";
+#ifdef SHOW_DEBUG
+	std::cout << "CLimbDown\n";
+#endif
 	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>().get());
 	CPepper->ClimbLadder(-1);
 }
@@ -72,7 +84,9 @@ Fire::~Fire()
 }
 void Fire::Execute()
 {
-	std::cout << "Fart\n";
+#ifdef SHOW_DEBUG
+	std::cout << "Fire\n";
+#endif
 
 	m_Actor->SetState(new WalkingState{});
 

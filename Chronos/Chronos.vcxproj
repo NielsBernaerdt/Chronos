@@ -199,6 +199,7 @@
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="BState.h" />
     <ClInclude Include="CBase.h" />
+    <ClInclude Include="CCollisionBox.h" />
     <ClInclude Include="CFPS.h" />
     <ClInclude Include="BCommand.h" />
     <ClInclude Include="CRender.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Chronos.h" />
     <ClInclude Include="ChronosPCH.h" />
     <ClInclude Include="BObserver.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
@@ -222,6 +224,7 @@
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="CCollisionBox.cpp" />
     <ClCompile Include="CFPS.cpp" />
     <ClCompile Include="CRender.cpp" />
     <ClCompile Include="CTransform.cpp" />

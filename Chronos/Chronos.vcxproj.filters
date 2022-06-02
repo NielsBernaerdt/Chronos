@@ -89,6 +89,12 @@
     <ClInclude Include="Audio.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollisionBox.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChronosPCH.cpp">
@@ -141,6 +147,9 @@
     </ClCompile>
     <ClCompile Include="Audio.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionBox.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
