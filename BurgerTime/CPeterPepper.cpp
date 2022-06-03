@@ -31,6 +31,13 @@ void CPeterPepper::Update(float deltaTime)
 		m_AnimationIndex = (m_AnimationIndex + 1) % 3;
 		SetTexture();
 	}
+	//STATES//
+	PlayerState* state = m_State->Update(this->m_OwnerObject, this);
+	if( state != nullptr)
+	{
+		delete m_State;
+		m_State = state;
+	}
 	//MOVEMENT//
 	if (dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>().get())->GetOverlappingObjects(CollisionGroup::Ladder).size() == 0)
 	{
@@ -39,18 +46,9 @@ void CPeterPepper::Update(float deltaTime)
 	if (dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>().get())->GetOverlappingObjects(CollisionGroup::Ground).size() == 0)
 	{
 		m_AccMovement.x = 0;
-
-		m_AccMovement.y += 400 * deltaTime;
 	}
 	m_PawnTransform->SetPosition(m_PawnTransform->GetPosition() + (m_AccMovement * deltaTime));
 	m_AccMovement = { 0,0,0 };
-	//STATES//
-	PlayerState* state = m_State->Update(this->m_OwnerObject, this);
-	if( state != nullptr)
-	{
-		delete m_State;
-		m_State = state;
-	}
 }
 
 void CPeterPepper::MoveHorizontally(int moveRight)

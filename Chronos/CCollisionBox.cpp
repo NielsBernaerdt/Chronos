@@ -6,21 +6,26 @@
 
 std::vector<CCollisionBox*> CCollisionBox::m_pCollisionBoxes;
 
-CCollisionBox::CCollisionBox(GameObject* gameObject, CollisionGroup group)
+CCollisionBox::CCollisionBox(GameObject* gameObject, CollisionGroup group, bool useScale, Rect sizeRect)
 	: CBase(gameObject)
 	, m_CollisionGroup(group)
+	, m_UseScale(useScale)
+	, m_Rect(sizeRect)
 {
 	m_pCollisionBoxes.push_back(this);
 }
 void CCollisionBox::Initialize()
 {
 	auto pos = m_OwnerObject->GetTransform()->GetPosition();
-	auto scale = m_OwnerObject->GetTransform()->GetScale();
 
-	m_Rect.left = (int)pos.x;
-	m_Rect.bottom = (int)pos.y;
-	m_Rect.width = (int)scale.x;
-	m_Rect.height = (int)scale.y;
+	m_Rect.left += (int)pos.x;
+	m_Rect.bottom += (int)pos.y;
+	if (m_UseScale)
+	{
+		auto scale = m_OwnerObject->GetTransform()->GetScale();
+		m_Rect.width = (int)scale.x;
+		m_Rect.height = (int)scale.y;
+	}
 }
 void CCollisionBox::Update(float)
 {

@@ -39,7 +39,10 @@ PlayerState* WalkingState::Update(GameObject* pPawn, CPeterPepper* pPeter)
 
 		return nullptr;
 	}
-	if(m_pCollision->GetOverlappingObjects(CollisionGroup::Ladder).size() >= 1)
+	if(m_pCollision->GetOverlappingObjects(CollisionGroup::Ladder).size() >= 1
+		//&& m_pCollision->GetOverlappingObjects(CollisionGroup::Ground).size() < 1
+		&& pPeter->GetAccMovement().y != 0
+		)
 	{
 		pPeter->SetAnimSpriteRow(2);
 		return new ClimbingState{};
@@ -63,10 +66,22 @@ PlayerState* ClimbingState::Update(GameObject* pPawn, CPeterPepper* pPeter)
 
 		return nullptr;
 	}
-	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Ladder).size() < 1)
+	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Ladder).size() >= 1
+		&& m_pCollision->GetOverlappingObjects(CollisionGroup::Ground).size() > 0
+		&& pPeter->GetAccMovement().y == 0
+		)
 	{
 		pPeter->SetAnimSpriteRow(0);
 		return new IdleState{};
+	}
+
+	if(pPeter->GetAccMovement().y >= 0)
+	{
+		pPeter->SetAnimSpriteRow(1);
+	}
+	else
+	{
+		pPeter->SetAnimSpriteRow(2);
 	}
 
 	return nullptr;

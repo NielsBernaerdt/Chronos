@@ -24,6 +24,7 @@ public:
 	void ClimbLadder(int moveUp);
 
 	void SetAnimSpriteRow(int rowNr);
+	const glm::vec3& GetAccMovement() { return m_AccMovement; }
 
 private:
 	float m_MovSpeed{200};

@@ -8,7 +8,7 @@ enum class CollisionGroup;
 class CCollisionBox : public CBase
 {
 public:
-	CCollisionBox(GameObject* gameObject, CollisionGroup group);
+	CCollisionBox(GameObject* gameObject, CollisionGroup group, bool m_UseScale = true, Rect sizeREct = {0,0,0,0});
 	~CCollisionBox() override = default;
 	CCollisionBox(const CCollisionBox& other) = delete;
 	CCollisionBox(CCollisionBox&& other) noexcept = delete;
@@ -23,6 +23,7 @@ public:
 	void Update(float) override;
 
 private:
+	bool m_UseScale{ true };
 	Rect m_Rect{ 0,0,0,0 };
 	CollisionGroup m_CollisionGroup;
 
