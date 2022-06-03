@@ -30,21 +30,17 @@ public:
 	void Update(float) override;
 
 	std::vector<std::shared_ptr<GameObject>> ConstructChildren(std::shared_ptr<Texture2D> texture);
-	void StopMoving()
-	{
-		for(bool e : m_IsTriggered)
-		{
-			e = false;
-		}
-	}
 
 private:
 	Ingredient m_Ingredient;
 	int m_SideLength{ 8 };
+	int m_Scale{ 24 };
 
 	std::vector<std::shared_ptr<GameObject>> m_Children;
 	std::vector<bool> m_IsTriggered;
 
 	void SetTexture();
-	bool IsFalling();
+	void ResetPositions();
+	void CheckPlayerCollision();
+	bool IsOnPlate();
 };

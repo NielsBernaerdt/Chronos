@@ -6,9 +6,13 @@
 #include "CCollisionBox.h"
 #include "CollisionGroups.h"
 
+//#define SHOW_DEBUG
+
 PlayerState* IdleState::Update(GameObject* pPawn, CPeterPepper*)
 {
+	#ifdef  SHOW_DEBUG
 	std::cout << "Idle State\n";
+#endif
 
 	if (m_DoOnce)
 	{
@@ -28,7 +32,9 @@ PlayerState* IdleState::Update(GameObject* pPawn, CPeterPepper*)
 
 PlayerState* WalkingState::Update(GameObject* pPawn, CPeterPepper* pPeter)
 {
+#ifdef SHOW_DEBUG
 	std::cout << "Walking State\n";
+#endif
 
 	if (m_DoOnce)
 	{
@@ -57,7 +63,9 @@ PlayerState* WalkingState::Update(GameObject* pPawn, CPeterPepper* pPeter)
 
 PlayerState* ClimbingState::Update(GameObject* pPawn, CPeterPepper* pPeter)
 {
+#ifdef SHOW_DEBUG
 	std::cout << "Climbing\n";
+#endif
 
 	if (m_DoOnce)
 	{

@@ -4,17 +4,17 @@
 #include "CCollisionBox.h"
 #include "CRender.h"
 #include "CollisionGroups.h"
+#include "CPlate.h"
 #include "CTransform.h"
 
 std::vector<std::shared_ptr<GameObject>> CBurgerIngredient::ConstructChildren(std::shared_ptr<Texture2D> texture)
 {
 	constexpr size_t nrBurgerParts{ 4 };
-	constexpr int scale{ 24 };
 	for (size_t i{}; i < nrBurgerParts; ++i)
 	{
 		const auto child = std::make_shared<GameObject>(std::string{ "PattyChild" + i });
-		child->GetTransform()->SetPosition((int)i * scale, 0);
-		child->GetTransform()->SetScale(scale, scale);
+		child->GetTransform()->SetPosition((int)i * m_Scale, 0);
+		child->GetTransform()->SetScale(m_Scale, m_Scale);
 		const auto pattyChild0Collision = std::make_shared<CCollisionBox>(child.get(), CollisionGroup::Burger);
 		child->AddComponent(pattyChild0Collision);
 		const auto patty0child0CRender = std::make_shared<CRender>(child.get(), texture, true);
@@ -33,37 +33,17 @@ void CBurgerIngredient::Initialize()
 
 void CBurgerIngredient::Update(float deltaTime)
 {
-	if (IsFalling())
+	if(IsOnPlate())
 	{
-		auto transform = m_OwnerObject->GetTransform();
-
-		auto pos = transform->GetPosition();
-		pos.y += 70 * deltaTime;
-
-		transform->SetPosition(pos);
-		transform->UpdateRelativeTransform();
+		CheckPlayerCollision();
 	}
 	else
 	{
-		int i{};
-		for (auto e : m_Children)
-		{
-			if (m_IsTriggered[i] == false)
-			{
-				CCollisionBox* box = dynamic_cast<CCollisionBox*>(e->GetComponent<CCollisionBox>().get());
-				if (box->GetOverlappingObjects(CollisionGroup::Pawn).size() >= 1)
-				{
-					m_IsTriggered[i] = true;
-
-					glm::vec3 pos{};
-					pos.x += i * e->GetTransform()->GetScale().x;
-					pos.y += e->GetTransform()->GetScale().y / 2;
-
-					e->GetTransform()->SetPosition(pos);
-				}
-			}
-			++i;
-		}
+		//FALLING CALCULATIONS
+		auto transform = m_OwnerObject->GetTransform();
+		auto pos = transform->GetPosition();
+		pos.y += 70 * deltaTime;
+		transform->SetPosition(pos);
 	}
 }
 
@@ -83,11 +63,70 @@ void CBurgerIngredient::SetTexture()
 	}
 }
 
-bool CBurgerIngredient::IsFalling()
+void CBurgerIngredient::ResetPositions()
 {
+	bool shouldReset = true;
 	for (bool b : m_IsTriggered)
 	{
-		if (b == false) return false;
+		if (b == false) shouldReset = false;
 	}
-	return true;
+
+	if (shouldReset == true)
+	{
+		auto pos = m_OwnerObject->GetTransform()->GetPosition();
+		pos.y += 1.2f * m_Children[0]->GetTransform()->GetScale().y;
+		m_OwnerObject->GetTransform()->SetPosition(pos);
+
+		int index{};
+		for (auto child : m_Children)
+		{
+			child->GetTransform()->SetPosition(index * m_Scale, 0);
+			++index;
+		}
+
+
+		for(int i{}; i < m_IsTriggered.size(); ++i)
+		{
+			m_IsTriggered[i] = false;
+		}
+	}
+}
+
+void CBurgerIngredient::CheckPlayerCollision()
+{
+	int i{};
+	for (auto e : m_Children)
+	{
+		if (m_IsTriggered[i] == false)
+		{
+			CCollisionBox* box = dynamic_cast<CCollisionBox*>(e->GetComponent<CCollisionBox>().get());
+			if (box->GetOverlappingObjects(CollisionGroup::Pawn).size() >= 1)
+			{
+				m_IsTriggered[i] = true;
+
+				glm::vec3 pos{};
+				pos.x += i * e->GetTransform()->GetScale().x;
+				pos.y += 1.2f * e->GetTransform()->GetScale().y ;
+
+				e->GetTransform()->SetPosition(pos);
+
+				ResetPositions();
+			}
+		}
+		++i;
+	}
+}
+
+bool CBurgerIngredient::IsOnPlate()
+{
+	for(auto child : m_Children)
+	{
+		auto collisionbox = dynamic_cast<CCollisionBox*>(child->GetComponent<CCollisionBox>().get());
+
+		if(collisionbox->GetOverlappingObjects(CollisionGroup::Plate).size() >= 1)
+		{
+			return true;
+		}
+	}
+	return false;
 }

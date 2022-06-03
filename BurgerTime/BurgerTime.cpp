@@ -252,7 +252,7 @@ void BurgerTime::SandboxScene(Scene& scene)
 	const auto pattyTexture = ResourceManager::GetInstance().LoadTexture("BurgerIngredients.png");
 	//TRYOUT PATTY
 	const auto pat = std::make_shared<GameObject>(std::string{ "supreme patty" });
-	pat->GetTransform()->SetPosition(50, 239);
+	pat->GetTransform()->SetPosition(50, 50);
 	const auto pattyIngredientComp = std::make_shared<CBurgerIngredient>(pat.get(), Ingredient::BunTop);
 	pat->AddComponent(pattyIngredientComp);
 	auto vector = pattyIngredientComp->ConstructChildren(pattyTexture);
@@ -268,17 +268,42 @@ void BurgerTime::SandboxScene(Scene& scene)
 //#pragma region Plates
 
 	const auto plate = std::make_shared<GameObject>(std::string{ "plate" });
-	plate->GetTransform()->SetPosition(50, 439);
-	plate->GetTransform()->SetScale(160, 20);
+	plate->GetTransform()->SetPosition(35, 439);
+	plate->GetTransform()->SetScale(160, 5);
 	const auto plateTexture = ResourceManager::GetInstance().LoadEmptyTexture();
 	const auto plateCRender = std::make_shared<CRender>(plate.get(), plateTexture);
 	plate->AddComponent(plateCRender);
 	const auto plateCCollision = std::make_shared<CCollisionBox>(plate.get(), CollisionGroup::Plate);
 	plate->AddComponent(plateCCollision);
-	const auto plateCPlate = std::make_shared<CPlate>(plate.get(), true);
+	const auto plateCPlate = std::make_shared<CPlate>(plate.get());
 	plate->AddComponent(plateCPlate);
 
 	scene.Add(plate);
+
+	//1//
+	const auto plate1 = std::make_shared<GameObject>(std::string{ "plate" });
+	plate1->GetTransform()->SetPosition(35, 162);
+	plate1->GetTransform()->SetScale(160, 5);
+	const auto plateCRender1 = std::make_shared<CRender>(plate1.get(), plateTexture);
+	plate1->AddComponent(plateCRender1);
+	const auto plateCCollision1 = std::make_shared<CCollisionBox>(plate1.get(), CollisionGroup::Plate);
+	plate1->AddComponent(plateCCollision1);
+	const auto plateCPlate1 = std::make_shared<CPlate>(plate1.get());
+	plate1->AddComponent(plateCPlate1);
+
+	scene.Add(plate1);
+	//2//
+	const auto plate2 = std::make_shared<GameObject>(std::string{ "plate" });
+	plate2->GetTransform()->SetPosition(35, 100);
+	plate2->GetTransform()->SetScale(160, 5);
+	const auto plateCRender2 = std::make_shared<CRender>(plate2.get(), plateTexture);
+	plate2->AddComponent(plateCRender2);
+	const auto plateCCollision2 = std::make_shared<CCollisionBox>(plate2.get(), CollisionGroup::Plate);
+	plate2->AddComponent(plateCCollision2);
+	const auto plateCPlate2 = std::make_shared<CPlate>(plate2.get());
+	plate2->AddComponent(plateCPlate2);
+
+	scene.Add(plate2);
 
 //#pragma endregion Plates
 	
