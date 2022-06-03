@@ -46,6 +46,9 @@
     <ClCompile Include="CBurgerIngredient.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="CPlate.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h">
@@ -74,6 +77,9 @@
     </ClInclude>
     <ClInclude Include="CollisionGroups.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlate.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

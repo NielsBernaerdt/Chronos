@@ -165,6 +165,7 @@
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="CBurgerIngredient.cpp" />
     <ClCompile Include="CPeterPepper.cpp" />
+    <ClCompile Include="CPlate.cpp" />
     <ClCompile Include="InputCommands.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PlayerState.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="CBurgerIngredient.h" />
     <ClInclude Include="CollisionGroups.h" />
     <ClInclude Include="CPeterPepper.h" />
+    <ClInclude Include="CPlate.h" />
     <ClInclude Include="InputCommands.h" />
     <ClInclude Include="PlayerState.h" />
   </ItemGroup>

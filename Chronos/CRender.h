@@ -8,7 +8,7 @@ class Texture2D;
 class CRender final : public CBase
 {
 public:
-	explicit CRender(GameObject* gameObject, std::shared_ptr<Texture2D> texture, bool scaleToObject = false);
+	explicit CRender(GameObject* gameObject, std::shared_ptr<Texture2D> texture, bool scaleToObject = true);
 	~CRender() override = default;
 	CRender(const CRender& other) = delete;
 	CRender(CRender&& other) = delete;

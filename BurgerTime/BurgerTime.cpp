@@ -24,6 +24,7 @@
 #include "CBurgerIngredient.h"
 #include "CCollisionBox.h"
 #include "CPeterPepper.h"
+#include "CPlate.h"
 
 //OWN SCENES//
 void BurgerTime::SandboxScene(Scene& scene)
@@ -249,58 +250,38 @@ void BurgerTime::SandboxScene(Scene& scene)
 
 	//COMMON RESOURCES
 	const auto pattyTexture = ResourceManager::GetInstance().LoadTexture("BurgerIngredients.png");
-	//PATTY 0
-	const auto patty0 = std::make_shared<GameObject>(std::string{ "PattyOne" });
-	patty0->GetTransform()->SetPosition(50, 239);
-		//PATTY 0.0
-		const auto patty0Child0 = std::make_shared<GameObject>(std::string{ "PattyOneChildZero" });
-		patty0Child0->GetTransform()->SetScale(24, 24);
-		const auto pattyChild0Collision = std::make_shared<CCollisionBox>(patty0Child0.get(), CollisionGroup::Burger);
-		patty0Child0->AddComponent(pattyChild0Collision);
-		const auto patty0child0CRender = std::make_shared<CRender>(patty0Child0.get(), pattyTexture, true);
-		patty0Child0->AddComponent(patty0child0CRender);
-		const auto patty0child0CIngredient = std::make_shared<CBurgerIngredient>(patty0Child0.get(), Ingredient::BunTop, 0);
-		patty0Child0->AddComponent(patty0child0CIngredient);
-		scene.Add(patty0Child0);
-		patty0Child0->SetParent(patty0);
-		//PATTY 0.1
-		const auto patty0Child1 = std::make_shared<GameObject>(std::string{ "PattyOneChildOne" });
-		patty0Child1->GetTransform()->SetScale(24, 24);
-		const auto patty0Child1Collision = std::make_shared<CCollisionBox>(patty0Child1.get(), CollisionGroup::Burger);
-		patty0Child1->AddComponent(patty0Child1Collision);
-		const auto patty0child1CRender = std::make_shared<CRender>(patty0Child1.get(), pattyTexture, true);
-		patty0Child1->AddComponent(patty0child1CRender);
-		const auto patty0child1CIngredient = std::make_shared<CBurgerIngredient>(patty0Child1.get(), Ingredient::BunTop, 1);
-		patty0Child1->AddComponent(patty0child1CIngredient);
-		scene.Add(patty0Child1);
-		patty0Child1->SetParent(patty0);
-		//PATTY 0.2
-		const auto patty0Child2 = std::make_shared<GameObject>(std::string{ "PattyChildTwo" });
-		patty0Child2->GetTransform()->SetScale(24, 24);
-		const auto patty0Child2Collision = std::make_shared<CCollisionBox>(patty0Child2.get(), CollisionGroup::Burger);
-		patty0Child2->AddComponent(patty0Child2Collision);
-		const auto patty0child2CRender = std::make_shared<CRender>(patty0Child2.get(), pattyTexture, true);
-		patty0Child2->AddComponent(patty0child2CRender);
-		const auto patty0child2CIngredient = std::make_shared<CBurgerIngredient>(patty0Child2.get(), Ingredient::BunTop, 2);
-		patty0Child2->AddComponent(patty0child2CIngredient);
-		scene.Add(patty0Child2);
-		patty0Child2->SetParent(patty0);
-		//PATTY 0.3
-		const auto patty0Child3 = std::make_shared<GameObject>(std::string{ "PattyOneChildThree" });
-		patty0Child3->GetTransform()->SetScale(24, 24);
-		const auto patty0Child3Collision = std::make_shared<CCollisionBox>(patty0Child3.get(), CollisionGroup::Burger);
-		patty0Child3->AddComponent(patty0Child3Collision);
-		const auto patty0Child3CRender = std::make_shared<CRender>(patty0Child3.get(), pattyTexture, true);
-		patty0Child3->AddComponent(patty0Child3CRender);
-		const auto patty0Child3CIngredient = std::make_shared<CBurgerIngredient>(patty0Child3.get(), Ingredient::BunTop, 3);
-		patty0Child3->AddComponent(patty0Child3CIngredient);
-		scene.Add(patty0Child3);
-		patty0Child3->SetParent(patty0);
+	//TRYOUT PATTY
+	const auto pat = std::make_shared<GameObject>(std::string{ "supreme patty" });
+	pat->GetTransform()->SetPosition(50, 239);
+	const auto pattyIngredientComp = std::make_shared<CBurgerIngredient>(pat.get(), Ingredient::BunTop);
+	pat->AddComponent(pattyIngredientComp);
+	auto vector = pattyIngredientComp->ConstructChildren(pattyTexture);
+	for(auto e : vector)
+	{
+		e->SetParent(pat);
+		scene.Add(e);
+	}
+	scene.Add(pat);
 
 #pragma endregion BurgerIngredients
 
+//#pragma region Plates
 
+	const auto plate = std::make_shared<GameObject>(std::string{ "plate" });
+	plate->GetTransform()->SetPosition(50, 439);
+	plate->GetTransform()->SetScale(160, 20);
+	const auto plateTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	const auto plateCRender = std::make_shared<CRender>(plate.get(), plateTexture);
+	plate->AddComponent(plateCRender);
+	const auto plateCCollision = std::make_shared<CCollisionBox>(plate.get(), CollisionGroup::Plate);
+	plate->AddComponent(plateCCollision);
+	const auto plateCPlate = std::make_shared<CPlate>(plate.get(), true);
+	plate->AddComponent(plateCPlate);
 
+	scene.Add(plate);
+
+//#pragma endregion Plates
+	
 	//PAWN
 	const auto peterPepper = std::make_shared<GameObject>(std::string{ "Peter" });
 	peterPepper->GetTransform()->SetPosition(200, 200);
@@ -313,7 +294,7 @@ void BurgerTime::SandboxScene(Scene& scene)
 	const auto peterCPeterPepper = std::make_shared<CPeterPepper>(peterPepper.get());
 	peterPepper->AddComponent(peterCPeterPepper);
 	scene.Add(peterPepper);
-
+	
 	m_pPlayerPawn = peterPepper.get();
 
 }
