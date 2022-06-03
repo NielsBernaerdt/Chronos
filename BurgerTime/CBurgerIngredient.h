@@ -30,11 +30,13 @@ public:
 	void Update(float) override;
 
 	std::vector<std::shared_ptr<GameObject>> ConstructChildren(std::shared_ptr<Texture2D> texture);
+	bool ReachedBottom() { return m_ReachedBottom; }
 
 private:
 	Ingredient m_Ingredient;
 	int m_SideLength{ 8 };
 	int m_Scale{ 24 };
+	bool m_ReachedBottom{ false };
 
 	std::vector<std::shared_ptr<GameObject>> m_Children;
 	std::vector<bool> m_IsTriggered;
@@ -43,4 +45,5 @@ private:
 	void ResetPositions();
 	void CheckPlayerCollision();
 	bool IsOnPlate();
+	void CheckForOtherIngredients();
 };

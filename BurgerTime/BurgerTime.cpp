@@ -263,6 +263,19 @@ void BurgerTime::SandboxScene(Scene& scene)
 	}
 	scene.Add(pat);
 
+	//SECOND PATTY
+	const auto pat2 = std::make_shared<GameObject>(std::string{ "second supree patty" });
+	pat2->GetTransform()->SetPosition(50, 130);
+	const auto pattyIngredientComp2 = std::make_shared<CBurgerIngredient>(pat2.get(), Ingredient::BunTop);
+	pat2->AddComponent(pattyIngredientComp2);
+	auto vector2 = pattyIngredientComp2->ConstructChildren(pattyTexture);
+	for (auto e : vector2)
+	{
+		e->SetParent(pat2);
+		scene.Add(e);
+	}
+	scene.Add(pat2);
+
 #pragma endregion BurgerIngredients
 
 //#pragma region Plates
@@ -275,7 +288,7 @@ void BurgerTime::SandboxScene(Scene& scene)
 	plate->AddComponent(plateCRender);
 	const auto plateCCollision = std::make_shared<CCollisionBox>(plate.get(), CollisionGroup::Plate);
 	plate->AddComponent(plateCCollision);
-	const auto plateCPlate = std::make_shared<CPlate>(plate.get());
+	const auto plateCPlate = std::make_shared<CPlate>(plate.get(), true);
 	plate->AddComponent(plateCPlate);
 
 	scene.Add(plate);

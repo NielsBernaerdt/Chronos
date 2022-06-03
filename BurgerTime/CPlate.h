@@ -6,7 +6,7 @@ class CCollisionBox;
 class CPlate : public CBase
 {
 public:
-	CPlate(GameObject* gameObject) : CBase(gameObject) {}
+	CPlate(GameObject* gameObject, bool final = false) : CBase(gameObject), m_IsFinal(final) {}
 	~CPlate() override = default;
 	CPlate(const CPlate& other) = delete;
 	CPlate(CPlate&& other) noexcept = delete;
@@ -15,4 +15,9 @@ public:
 
 	void Initialize() override {}
 	void Update(float) override{}
+
+	bool IsFinalPlate() { return m_IsFinal; }
+
+private:
+	bool m_IsFinal{ false };
 };

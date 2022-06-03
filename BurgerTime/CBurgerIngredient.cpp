@@ -39,6 +39,8 @@ void CBurgerIngredient::Update(float deltaTime)
 	}
 	else
 	{
+		CheckForOtherIngredients();
+
 		//FALLING CALCULATIONS
 		auto transform = m_OwnerObject->GetTransform();
 		auto pos = transform->GetPosition();
@@ -122,11 +124,34 @@ bool CBurgerIngredient::IsOnPlate()
 	for(auto child : m_Children)
 	{
 		auto collisionbox = dynamic_cast<CCollisionBox*>(child->GetComponent<CCollisionBox>().get());
-
-		if(collisionbox->GetOverlappingObjects(CollisionGroup::Plate).size() >= 1)
+		auto overlappingObjects = collisionbox->GetOverlappingObjects(CollisionGroup::Plate);
+		if(overlappingObjects.size() >= 1)
 		{
+			if (dynamic_cast<CPlate*>(overlappingObjects[0]->GetComponent<CPlate>().get())->IsFinalPlate() == true)
+			{
+				m_ReachedBottom = true;
+			}
 			return true;
 		}
 	}
 	return false;
+}
+
+void CBurgerIngredient::CheckForOtherIngredients()
+{
+	auto collisionboxChild = dynamic_cast<CCollisionBox*>(m_Children[0]->GetComponent<CCollisionBox>().get());
+	auto vector = collisionboxChild->GetOverlappingObjects(CollisionGroup::Burger);
+
+
+	for(auto overlap : vector)
+	{
+		if (overlap->GetParent().get() != m_OwnerObject)
+		{
+			auto pos = overlap->GetParent()->GetTransform()->GetPosition();
+			pos.y += 1.2f * m_Scale;
+			overlap->GetParent()->GetTransform()->SetPosition(pos);
+			return;
+		}
+	}
+
 }
