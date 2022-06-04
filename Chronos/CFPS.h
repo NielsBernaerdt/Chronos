@@ -18,7 +18,7 @@ public:
 	void Update(float deltaTime) override;
 	
 private:
-	std::shared_ptr<CText> m_pTextComponent{};
+	CText* m_pTextComponent{};
 
 	bool m_FirstUpdate = true;
 	int m_PreviousFPS{};

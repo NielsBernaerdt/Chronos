@@ -42,7 +42,7 @@ void CText::Initialize()
 	if (m_RenderText == false)
 		return;
 
-	m_pRenderComponent = std::dynamic_pointer_cast<CRender>(m_OwnerObject->GetComponent<CRender>());
+	m_pRenderComponent = dynamic_cast<CRender*>(m_OwnerObject->GetComponent<CRender>());
 	if (m_pRenderComponent == nullptr)
 	{
 		std::cout << "RenderComponent not valid\n";

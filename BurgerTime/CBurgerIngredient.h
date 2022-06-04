@@ -28,8 +28,7 @@ public:
 
 	void Initialize() override;
 	void Update(float) override;
-
-	std::vector<std::shared_ptr<GameObject>> ConstructChildren(std::shared_ptr<Texture2D> texture);
+	
 	bool ReachedBottom() { return m_ReachedBottom; }
 
 private:
@@ -38,7 +37,7 @@ private:
 	int m_Scale{ 24 };
 	bool m_ReachedBottom{ false };
 
-	std::vector<std::shared_ptr<GameObject>> m_Children;
+	std::vector<GameObject*> m_Children;
 	std::vector<bool> m_IsTriggered;
 
 	void SetTexture();

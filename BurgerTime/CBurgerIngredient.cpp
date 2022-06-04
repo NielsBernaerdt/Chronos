@@ -6,32 +6,14 @@
 #include "CollisionGroups.h"
 #include "CPlate.h"
 #include "CTransform.h"
-std::vector<std::shared_ptr<GameObject>> CBurgerIngredient::ConstructChildren(std::shared_ptr<Texture2D> texture)
-{
-	constexpr size_t nrBurgerParts{ 4 };
-	for (size_t i{}; i < nrBurgerParts; ++i)
-	{
-		const auto child = std::make_shared<GameObject>(std::string{ "PattyChild" + i });
-		child->GetTransform()->SetPosition((int)i * m_Scale, 0);
-		child->GetTransform()->SetScale(m_Scale, m_Scale);
-		const auto pattyChild0Collision = std::make_shared<CCollisionBox>(child.get(), CollisionGroup::Burger);
-		child->AddComponent(pattyChild0Collision);
-		const auto patty0child0CRender = std::make_shared<CRender>(child.get(), texture, true);
-		child->AddComponent(patty0child0CRender);
-		m_Children.push_back(child);
-		m_IsTriggered.push_back(false);
-	}
-
-	return m_Children;
-}
 
 void CBurgerIngredient::Initialize()
 {
-	//for (const auto e : m_OwnerObject->GetChildren())
-	//{
-	//	m_Children.push_back(e);
-	//	m_IsTriggered.push_back(false);
-	//}
+	for (const auto e : m_OwnerObject->GetChildren())
+	{
+		m_Children.push_back(e);
+		m_IsTriggered.push_back(false);
+	}
 
 
 	SetTexture();
@@ -65,7 +47,7 @@ void CBurgerIngredient::SetTexture()
 		bottomLeft.y = float(int(m_Ingredient) * m_SideLength);
 		Rect src{ (int)bottomLeft.x, (int)bottomLeft.y, m_SideLength, m_SideLength };
 
-		dynamic_cast<CRender*>(e->GetComponent<CRender>().get())->SetSourceRect(src);
+		dynamic_cast<CRender*>(e->GetComponent<CRender>())->SetSourceRect(src);
 
 		++index;
 	}
@@ -107,7 +89,7 @@ void CBurgerIngredient::CheckPlayerCollision()
 	{
 		if (m_IsTriggered[i] == false)
 		{
-			CCollisionBox* box = dynamic_cast<CCollisionBox*>(e->GetComponent<CCollisionBox>().get());
+			CCollisionBox* box = dynamic_cast<CCollisionBox*>(e->GetComponent<CCollisionBox>());
 			if (box->GetOverlappingObjects(CollisionGroup::Pawn).size() >= 1)
 			{
 				m_IsTriggered[i] = true;
@@ -129,11 +111,11 @@ bool CBurgerIngredient::IsOnPlate()
 {
 	for(auto child : m_Children)
 	{
-		auto collisionbox = dynamic_cast<CCollisionBox*>(child->GetComponent<CCollisionBox>().get());
+		auto collisionbox = dynamic_cast<CCollisionBox*>(child->GetComponent<CCollisionBox>());
 		auto overlappingObjects = collisionbox->GetOverlappingObjects(CollisionGroup::Plate);
 		if(overlappingObjects.size() >= 1)
 		{
-			if (dynamic_cast<CPlate*>(overlappingObjects[0]->GetComponent<CPlate>().get())->IsFinalPlate() == true)
+			if (dynamic_cast<CPlate*>(overlappingObjects[0]->GetComponent<CPlate>())->IsFinalPlate() == true)
 			{
 				m_ReachedBottom = true;
 			}
@@ -148,7 +130,7 @@ void CBurgerIngredient::CheckForOtherIngredients()
 	if (m_Children.size() == 0)
 		return;
 
-	auto collisionboxChild = dynamic_cast<CCollisionBox*>(m_Children[0]->GetComponent<CCollisionBox>().get());
+	auto collisionboxChild = dynamic_cast<CCollisionBox*>(m_Children[0]->GetComponent<CCollisionBox>());
 	auto vector = collisionboxChild->GetOverlappingObjects(CollisionGroup::Burger);
 
 

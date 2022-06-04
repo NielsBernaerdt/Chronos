@@ -45,11 +45,11 @@ void CPeterPepper::Update(float deltaTime)
 		m_State = state;
 	}
 	//MOVEMENT//
-	if (dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>().get())->GetOverlappingObjects(CollisionGroup::Ladder).size() == 0)
+	if (dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>())->GetOverlappingObjects(CollisionGroup::Ladder).size() == 0)
 	{
 		m_AccMovement.y = 0;
 	}
-	if (dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>().get())->GetOverlappingObjects(CollisionGroup::Ground).size() == 0)
+	if (dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>())->GetOverlappingObjects(CollisionGroup::Ground).size() == 0)
 	{
 		m_AccMovement.x = 0;
 	}
@@ -81,7 +81,7 @@ void CPeterPepper::SetTexture()
 	bottomLeft.y = float(int(m_AnimSpriteRow) * m_SrcLength);
 	Rect src{ (int)bottomLeft.x, (int)bottomLeft.y, m_SrcLength, m_SrcLength };
 
-	dynamic_cast<CRender*>(m_OwnerObject->GetComponent<CRender>().get())->SetSourceRect(src);
+	dynamic_cast<CRender*>(m_OwnerObject->GetComponent<CRender>())->SetSourceRect(src);
 }
 
 void CPeterPepper::SetAnimSpriteRow(int rowNr)

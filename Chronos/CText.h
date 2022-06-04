@@ -33,5 +33,5 @@ private:
 	SDL_Color m_Color{};
 	bool m_RenderText{};
 
-	std::shared_ptr<CRender> m_pRenderComponent{};
+	CRender* m_pRenderComponent{};
 };

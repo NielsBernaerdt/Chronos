@@ -21,7 +21,7 @@ void MoveRight::Execute()
 	std::cout << "MoveRight\n";
 	#endif
 
-	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>().get());
+	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>());
 	CPepper->MoveHorizontally(1);
 }
 //----------------------------------MOVELEFT----------------------------------
@@ -38,7 +38,7 @@ void MoveLeft::Execute()
 	std::cout << "MoveLeft\n";
 #endif
 	
-	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>().get());
+	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>());
 	CPepper->MoveHorizontally(-1);
 }
 //----------------------------------CLIMBUP----------------------------------
@@ -54,7 +54,7 @@ void ClimbUp::Execute()
 #ifdef SHOW_DEBUG
 	std::cout << "ClimbUp\n";
 #endif
-	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>().get());
+	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>());
 	CPepper->ClimbLadder(1);
 }
 //----------------------------------CLIMBDOWN----------------------------------
@@ -70,7 +70,7 @@ void ClimbDown::Execute()
 #ifdef SHOW_DEBUG
 	std::cout << "CLimbDown\n";
 #endif
-	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>().get());
+	if (CPepper == nullptr)	CPepper = dynamic_cast<CPeterPepper*>(m_Actor->GetComponent<CPeterPepper>());
 	CPepper->ClimbLadder(-1);
 }
 //----------------------------------FIRE----------------------------------

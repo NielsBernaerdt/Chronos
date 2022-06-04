@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "CBase.h"
+#include "CTransform.h"
 
 enum class Event;
 class BObserver;
@@ -21,15 +22,15 @@ public:
 	void Initialize();
 	void Update(float deltaTime);
 	void Render() const;
-	void AddComponent(std::shared_ptr<CBase> component);
+	void AddComponent(std::unique_ptr<CBase> component);
 	template <typename T>
-	std::shared_ptr<CBase> GetComponent() const;
+	CBase* GetComponent() const;
 	CTransform* GetTransform();
 
 	std::string GetName() { return m_Name; }
 
 private:
-	std::vector<std::shared_ptr<CBase>> m_pComponents;
+	std::vector<std::unique_ptr<CBase>> m_pComponents;
 	std::string m_Name;
 
 	//scenegraph
@@ -58,13 +59,14 @@ private:
 };
 
 template <typename T>
-std::shared_ptr<CBase> GameObject::GetComponent() const
+CBase* GameObject::GetComponent() const
 {
-	for (auto e : m_pComponents) 
+	for (const auto& e : m_pComponents)
 	{
-		if (std::dynamic_pointer_cast<T>(e))
-			return e;
+		if (dynamic_cast<T*>(e.get()))
+			return e.get();
 	}
-	std::shared_ptr<CBase> emptyComponent = nullptr;
-	return emptyComponent;
+
+	return nullptr;
 }
+

@@ -12,7 +12,7 @@ CFPS::CFPS(GameObject* gameObject)
 void CFPS::Initialize()
 {
 	//Get components through owner object
-	m_pTextComponent = std::dynamic_pointer_cast<CText>(m_OwnerObject->GetComponent<CText>());
+	m_pTextComponent = dynamic_cast<CText*>(m_OwnerObject->GetComponent<CText>());
 	if (m_pTextComponent == nullptr)
 	{
 		std::cout << "TextCompnent not valid\n";

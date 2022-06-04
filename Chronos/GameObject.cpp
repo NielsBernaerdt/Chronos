@@ -9,7 +9,7 @@
 GameObject::GameObject(std::string name)
 	:m_Name(name)
 {
-	AddComponent(std::make_shared<CTransform>(this));
+	AddComponent(std::make_unique<CTransform>(this));
 }
 GameObject::~GameObject()
 {
@@ -53,21 +53,21 @@ void GameObject::Render() const
 		obj->Render();
 	}
 	//todo dont dynamiccast on hot code path
-	CBase* renderComp = GetComponent<CRender>().get();
+	CBase* renderComp = GetComponent<CRender>();
 	if (renderComp)
 		dynamic_cast<CRender*>(renderComp)->Render();
 }
 
-void GameObject::AddComponent(std::shared_ptr<CBase> component)
+void GameObject::AddComponent(std::unique_ptr<CBase> component)
 {
-	m_pComponents.push_back(component);
+	m_pComponents.push_back(std::move(component));
 }
 
 CTransform* GameObject::GetTransform()
 {
 	if (m_pCTransform == nullptr)
 	{
-		m_pCTransform = dynamic_cast<CTransform*>(GetComponent<CTransform>().get());
+		m_pCTransform = dynamic_cast<CTransform*>(GetComponent<CTransform>());
 	}
 	return m_pCTransform;
 }

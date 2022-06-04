@@ -41,7 +41,7 @@ PlayerState* WalkingState::Update(GameObject* pPawn, CPeterPepper* pPeter)
 		m_DoOnce = false;
 		m_PrevPos = pPawn->GetTransform()->GetPosition();
 
-		m_pCollision = dynamic_cast<CCollisionBox*>(pPawn->GetComponent<CCollisionBox>().get());
+		m_pCollision = dynamic_cast<CCollisionBox*>(pPawn->GetComponent<CCollisionBox>());
 
 		return nullptr;
 	}
@@ -70,7 +70,7 @@ PlayerState* ClimbingState::Update(GameObject* pPawn, CPeterPepper* pPeter)
 	if (m_DoOnce)
 	{
 		m_DoOnce = false;
-		m_pCollision = dynamic_cast<CCollisionBox*>(pPawn->GetComponent<CCollisionBox>().get());
+		m_pCollision = dynamic_cast<CCollisionBox*>(pPawn->GetComponent<CCollisionBox>());
 
 		return nullptr;
 	}
