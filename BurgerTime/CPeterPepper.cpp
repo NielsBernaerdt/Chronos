@@ -14,6 +14,12 @@ CPeterPepper::CPeterPepper(GameObject* gameObject)
 	if (m_OwnerObject)
 		m_PawnTransform = m_OwnerObject->GetTransform();
 }
+CPeterPepper::~CPeterPepper()
+{
+	delete m_State;
+	m_State = nullptr;
+}
+
 void CPeterPepper::Initialize()
 {
 	SetTexture();

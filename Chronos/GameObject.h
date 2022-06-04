@@ -12,7 +12,7 @@ class GameObject final
 {
 public:
 	explicit GameObject(std::string name);
-	~GameObject() = default;
+	~GameObject();
 	GameObject(const GameObject& other) = delete;
 	GameObject(GameObject&& other) = delete;
 	GameObject& operator=(const GameObject& other) = delete;
@@ -34,15 +34,15 @@ private:
 
 	//scenegraph
 public:
-	std::shared_ptr<GameObject> GetParent();
-	void SetParent(std::shared_ptr<GameObject> parent);
+	GameObject* GetParent();
+	void SetParent(GameObject* parent);
 
 	std::vector<std::shared_ptr<GameObject>>& GetChildren() { return m_pChildren; }
 private:
 	void AddChild(std::shared_ptr<GameObject> child);
 	void RemoveChild(std::shared_ptr<GameObject> child);
 
-	std::shared_ptr<GameObject> m_pParent;
+	GameObject* m_pParent = nullptr;
 	std::vector<std::shared_ptr<GameObject>> m_pChildren;
 	CTransform* m_pCTransform = nullptr;
 

@@ -9,9 +9,18 @@
 GameObject::GameObject(std::string name)
 	:m_Name(name)
 {
-	std::shared_ptr<CTransform> pCTransform = std::make_shared<CTransform>(this);
-	AddComponent(pCTransform);
+	AddComponent(std::make_shared<CTransform>(this));
 }
+GameObject::~GameObject()
+{
+	//todo memory for boservers clean??
+	//for(size_t i{}; i < m_pObservers.size(); ++i)
+	//{
+	//	delete m_pObservers[i];
+	//	m_pObservers[i] = nullptr;
+	//}
+}
+
 
 void GameObject::Initialize()
 {
@@ -65,16 +74,16 @@ CTransform* GameObject::GetTransform()
 #pragma endregion Components
 
 #pragma region Scenegraph
-std::shared_ptr<GameObject> GameObject::GetParent()
+GameObject* GameObject::GetParent()
 {
 	return m_pParent;
 }
-void GameObject::SetParent(std::shared_ptr<GameObject> parent)
+void GameObject::SetParent(GameObject* parent)
 {
-	if (m_pParent)
-		m_pParent->RemoveChild(std::shared_ptr<GameObject>(this));
+	//if (m_pParent)
+	//	m_pParent->RemoveChild(std::shared_ptr<GameObject>(this));
 	m_pParent = parent;
-	m_pParent->AddChild(std::shared_ptr<GameObject>(this));
+	m_pParent->AddChild(std::shared_ptr<GameObject>(this)); // todo fix memory problem
 
 	//todo: opdate position/rotation/scale
 }

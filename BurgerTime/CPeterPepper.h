@@ -12,7 +12,7 @@ class CPeterPepper : public CBase
 {
 public:
 	CPeterPepper(GameObject* gameObject);
-	~CPeterPepper() override = default;
+	~CPeterPepper() override;
 	CPeterPepper(const CPeterPepper& other) = delete;
 	CPeterPepper(CPeterPepper&& other) noexcept = delete;
 	CPeterPepper& operator=(const CPeterPepper& other) = delete;

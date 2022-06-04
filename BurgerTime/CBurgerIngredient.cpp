@@ -7,7 +7,7 @@
 #include "CPlate.h"
 #include "CTransform.h"
 
-std::vector<std::shared_ptr<GameObject>> CBurgerIngredient::ConstructChildren(std::shared_ptr<Texture2D> texture)
+const std::vector<std::shared_ptr<GameObject>>& CBurgerIngredient::ConstructChildren(std::shared_ptr<Texture2D> texture)
 {
 	constexpr size_t nrBurgerParts{ 4 };
 	for (size_t i{}; i < nrBurgerParts; ++i)
@@ -17,7 +17,8 @@ std::vector<std::shared_ptr<GameObject>> CBurgerIngredient::ConstructChildren(st
 		child->GetTransform()->SetScale(m_Scale, m_Scale);
 		const auto pattyChild0Collision = std::make_shared<CCollisionBox>(child.get(), CollisionGroup::Burger);
 		child->AddComponent(pattyChild0Collision);
-		const auto patty0child0CRender = std::make_shared<CRender>(child.get(), texture, true);
+		//const auto patty0child0CRender = std::make_shared<CRender>(child.get(), texture, true);
+		const auto patty0child0CRender = std::make_shared<CRender>(child.get(), nullptr, true);
 		child->AddComponent(patty0child0CRender);
 		m_Children.push_back(child);
 		m_IsTriggered.push_back(false);
@@ -28,6 +29,13 @@ std::vector<std::shared_ptr<GameObject>> CBurgerIngredient::ConstructChildren(st
 
 void CBurgerIngredient::Initialize()
 {
+	for (const auto e : m_OwnerObject->GetChildren())
+	{
+		m_Children.push_back(e);
+		m_IsTriggered.push_back(false);
+	}
+
+
 	SetTexture();
 }
 
@@ -139,13 +147,16 @@ bool CBurgerIngredient::IsOnPlate()
 
 void CBurgerIngredient::CheckForOtherIngredients()
 {
+	if (m_Children.size() == 0)
+		return;
+
 	auto collisionboxChild = dynamic_cast<CCollisionBox*>(m_Children[0]->GetComponent<CCollisionBox>().get());
 	auto vector = collisionboxChild->GetOverlappingObjects(CollisionGroup::Burger);
 
 
 	for(auto overlap : vector)
 	{
-		if (overlap->GetParent().get() != m_OwnerObject)
+		if (overlap->GetParent() != m_OwnerObject)
 		{
 			auto pos = overlap->GetParent()->GetTransform()->GetPosition();
 			pos.y += 1.2f * m_Scale;

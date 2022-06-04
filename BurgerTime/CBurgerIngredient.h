@@ -29,7 +29,7 @@ public:
 	void Initialize() override;
 	void Update(float) override;
 
-	std::vector<std::shared_ptr<GameObject>> ConstructChildren(std::shared_ptr<Texture2D> texture);
+	const std::vector<std::shared_ptr<GameObject>>& ConstructChildren(std::shared_ptr<Texture2D> texture);
 	bool ReachedBottom() { return m_ReachedBottom; }
 
 private:

@@ -48,7 +48,7 @@ void CTransform:: UpdateRelativeTransform()
 {
 	m_IsDirty = false;
 
-	if (m_OwnerObject->GetParent() != nullptr)
+	if (m_OwnerObject->GetParent())
 	{
 		m_WorldPos = m_OwnerObject->GetParent()->GetTransform()->GetPosition() + m_Pos;
 	}

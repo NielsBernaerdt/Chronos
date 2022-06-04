@@ -248,37 +248,58 @@ void BurgerTime::SandboxScene(Scene& scene)
 
 #pragma region BurgerIngredients
 
-	//COMMON RESOURCES
-	const auto pattyTexture = ResourceManager::GetInstance().LoadTexture("BurgerIngredients.png");
-	//TRYOUT PATTY
-	const auto pat = std::make_shared<GameObject>(std::string{ "supreme patty" });
-	pat->GetTransform()->SetPosition(50, 50);
-	const auto pattyIngredientComp = std::make_shared<CBurgerIngredient>(pat.get(), Ingredient::BunTop);
-	pat->AddComponent(pattyIngredientComp);
-	auto vector = pattyIngredientComp->ConstructChildren(pattyTexture);
-	for(auto e : vector)
-	{
-		e->SetParent(pat);
-		scene.Add(e);
-	}
-	scene.Add(pat);
+	auto testParent = std::make_shared<GameObject>(std::string{ "TestParent" });
 
-	//SECOND PATTY
-	const auto pat2 = std::make_shared<GameObject>(std::string{ "second supree patty" });
-	pat2->GetTransform()->SetPosition(50, 130);
-	const auto pattyIngredientComp2 = std::make_shared<CBurgerIngredient>(pat2.get(), Ingredient::BunTop);
-	pat2->AddComponent(pattyIngredientComp2);
-	auto vector2 = pattyIngredientComp2->ConstructChildren(pattyTexture);
-	for (auto e : vector2)
-	{
-		e->SetParent(pat2);
-		scene.Add(e);
-	}
-	scene.Add(pat2);
+	auto testChild = std::make_shared<GameObject>(std::string{ "TestChild" });
+
+	testChild->SetParent(testParent.get());
+
+	scene.Add(testParent);
+	scene.Add(testChild);
+
+
+	////COMMON RESOURCES
+	//const auto pattyTexture = ResourceManager::GetInstance().LoadTexture("BurgerIngredients.png");
+	////TRYOUT PATTY
+	//const auto pat = std::make_shared<GameObject>(std::string{ "supreme patty" });
+	//pat->GetTransform()->SetPosition(50, 50);
+	//const auto pattyIngredientComp = std::make_shared<CBurgerIngredient>(pat.get(), Ingredient::BunTop);
+	//pat->AddComponent(pattyIngredientComp);
+
+	//constexpr size_t nrBurgerParts{ 4 };
+	//constexpr int scale{ 24 };
+	//for (size_t i{}; i < nrBurgerParts; ++i)
+	//{
+	//	const auto child = std::make_shared<GameObject>(std::string{ "PattyChild" + i });
+	//	child->GetTransform()->SetPosition((int)i * scale, 0);
+	//	child->GetTransform()->SetScale(scale, scale);
+	//	const auto pattyChild0Collision = std::make_shared<CCollisionBox>(child.get(), CollisionGroup::Burger);
+	//	child->AddComponent(pattyChild0Collision);
+	//	const auto patty0child0CRender = std::make_shared<CRender>(child.get(), pattyTexture, true);
+	//	child->AddComponent(patty0child0CRender);
+	//	child->SetParent(pat.get());
+
+	//	scene.Add(child);
+	//}
+
+	////scene.Add(pat);
+
+	////SECOND PATTY
+	//const auto pat2 = std::make_shared<GameObject>(std::string{ "second supree patty" });
+	//pat2->GetTransform()->SetPosition(50, 130);
+	//const auto pattyIngredientComp2 = std::make_shared<CBurgerIngredient>(pat2.get(), Ingredient::BunTop);
+	//pat2->AddComponent(pattyIngredientComp2);
+	//auto vector2 = pattyIngredientComp2->ConstructChildren(pattyTexture);
+	//for (auto e : vector2)
+	//{
+	//	e->SetParent(pat2.get());
+	//	scene.Add(e);
+	//}
+	//scene.Add(pat2);
 
 #pragma endregion BurgerIngredients
 
-//#pragma region Plates
+#pragma region Plates
 
 	const auto plate = std::make_shared<GameObject>(std::string{ "plate" });
 	plate->GetTransform()->SetPosition(35, 439);
@@ -318,7 +339,7 @@ void BurgerTime::SandboxScene(Scene& scene)
 
 	scene.Add(plate2);
 
-//#pragma endregion Plates
+#pragma endregion Plates
 	
 	//PAWN
 	const auto peterPepper = std::make_shared<GameObject>(std::string{ "Peter" });
@@ -335,62 +356,6 @@ void BurgerTime::SandboxScene(Scene& scene)
 	
 	m_pPlayerPawn = peterPepper.get();
 
-}
-void BurgerTime::SceneGraphTestScene(Scene& scene) const
-{
-	const std::shared_ptr<GameObject> parentObject = std::make_shared<GameObject>("Parent");
-	parentObject->GetTransform()->SetPosition(200, 0);
-	scene.Add(parentObject);
-
-	const std::shared_ptr<GameObject> secondParentObject = std::make_shared<GameObject>("ParentTWO");
-	secondParentObject->GetTransform()->SetPosition(0, 200);
-	scene.Add(secondParentObject);
-
-	const std::shared_ptr<GameObject> childObject = std::make_shared<GameObject>("Child");
-	childObject->GetTransform()->SetPosition(500, 0);
-	auto logoTexture = ResourceManager::GetInstance().LoadTexture("logo.png");
-	const auto logoCRender = std::make_shared<CRender>(childObject.get(), logoTexture);
-	childObject->AddComponent(logoCRender);
-	scene.Add(childObject);
-
-	childObject->SetParent(parentObject);
-	parentObject->SetParent(secondParentObject);
-
-	//todo Cant fix parent at runtime
-	//childObject->SetParent(secondParentObject);
-	//childObject->GetTransform()->UpdateRelativeTransform();
-
-	//logoCRender->UpdateRelativeTransform();
-}
-void BurgerTime::ObserverScene(Scene& scene) const
-{
-	//Achievements Observer
-	std::shared_ptr<Achievements> achievements = std::make_shared<Achievements>();
-
-	// PlayerObject
-	auto peterPawn = std::make_shared<GameObject>(std::string{"PawnObject"});
-		//HealthComponent
-		std::shared_ptr<CHealth> pawnCHealth = std::make_shared<CHealth>(peterPawn.get());
-		pawnCHealth->SetHealth(3);
-		//PointsComponent
-		std::shared_ptr<CPoints> pawnCPoints = std::make_shared<CPoints>(peterPawn.get());
-
-	peterPawn->AddComponent(pawnCHealth);
-	peterPawn->AddComponent(pawnCPoints);
-
-	peterPawn->AddObserver(achievements.get());
-
-	scene.Add(peterPawn);
-
-	///
-	std::cout << "Current HP: " << pawnCHealth->GetHealth() << std::endl;
-	std::cout << "Current Points: " << pawnCPoints->GetPoints() << std::endl;
-	pawnCHealth->SetHealth(1);
-	std::cout << "First Reduction to 1HP: " << pawnCHealth->GetHealth() << std::endl;
-	std::cout << "Current Points: " << pawnCPoints->GetPoints() << std::endl;
-	pawnCHealth->SetHealth(0);
-	std::cout << "Second Reduction to 0HP: " << pawnCHealth->GetHealth() << std::endl;
-	std::cout << "Current Points: " << pawnCPoints->GetPoints() << std::endl;
 }
 
 void BurgerTime::ConfigureInput(InputManager* input)

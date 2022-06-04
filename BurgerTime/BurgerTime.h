@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "Game.h"
 
 class GameObject;
@@ -7,8 +9,6 @@ class BurgerTime : public Game
 {
 private:
 	void SandboxScene(Scene& scene);
-	void SceneGraphTestScene(Scene& scene) const;
-	void ObserverScene(Scene& scene) const;	
 
 	GameObject* m_pPlayerPawn = nullptr;
 

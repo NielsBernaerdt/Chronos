@@ -69,6 +69,8 @@ void Chronos::Cleanup()
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
 	SDL_Quit();
+	delete m_Input;
+	m_Input = nullptr;
 	delete m_pGame;
 	m_pGame = nullptr;
 }
