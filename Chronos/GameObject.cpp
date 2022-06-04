@@ -83,16 +83,13 @@ void GameObject::SetParent(GameObject* parent)
 	//if (m_pParent)
 	//	m_pParent->RemoveChild(std::shared_ptr<GameObject>(this));
 	m_pParent = parent;
-	m_pParent->AddChild(std::shared_ptr<GameObject>(this)); // todo fix memory problem
-
-	//todo: opdate position/rotation/scale
+	m_pParent->AddChild(this);
 }
-void GameObject::AddChild(std::shared_ptr<GameObject> child)
+void GameObject::AddChild(GameObject* child)
 {
 	m_pChildren.push_back(child);
-	//todo: opdate position/rotation/scale
 }
-void GameObject::RemoveChild(std::shared_ptr<GameObject> child)
+void GameObject::RemoveChild(GameObject* child)
 {
 	const auto it = std::ranges::find(m_pChildren, child);
 

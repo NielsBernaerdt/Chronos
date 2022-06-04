@@ -6,8 +6,7 @@
 #include "CollisionGroups.h"
 #include "CPlate.h"
 #include "CTransform.h"
-
-const std::vector<std::shared_ptr<GameObject>>& CBurgerIngredient::ConstructChildren(std::shared_ptr<Texture2D> texture)
+std::vector<std::shared_ptr<GameObject>> CBurgerIngredient::ConstructChildren(std::shared_ptr<Texture2D> texture)
 {
 	constexpr size_t nrBurgerParts{ 4 };
 	for (size_t i{}; i < nrBurgerParts; ++i)
@@ -17,8 +16,7 @@ const std::vector<std::shared_ptr<GameObject>>& CBurgerIngredient::ConstructChil
 		child->GetTransform()->SetScale(m_Scale, m_Scale);
 		const auto pattyChild0Collision = std::make_shared<CCollisionBox>(child.get(), CollisionGroup::Burger);
 		child->AddComponent(pattyChild0Collision);
-		//const auto patty0child0CRender = std::make_shared<CRender>(child.get(), texture, true);
-		const auto patty0child0CRender = std::make_shared<CRender>(child.get(), nullptr, true);
+		const auto patty0child0CRender = std::make_shared<CRender>(child.get(), texture, true);
 		child->AddComponent(patty0child0CRender);
 		m_Children.push_back(child);
 		m_IsTriggered.push_back(false);
@@ -29,11 +27,11 @@ const std::vector<std::shared_ptr<GameObject>>& CBurgerIngredient::ConstructChil
 
 void CBurgerIngredient::Initialize()
 {
-	for (const auto e : m_OwnerObject->GetChildren())
-	{
-		m_Children.push_back(e);
-		m_IsTriggered.push_back(false);
-	}
+	//for (const auto e : m_OwnerObject->GetChildren())
+	//{
+	//	m_Children.push_back(e);
+	//	m_IsTriggered.push_back(false);
+	//}
 
 
 	SetTexture();

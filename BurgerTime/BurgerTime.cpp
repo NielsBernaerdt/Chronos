@@ -260,7 +260,7 @@ void BurgerTime::SandboxScene(Scene& scene)
 
 	////COMMON RESOURCES
 	//const auto pattyTexture = ResourceManager::GetInstance().LoadTexture("BurgerIngredients.png");
-	////TRYOUT PATTY
+	//////TRYOUT PATTY
 	//const auto pat = std::make_shared<GameObject>(std::string{ "supreme patty" });
 	//pat->GetTransform()->SetPosition(50, 50);
 	//const auto pattyIngredientComp = std::make_shared<CBurgerIngredient>(pat.get(), Ingredient::BunTop);

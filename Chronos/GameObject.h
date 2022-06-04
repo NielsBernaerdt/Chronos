@@ -37,13 +37,13 @@ public:
 	GameObject* GetParent();
 	void SetParent(GameObject* parent);
 
-	std::vector<std::shared_ptr<GameObject>>& GetChildren() { return m_pChildren; }
+	std::vector<GameObject*> GetChildren() { return m_pChildren; }
 private:
-	void AddChild(std::shared_ptr<GameObject> child);
-	void RemoveChild(std::shared_ptr<GameObject> child);
+	void AddChild(GameObject* child);
+	void RemoveChild(GameObject* child);
 
 	GameObject* m_pParent = nullptr;
-	std::vector<std::shared_ptr<GameObject>> m_pChildren;
+	std::vector<GameObject*> m_pChildren;
 	CTransform* m_pCTransform = nullptr;
 
 	//Observers
