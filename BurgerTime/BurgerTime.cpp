@@ -1,4 +1,6 @@
 #include "BurgerTime.h"
+#include <iostream>
+#include <fstream>
 #include "CollisionGroups.h"
 #include "InputManager.h"
 #include "InputCommands.h"
@@ -18,12 +20,24 @@
 //Observers
 #include "GameState.h"
 
-//OWN SCENES//
-void BurgerTime::SandboxScene(Scene& scene)
+void BurgerTime::ReadFromFile()
+{
+	std::fstream newfile;
+	newfile.open("../Data/LevelLayout.txt", std::ios::in); //open a file to perform read operation using file object
+	if (newfile.is_open()) { //checking whether the file is open
+		std::string tp;
+		while (getline(newfile, tp)) { //read data from file object and put it into string.
+			std::cout << tp << "\n"; //print the data of the string
+		}
+		newfile.close(); //close the file object.
+	}
+}
+
+void BurgerTime::CreateLevel(Scene& scene)
 {
 	//OBSERVERS
 	auto observer = std::make_shared<GameState>();
-	//
+
 	//Background image
 	std::shared_ptr<GameObject> background = std::make_shared<GameObject>(std::string{ "Background" });
 	background->GetTransform()->SetScale(620, 620);
@@ -42,6 +56,188 @@ void BurgerTime::SandboxScene(Scene& scene)
 	std::unique_ptr<CRender> fpsCRender = std::make_unique<CRender>(fpsCounter.get(), fpsTexture);
 	fpsCounter->AddComponent(std::move(fpsCRender));
 	scene.Add(fpsCounter);
+
+	CreatePlayerPawns(scene, observer);
+	if(m_GameMode != "Versus") CreateNPCs(scene, observer);
+	CreateTerrain(scene);
+}
+
+void BurgerTime::CreatePlayerPawns(Scene& scene, std::shared_ptr<GameState> pObserver)
+{
+	//PAWN ONE
+	const auto peterPepper = std::make_shared<GameObject>(std::string{ "Peter" });
+	peterPepper->GetTransform()->SetPosition(200, 200);
+	peterPepper->GetTransform()->SetScale(44, 44);
+	std::unique_ptr<CCollisionBox> peterCollision = std::make_unique<CCollisionBox>(peterPepper.get(), CollisionGroup::Pawn);
+	peterPepper->AddComponent(std::move(peterCollision));
+	const auto peterTexture = ResourceManager::GetInstance().LoadTexture("PeterSprites.png");
+	std::unique_ptr<CRender> peterCRender = std::make_unique<CRender>(peterPepper.get(), peterTexture, true);
+	peterPepper->AddComponent(std::move(peterCRender));
+	std::unique_ptr<CPeterPepper> peterCPeterPepper = std::make_unique<CPeterPepper>(peterPepper.get());
+	peterPepper->AddComponent(std::move(peterCPeterPepper));
+	std::unique_ptr<CHealth> peterCHealth = std::make_unique<CHealth>(peterPepper.get(), 3);
+	peterPepper->AddComponent(std::move(peterCHealth));
+	peterPepper->AddObserver(pObserver);
+	scene.Add(peterPepper);
+	m_pPlayerOnePawn = peterPepper.get();
+
+	if (m_GameMode == "Coop")
+	{
+		const auto peterPepper2 = std::make_shared<GameObject>(std::string{ "Peter" });
+		peterPepper2->GetTransform()->SetPosition(400, 400);
+		peterPepper2->GetTransform()->SetScale(44, 44);
+		std::unique_ptr<CCollisionBox> peterCollision2 = std::make_unique<CCollisionBox>(peterPepper2.get(), CollisionGroup::Pawn);
+		peterPepper2->AddComponent(std::move(peterCollision2));
+		const auto peterTexture2 = ResourceManager::GetInstance().LoadTexture("PeterSprites.png");
+		std::unique_ptr<CRender> peterCRender2 = std::make_unique<CRender>(peterPepper2.get(), peterTexture2, true);
+		peterPepper2->AddComponent(std::move(peterCRender2));
+		std::unique_ptr<CPeterPepper> peterCPeterPepper2 = std::make_unique<CPeterPepper>(peterPepper2.get());
+		peterPepper2->AddComponent(std::move(peterCPeterPepper2));
+		std::unique_ptr<CHealth> peterCHealth2 = std::make_unique<CHealth>(peterPepper2.get(), 3);
+		peterPepper2->AddComponent(std::move(peterCHealth2));
+		peterPepper2->AddObserver(pObserver);
+		scene.Add(peterPepper2);
+		m_pPlayerTwoPawn = peterPepper2.get();
+	}
+	else if (m_GameMode == "Versus")
+	{
+		const auto peterPepper2 = std::make_shared<GameObject>(std::string{ "Peter" });
+		peterPepper2->GetTransform()->SetPosition(400, 400);
+		peterPepper2->GetTransform()->SetScale(44, 44);
+		std::unique_ptr<CCollisionBox> peterCollision2 = std::make_unique<CCollisionBox>(peterPepper2.get(), CollisionGroup::Pawn);
+		peterPepper2->AddComponent(std::move(peterCollision2));
+		const auto hotDogTexture = ResourceManager::GetInstance().LoadTexture("HotDogSprites.png");
+		std::unique_ptr<CRender> peterCRender2 = std::make_unique<CRender>(peterPepper2.get(), hotDogTexture, true);
+		peterPepper2->AddComponent(std::move(peterCRender2));
+		std::unique_ptr<CEnemyPlayer> peterCPeterPepper2 = std::make_unique<CEnemyPlayer>(peterPepper2.get());
+		peterPepper2->AddComponent(std::move(peterCPeterPepper2));
+		std::unique_ptr<CHealth> peterCHealth2 = std::make_unique<CHealth>(peterPepper2.get(), 3);
+		peterPepper2->AddComponent(std::move(peterCHealth2));
+		peterPepper2->AddObserver(pObserver);
+		scene.Add(peterPepper2);
+		m_pPlayerTwoPawn = peterPepper2.get();
+	}
+}
+
+void BurgerTime::CreateNPCs(Scene& scene, std::shared_ptr<GameState> pObserver)
+{
+	//COMMON RESOURCES//
+	const auto hotDogTexture = ResourceManager::GetInstance().LoadTexture("HotDogSprites.png");
+	//
+	const auto mrHotDog = std::make_shared<GameObject>(std::string{ "MrHotDog" });
+	mrHotDog->GetTransform()->SetPosition(400, 200);
+	mrHotDog->GetTransform()->SetScale(44, 44);
+	std::unique_ptr<CCollisionBox> hotdogCollision = std::make_unique<CCollisionBox>(mrHotDog.get(), CollisionGroup::NPC);
+	mrHotDog->AddComponent(std::move(hotdogCollision));
+	std::unique_ptr<CRender> hotDogCRender = std::make_unique<CRender>(mrHotDog.get(), hotDogTexture, true);
+	mrHotDog->AddComponent(std::move(hotDogCRender));
+	std::unique_ptr<CMrHotDog> hotDogCHotDog = std::make_unique<CMrHotDog>(mrHotDog.get());
+	mrHotDog->AddComponent(std::move(hotDogCHotDog));
+	std::unique_ptr<CHealth> hotDogCHealth = std::make_unique<CHealth>(mrHotDog.get(), 1);
+	mrHotDog->AddComponent(std::move(hotDogCHealth));
+	mrHotDog->AddObserver(pObserver);
+	scene.Add(mrHotDog);
+
+	const auto mrHotDog1 = std::make_shared<GameObject>(std::string{ "MrHotDog" });
+	mrHotDog1->GetTransform()->SetPosition(40, 200);
+	mrHotDog1->GetTransform()->SetScale(44, 44);
+	std::unique_ptr<CCollisionBox> hotdogCollision1 = std::make_unique<CCollisionBox>(mrHotDog1.get(), CollisionGroup::NPC);
+	mrHotDog1->AddComponent(std::move(hotdogCollision1));
+	std::unique_ptr<CRender> hotDogCRender1 = std::make_unique<CRender>(mrHotDog1.get(), hotDogTexture, true);
+	mrHotDog1->AddComponent(std::move(hotDogCRender1));
+	std::unique_ptr<CMrHotDog> hotDogCHotDog1 = std::make_unique<CMrHotDog>(mrHotDog1.get());
+	mrHotDog1->AddComponent(std::move(hotDogCHotDog1));
+	std::unique_ptr<CHealth> hotDogCHealth1 = std::make_unique<CHealth>(mrHotDog1.get(), 1);
+	mrHotDog1->AddComponent(std::move(hotDogCHealth1));
+	mrHotDog1->AddObserver(pObserver);
+	scene.Add(mrHotDog1);
+}
+
+void BurgerTime::CreateGameplayObjects(Scene& scene, std::shared_ptr<GameState> pObserver)
+{
+	//COMMON RESOURCES
+	const auto pattyTexture = ResourceManager::GetInstance().LoadTexture("BurgerIngredients.png");
+	constexpr size_t nrBurgerParts{ 4 };
+	int scale{ 24 };
+	//TRYOUT PATTY
+	const auto pat1 = std::make_shared<GameObject>(std::string{ "second supree patty" });
+	pat1->GetTransform()->SetPosition(40, 130);
+	std::unique_ptr<CBurgerIngredient> pattyIngredientComp1 = std::make_unique<CBurgerIngredient>(pat1.get(), Ingredient::BunBottom);
+	pat1->AddComponent(std::move(pattyIngredientComp1));
+	for (size_t i{}; i < nrBurgerParts; ++i)
+	{
+		const auto child = std::make_shared<GameObject>(std::string{ "PattyChild" + i });
+		child->GetTransform()->SetPosition((int)i * scale, 0);
+		child->GetTransform()->SetScale(scale, scale);
+		std::unique_ptr<CCollisionBox> pattyChild0Collision = std::make_unique<CCollisionBox>(child.get(), CollisionGroup::Burger);
+		child->AddComponent(std::move(pattyChild0Collision));
+		std::unique_ptr<CRender> patty0child0CRender = std::make_unique<CRender>(child.get(), pattyTexture, true);
+		child->AddComponent(std::move(patty0child0CRender));
+		child->SetParent(pat1.get());
+		scene.Add(child);
+	}
+	scene.Add(pat1);
+
+	const auto pat2 = std::make_shared<GameObject>(std::string{ "second supree patty" });
+	pat2->GetTransform()->SetPosition(40, 50);
+	std::unique_ptr<CBurgerIngredient> pattyIngredientComp2 = std::make_unique<CBurgerIngredient>(pat2.get(), Ingredient::BunTop);
+	pat2->AddComponent(std::move(pattyIngredientComp2));
+	for (size_t i{}; i < nrBurgerParts; ++i)
+	{
+		const auto child = std::make_shared<GameObject>(std::string{ "PattyChild" + i });
+		child->GetTransform()->SetPosition((int)i * scale, 0);
+		child->GetTransform()->SetScale(scale, scale);
+		std::unique_ptr<CCollisionBox> pattyChild0Collision = std::make_unique<CCollisionBox>(child.get(), CollisionGroup::Burger);
+		child->AddComponent(std::move(pattyChild0Collision));
+		std::unique_ptr<CRender> patty0child0CRender = std::make_unique<CRender>(child.get(), pattyTexture, true);
+		child->AddComponent(std::move(patty0child0CRender));
+		child->SetParent(pat2.get());
+		scene.Add(child);
+	}
+	pat2->AddObserver(pObserver);
+	scene.Add(pat2);
+
+	//COMMON RESOURCES
+	const auto plateTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	//
+	const auto plate = std::make_shared<GameObject>(std::string{ "plate" });
+	plate->GetTransform()->SetPosition(35, 539);
+	plate->GetTransform()->SetScale(160, 5);
+	std::unique_ptr<CRender> plateCRender = std::make_unique<CRender>(plate.get(), plateTexture);
+	plate->AddComponent(std::move(plateCRender));
+	std::unique_ptr<CCollisionBox> plateCCollision = std::make_unique<CCollisionBox>(plate.get(), CollisionGroup::Plate);
+	plate->AddComponent(std::move(plateCCollision));
+	std::unique_ptr<CPlate> plateCPlate = std::make_unique<CPlate>(plate.get(), true);
+	plate->AddComponent(std::move(plateCPlate));
+	scene.Add(plate);
+
+	////1//
+	//const auto plate1 = std::make_shared<GameObject>(std::string{ "plate" });
+	//plate1->GetTransform()->SetPosition(35, 162);
+	//plate1->GetTransform()->SetScale(160, 5);
+	//std::unique_ptr<CRender> plateCRender1 = std::make_unique<CRender>(plate1.get(), plateTexture);
+	//plate1->AddComponent(std::move(plateCRender1));
+	//std::unique_ptr<CCollisionBox> plateCCollision1 = std::make_unique<CCollisionBox>(plate1.get(), CollisionGroup::Plate);
+	//plate1->AddComponent(std::move(plateCCollision1));
+	//std::unique_ptr<CPlate> plateCPlate1 = std::make_unique<CPlate>(plate1.get(), true);
+	//plate1->AddComponent(std::move(plateCPlate1));
+	//scene.Add(plate1);
+	////2//
+	//const auto plate2 = std::make_shared<GameObject>(std::string{ "plate" });
+	//plate2->GetTransform()->SetPosition(35, 100);
+	//plate2->GetTransform()->SetScale(160, 5);
+	//std::unique_ptr<CRender> plateCRender2 = std::make_unique<CRender>(plate2.get(), plateTexture);
+	//plate2->AddComponent(std::move(plateCRender2));
+	//std::unique_ptr<CCollisionBox> plateCCollision2 = std::make_unique<CCollisionBox>(plate2.get(), CollisionGroup::Plate);
+	//plate2->AddComponent(std::move(plateCCollision2));
+	//std::unique_ptr<CPlate> plateCPlate2 = std::make_unique<CPlate>(plate2.get(), true);
+	//plate2->AddComponent(std::move(plateCPlate2));
+	//scene.Add(plate2);
+}
+
+
+void BurgerTime::CreateTerrain(Scene& scene)
+{
 
 #pragma region Ladders
 	//COMMON RESOURCES
@@ -241,176 +437,6 @@ void BurgerTime::SandboxScene(Scene& scene)
 	//ground11->AddComponent(std::move(groundCTexture11));
 	scene.Add(ground11);
 #pragma endregion Ground
-
-#pragma region BurgerIngredients
-	//COMMON RESOURCES
-	const auto pattyTexture = ResourceManager::GetInstance().LoadTexture("BurgerIngredients.png");
-	constexpr size_t nrBurgerParts{ 4 };
-	int scale{ 24 };
-	//TRYOUT PATTY
-	const auto pat1 = std::make_shared<GameObject>(std::string{ "second supree patty" });
-	pat1->GetTransform()->SetPosition(40, 130);
-	std::unique_ptr<CBurgerIngredient> pattyIngredientComp1 = std::make_unique<CBurgerIngredient>(pat1.get(), Ingredient::BunBottom);
-	pat1->AddComponent(std::move(pattyIngredientComp1));
-	for (size_t i{}; i < nrBurgerParts; ++i)
-	{
-		const auto child = std::make_shared<GameObject>(std::string{ "PattyChild" + i });
-		child->GetTransform()->SetPosition((int)i * scale, 0);
-		child->GetTransform()->SetScale(scale, scale);
-		std::unique_ptr<CCollisionBox> pattyChild0Collision = std::make_unique<CCollisionBox>(child.get(), CollisionGroup::Burger);
-		child->AddComponent(std::move(pattyChild0Collision));
-		std::unique_ptr<CRender> patty0child0CRender = std::make_unique<CRender>(child.get(), pattyTexture, true);
-		child->AddComponent(std::move(patty0child0CRender));
-		child->SetParent(pat1.get());
-		scene.Add(child);
-	}
-	scene.Add(pat1);
-
-	const auto pat2 = std::make_shared<GameObject>(std::string{ "second supree patty" });
-	pat2->GetTransform()->SetPosition(40, 50);
-	std::unique_ptr<CBurgerIngredient> pattyIngredientComp2 = std::make_unique<CBurgerIngredient>(pat2.get(), Ingredient::BunTop);
-	pat2->AddComponent(std::move(pattyIngredientComp2));
-	for (size_t i{}; i < nrBurgerParts; ++i)
-	{
-		const auto child = std::make_shared<GameObject>(std::string{ "PattyChild" + i });
-		child->GetTransform()->SetPosition((int)i * scale, 0);
-		child->GetTransform()->SetScale(scale, scale);
-		std::unique_ptr<CCollisionBox> pattyChild0Collision = std::make_unique<CCollisionBox>(child.get(), CollisionGroup::Burger);
-		child->AddComponent(std::move(pattyChild0Collision));
-		std::unique_ptr<CRender> patty0child0CRender = std::make_unique<CRender>(child.get(), pattyTexture, true);
-		child->AddComponent(std::move(patty0child0CRender));
-		child->SetParent(pat2.get());
-		scene.Add(child);
-	}
-	pat2->AddObserver(observer);
-	scene.Add(pat2);
-
-#pragma endregion BurgerIngredients
-
-#pragma region Plates
-
-	//COMMON RESOURCES
-	const auto plateTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	//
-	const auto plate = std::make_shared<GameObject>(std::string{ "plate" });
-	plate->GetTransform()->SetPosition(35, 539);
-	plate->GetTransform()->SetScale(160, 5);
-	std::unique_ptr<CRender> plateCRender = std::make_unique<CRender>(plate.get(), plateTexture);
-	plate->AddComponent(std::move(plateCRender));
-	std::unique_ptr<CCollisionBox> plateCCollision = std::make_unique<CCollisionBox>(plate.get(), CollisionGroup::Plate);
-	plate->AddComponent(std::move(plateCCollision));
-	std::unique_ptr<CPlate> plateCPlate = std::make_unique<CPlate>(plate.get(), true);
-	plate->AddComponent(std::move(plateCPlate));
-	scene.Add(plate);
-
-	////1//
-	//const auto plate1 = std::make_shared<GameObject>(std::string{ "plate" });
-	//plate1->GetTransform()->SetPosition(35, 162);
-	//plate1->GetTransform()->SetScale(160, 5);
-	//std::unique_ptr<CRender> plateCRender1 = std::make_unique<CRender>(plate1.get(), plateTexture);
-	//plate1->AddComponent(std::move(plateCRender1));
-	//std::unique_ptr<CCollisionBox> plateCCollision1 = std::make_unique<CCollisionBox>(plate1.get(), CollisionGroup::Plate);
-	//plate1->AddComponent(std::move(plateCCollision1));
-	//std::unique_ptr<CPlate> plateCPlate1 = std::make_unique<CPlate>(plate1.get(), true);
-	//plate1->AddComponent(std::move(plateCPlate1));
-	//scene.Add(plate1);
-	////2//
-	//const auto plate2 = std::make_shared<GameObject>(std::string{ "plate" });
-	//plate2->GetTransform()->SetPosition(35, 100);
-	//plate2->GetTransform()->SetScale(160, 5);
-	//std::unique_ptr<CRender> plateCRender2 = std::make_unique<CRender>(plate2.get(), plateTexture);
-	//plate2->AddComponent(std::move(plateCRender2));
-	//std::unique_ptr<CCollisionBox> plateCCollision2 = std::make_unique<CCollisionBox>(plate2.get(), CollisionGroup::Plate);
-	//plate2->AddComponent(std::move(plateCCollision2));
-	//std::unique_ptr<CPlate> plateCPlate2 = std::make_unique<CPlate>(plate2.get(), true);
-	//plate2->AddComponent(std::move(plateCPlate2));
-	//scene.Add(plate2);
-
-#pragma endregion Plates
-
-#pragma region MrHotDog
-
-	//COMMON RESOURCES//
-	const auto hotDogTexture = ResourceManager::GetInstance().LoadTexture("HotDogSprites.png");
-	//
-	const auto mrHotDog = std::make_shared<GameObject>(std::string{ "MrHotDog" });
-	mrHotDog->GetTransform()->SetPosition(400, 200);
-	mrHotDog->GetTransform()->SetScale(44, 44);
-	std::unique_ptr<CCollisionBox> hotdogCollision = std::make_unique<CCollisionBox>(mrHotDog.get(), CollisionGroup::NPC);
-	mrHotDog->AddComponent(std::move(hotdogCollision));
-	std::unique_ptr<CRender> hotDogCRender = std::make_unique<CRender>(mrHotDog.get(), hotDogTexture, true);
-	mrHotDog->AddComponent(std::move(hotDogCRender));
-	std::unique_ptr<CMrHotDog> hotDogCHotDog = std::make_unique<CMrHotDog>(mrHotDog.get());
-	mrHotDog->AddComponent(std::move(hotDogCHotDog));
-	std::unique_ptr<CHealth> hotDogCHealth = std::make_unique<CHealth>(mrHotDog.get(), 1);
-	mrHotDog->AddComponent(std::move(hotDogCHealth));
-	mrHotDog->AddObserver(observer);
-	scene.Add(mrHotDog);
-
-	const auto mrHotDog1 = std::make_shared<GameObject>(std::string{ "MrHotDog" });
-	mrHotDog1->GetTransform()->SetPosition(40, 200);
-	mrHotDog1->GetTransform()->SetScale(44, 44);
-	std::unique_ptr<CCollisionBox> hotdogCollision1 = std::make_unique<CCollisionBox>(mrHotDog1.get(), CollisionGroup::NPC);
-	mrHotDog1->AddComponent(std::move(hotdogCollision1));
-	std::unique_ptr<CRender> hotDogCRender1 = std::make_unique<CRender>(mrHotDog1.get(), hotDogTexture, true);
-	mrHotDog1->AddComponent(std::move(hotDogCRender1));
-	std::unique_ptr<CMrHotDog> hotDogCHotDog1 = std::make_unique<CMrHotDog>(mrHotDog1.get());
-	mrHotDog1->AddComponent(std::move(hotDogCHotDog1));
-	std::unique_ptr<CHealth> hotDogCHealth1 = std::make_unique<CHealth>(mrHotDog1.get(), 1);
-	mrHotDog1->AddComponent(std::move(hotDogCHealth1));
-	mrHotDog1->AddObserver(observer);
-	scene.Add(mrHotDog1);
-
-#pragma endregion MrHotDog
-	
-	//PAWN ONE
-	const auto peterPepper = std::make_shared<GameObject>(std::string{ "Peter" });
-	peterPepper->GetTransform()->SetPosition(200, 200);
-	peterPepper->GetTransform()->SetScale(44, 44);
-	std::unique_ptr<CCollisionBox> peterCollision = std::make_unique<CCollisionBox>(peterPepper.get(), CollisionGroup::Pawn);
-	peterPepper->AddComponent(std::move(peterCollision));
-	const auto peterTexture = ResourceManager::GetInstance().LoadTexture("PeterSprites.png");
-	std::unique_ptr<CRender> peterCRender = std::make_unique<CRender>(peterPepper.get(), peterTexture, true);
-	peterPepper->AddComponent(std::move(peterCRender));
-	std::unique_ptr<CPeterPepper> peterCPeterPepper = std::make_unique<CPeterPepper>(peterPepper.get());
-	peterPepper->AddComponent(std::move(peterCPeterPepper));
-	std::unique_ptr<CHealth> peterCHealth = std::make_unique<CHealth>(peterPepper.get(), 3);
-	peterPepper->AddComponent(std::move(peterCHealth));
-	peterPepper->AddObserver(observer);
-	scene.Add(peterPepper);
-	m_pPlayerOnePawn = peterPepper.get();
-	//PAWN TWO (COOP)
-	//const auto peterPepper2 = std::make_shared<GameObject>(std::string{ "Peter" });
-	//peterPepper2->GetTransform()->SetPosition(400, 400);
-	//peterPepper2->GetTransform()->SetScale(44, 44);
-	//std::unique_ptr<CCollisionBox> peterCollision2 = std::make_unique<CCollisionBox>(peterPepper2.get(), CollisionGroup::Pawn);
-	//peterPepper2->AddComponent(std::move(peterCollision2));
-	//const auto peterTexture2 = ResourceManager::GetInstance().LoadTexture("PeterSprites.png");
-	//std::unique_ptr<CRender> peterCRender2 = std::make_unique<CRender>(peterPepper2.get(), peterTexture2, true);
-	//peterPepper2->AddComponent(std::move(peterCRender2));
-	//std::unique_ptr<CPeterPepper> peterCPeterPepper2 = std::make_unique<CPeterPepper>(peterPepper2.get());
-	//peterPepper2->AddComponent(std::move(peterCPeterPepper2));
-	//std::unique_ptr<CHealth> peterCHealth2 = std::make_unique<CHealth>(peterPepper2.get(), 3);
-	//peterPepper2->AddComponent(std::move(peterCHealth2));
-	//peterPepper2->AddObserver(observer);
-	//scene.Add(peterPepper2);
-	//m_pPlayerTwoPawn = peterPepper2.get();
-	//PAWN TWO (VERSUS)
-	const auto peterPepper2 = std::make_shared<GameObject>(std::string{ "Peter" });
-	peterPepper2->GetTransform()->SetPosition(400, 400);
-	peterPepper2->GetTransform()->SetScale(44, 44);
-	std::unique_ptr<CCollisionBox> peterCollision2 = std::make_unique<CCollisionBox>(peterPepper2.get(), CollisionGroup::Pawn);
-	peterPepper2->AddComponent(std::move(peterCollision2));
-	std::unique_ptr<CRender> peterCRender2 = std::make_unique<CRender>(peterPepper2.get(), hotDogTexture, true);
-	peterPepper2->AddComponent(std::move(peterCRender2));
-	std::unique_ptr<CEnemyPlayer> peterCPeterPepper2 = std::make_unique<CEnemyPlayer>(peterPepper2.get());
-	peterPepper2->AddComponent(std::move(peterCPeterPepper2));
-	std::unique_ptr<CHealth> peterCHealth2 = std::make_unique<CHealth>(peterPepper2.get(), 3);
-	peterPepper2->AddComponent(std::move(peterCHealth2));
-	peterPepper2->AddObserver(observer);
-	scene.Add(peterPepper2);
-	m_pPlayerTwoPawn = peterPepper2.get();
-
 }
 
 std::vector<InputManager*> BurgerTime::ConfigureInput()
@@ -427,15 +453,18 @@ std::vector<InputManager*> BurgerTime::ConfigureInput()
 	inputPlayerOne->SetPawn(m_pPlayerOnePawn);
 	inputManagers.push_back(inputPlayerOne);
 
-	//INPUT PAWN TWO
-	InputManager* inputPlayerTwo = new InputManager{ 0 };
-	inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_RIGHT, std::make_unique<MoveRight>());
-	inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_LEFT, std::make_unique<MoveLeft>());
-	inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_UP, std::make_unique<ClimbUp>());
-	inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_DOWN, std::make_unique<ClimbDown>());
+	if (m_GameMode != "SinglePlayer")
+	{
+		//INPUT PAWN TWO
+		InputManager* inputPlayerTwo = new InputManager{ 0 };
+		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_RIGHT, std::make_unique<MoveRight>());
+		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_LEFT, std::make_unique<MoveLeft>());
+		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_UP, std::make_unique<ClimbUp>());
+		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_DOWN, std::make_unique<ClimbDown>());
 
-	inputPlayerTwo->SetPawn(m_pPlayerTwoPawn);
-	inputManagers.push_back(inputPlayerTwo);
+		inputPlayerTwo->SetPawn(m_pPlayerTwoPawn);
+		inputManagers.push_back(inputPlayerTwo);
+	}
 
 	return inputManagers;
 }

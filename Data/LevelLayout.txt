@@ -1,0 +1,7 @@
+Level:
+1 2 3
+GameMode:
+Singleplayer Coop Versus
+Difficulty:
+Nr Enemies:
+Nr BurgerIngredients:

@@ -57,7 +57,7 @@ void Chronos::Initialize()
 {
 	 Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	 m_pGame->SetupObjects(scene);
+	 m_pGame->SetupLevelLayout(scene);
 
 	 InitializeObjects(scene.GetObjects());
 }
