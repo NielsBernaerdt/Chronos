@@ -23,7 +23,7 @@ CPeterPepper::~CPeterPepper()
 void CPeterPepper::Initialize()
 {
 	SetTexture();
-
+	m_pCollision = dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>());
 	m_State = new IdleState{};
 }
 void CPeterPepper::Update(float deltaTime)
@@ -45,14 +45,23 @@ void CPeterPepper::Update(float deltaTime)
 		m_State = state;
 	}
 	//MOVEMENT//
-	if (dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>())->GetOverlappingObjects(CollisionGroup::Ladder).size() == 0)
+	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Ladder).size() == 0)
 	{
 		m_AccMovement.y = 0;
 	}
-	if (dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>())->GetOverlappingObjects(CollisionGroup::Ground).size() == 0)
+	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Ground).size() == 0)
 	{
 		m_AccMovement.x = 0;
 	}
+
+
+	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Ladder).size() < 1
+		&& m_pCollision->GetOverlappingObjects(CollisionGroup::Ground).size() < 1)
+	{
+		m_PawnTransform->SetPosition(m_PrevPosition);
+	}
+
+	m_PrevPosition = m_PawnTransform->GetPosition();
 	m_PawnTransform->SetPosition(m_PawnTransform->GetPosition() + (m_AccMovement * deltaTime));
 	m_AccMovement = { 0,0,0 };
 }

@@ -28,9 +28,11 @@ public:
 
 private:
 	float m_MovSpeed{200};
+	glm::vec3 m_PrevPosition{};
 	glm::vec3 m_AccMovement{};
 
 	CTransform* m_PawnTransform;
+	CCollisionBox* m_pCollision;
 
 	float m_AccTime{};
 	float m_AnimationDuration{ 0.125f };
