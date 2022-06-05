@@ -1,7 +1,5 @@
 #include "ChronosPCH.h"
 #include "CCollisionBox.h"
-
-#include "CTransform.h"
 #include "GameObject.h"
 
 std::vector<CCollisionBox*> CCollisionBox::m_pCollisionBoxes;

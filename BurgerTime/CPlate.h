@@ -1,8 +1,6 @@
 #pragma once
 #include <CBase.h>
 
-class CCollisionBox;
-
 class CPlate : public CBase
 {
 public:

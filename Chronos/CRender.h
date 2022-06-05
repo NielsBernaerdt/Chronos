@@ -1,7 +1,10 @@
 #pragma once
+#pragma warning(push, 0)
+#include <glm/glm.hpp>
+#pragma warning (pop)
 #include "CBase.h"
+#include "memory"
 #include "Rect.h"
-#include "ChronosPCH.h"
 
 class Texture2D;
 

@@ -1,5 +1,7 @@
 #pragma once
-#include "ChronosPCH.h"
+#pragma warning(push, 0)
+#include <glm/glm.hpp>
+#pragma warning (pop)
 #include "CBase.h"
 
 class CTransform final : public CBase

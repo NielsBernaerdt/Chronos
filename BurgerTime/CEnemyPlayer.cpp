@@ -1,15 +1,10 @@
 #include "CEnemyPlayer.h"
-
 #include "CBurgerIngredient.h"
 #include "CCollisionBox.h"
 #include "CollisionGroups.h"
 #include "CRender.h"
-#include "GameObject.h"
-#include "CTransform.h"
-#include "PlayerState.h"
-#include "Rect.h"
 #include "CHealth.h"
-#include "GameState.h"
+#include "GameObject.h"
 
 CEnemyPlayer::CEnemyPlayer(GameObject* gameObject)
 	: CBase(gameObject)

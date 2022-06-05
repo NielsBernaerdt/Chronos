@@ -1,4 +1,5 @@
 #include "GameState.h"
+#include <iostream>
 
 void GameState::Notify(GameObject*, Event event)
 {

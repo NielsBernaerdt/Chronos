@@ -4,7 +4,6 @@
 #pragma warning (pop)
 #include <CBase.h>
 
-class PlayerState;
 class CTransform;
 class CCollisionBox;
 

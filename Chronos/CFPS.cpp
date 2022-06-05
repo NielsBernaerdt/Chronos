@@ -1,5 +1,4 @@
 #include "ChronosPCH.h"
-
 #include "CFPS.h"
 #include "GameObject.h"
 #include "CText.h"

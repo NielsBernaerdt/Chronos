@@ -1,6 +1,5 @@
 #include "ChronosPCH.h"
 #include "CTransform.h"
-
 #include "GameObject.h"
 
 CTransform::CTransform(GameObject* gameObject, int x, int y)
@@ -60,9 +59,6 @@ void CTransform:: UpdateRelativeTransform()
 	for(const auto child : m_OwnerObject->GetChildren())
 	{
 		CTransform* childCTransform = child->GetTransform();
-		// todo why does this not work if (childCTransform->IsDirty())
-		{
-			childCTransform->UpdateRelativeTransform();
-		}
+		childCTransform->UpdateRelativeTransform();
 	}
 }

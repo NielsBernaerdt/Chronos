@@ -1,5 +1,4 @@
 #include "CMrHotDog.h"
-
 #include "CBurgerIngredient.h"
 #include "GameObject.h"
 #include "PlayerState.h"
@@ -7,8 +6,6 @@
 #include "CHealth.h"
 #include "CollisionGroups.h"
 #include "CRender.h"
-#include "CHealth.h"
-#include "GameState.h"
 
 CMrHotDog::CMrHotDog(GameObject* gameObject)
 	: CBase(gameObject)

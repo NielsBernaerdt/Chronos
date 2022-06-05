@@ -1,11 +1,8 @@
 #include "CBurgerIngredient.h"
-#include "GameObject.h"
-
 #include "GameState.h"
 #include "CCollisionBox.h"
 #include "CRender.h"
 #include "CollisionGroups.h"
-#include "CTransform.h"
 
 void CBurgerIngredient::Initialize()
 {

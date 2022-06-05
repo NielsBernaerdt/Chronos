@@ -1,7 +1,7 @@
 #include "CHealth.h"
-#include "../BurgerTime/GameState.h"
-#include "../BurgerTime/CPeterPepper.h"
-#include "../BurgerTime/CMrHotDog.h"
+#include "GameState.h"
+#include "CPeterPepper.h"
+#include "CMrHotDog.h"
 
 void CHealth::SetHealth(int hp)
 {

@@ -1,12 +1,8 @@
 #include "CPeterPepper.h"
-
 #include "CCollisionBox.h"
 #include "CollisionGroups.h"
 #include "CRender.h"
 #include "GameObject.h"
-#include "CTransform.h"
-#include "PlayerState.h"
-#include "Rect.h"
 
 CPeterPepper::CPeterPepper(GameObject* gameObject)
 	: CBase(gameObject)

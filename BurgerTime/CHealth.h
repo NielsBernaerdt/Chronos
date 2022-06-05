@@ -1,6 +1,5 @@
 #pragma once
 #include "CBase.h"
-#include "GameObject.h"
 
 class CHealth : public CBase
 {

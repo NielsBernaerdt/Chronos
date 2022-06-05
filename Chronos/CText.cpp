@@ -1,6 +1,5 @@
 #include "ChronosPCH.h"
 #include "CText.h"
-
 #include "GameObject.h"
 #include <SDL_ttf.h>
 #include "ResourceManager.h"

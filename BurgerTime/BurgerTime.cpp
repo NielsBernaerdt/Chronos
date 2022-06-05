@@ -1,32 +1,22 @@
 #include "BurgerTime.h"
-
-#pragma warning(push, 0)
-#include <glm/glm.hpp>
-#include <SDL.h>
-#pragma warning (pop)
-
 #include "CollisionGroups.h"
 #include "InputManager.h"
 #include "InputCommands.h"
-#include "BCommand.h"
 #include "ResourceManager.h"
-#include "GameObject.h"
 #include "Scene.h"
 //components
-#include "CPoints.h"
 #include "CFPS.h"
 #include "CHealth.h"
 #include "CRender.h"
 #include "CText.h"
-#include "CTransform.h"
-//Observers
-#include "GameState.h"
 #include "CBurgerIngredient.h"
 #include "CCollisionBox.h"
 #include "CEnemyPlayer.h"
 #include "CMrHotDog.h"
 #include "CPeterPepper.h"
 #include "CPlate.h"
+//Observers
+#include "GameState.h"
 
 //OWN SCENES//
 void BurgerTime::SandboxScene(Scene& scene)

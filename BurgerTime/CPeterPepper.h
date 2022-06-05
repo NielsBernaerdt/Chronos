@@ -1,12 +1,8 @@
 #pragma once
 #include <CBase.h>
-#pragma warning(push, 0)
-#include <glm/glm.hpp>
-#pragma warning (pop)
 #include "PlayerState.h"
 
 class CTransform;
-class PlayerState;
 
 class CPeterPepper : public CBase
 {

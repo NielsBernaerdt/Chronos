@@ -25,9 +25,6 @@
     <ClCompile Include="BurgerTime.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="..\Chronos\CHealth.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\Chronos\CPoints.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -55,13 +52,13 @@
     <ClCompile Include="CEnemyPlayer.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="CHealth.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h">
       <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Chronos\CHealth.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\Chronos\CPoints.h">
       <Filter>Components</Filter>
@@ -91,6 +88,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="CEnemyPlayer.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CHealth.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

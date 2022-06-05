@@ -1,12 +1,10 @@
 #pragma once
 #include <CBase.h>
-
 #include <vector>
 
 class CCollisionBox;
 class CRender;
 class CTransform;
-class Texture2D;
 
 enum class Ingredient
 {

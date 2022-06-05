@@ -1,6 +1,4 @@
 #include "PlayerState.h"
-
-#include "CTransform.h"
 #include "GameObject.h"
 #include "CPeterPepper.h"
 #include "CCollisionBox.h"
