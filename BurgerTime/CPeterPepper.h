@@ -43,5 +43,5 @@ private:
 
 	//State
 private:
-	PlayerState* m_State;
+	PlayerState* m_State = nullptr;
 };

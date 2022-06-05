@@ -5,8 +5,10 @@ void GameState::Notify(GameObject*, Event event)
 	switch (event)
 	{
 	case Event::ActorDied:
+		std::cout << "DEAD\n";
 		break;
 	case Event::NPCKilled:
+		std::cout << "+100\n";
 		break;
 	case Event::BurgerCompleted:
 		CheckPlayerVictory();

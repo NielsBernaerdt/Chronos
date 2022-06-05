@@ -5,7 +5,7 @@
 class CHealth : public CBase
 {
 public:
-	CHealth(GameObject* gameObject) : CBase(gameObject) {}
+	CHealth(GameObject* gameObject, int health = 3) : CBase(gameObject), m_Health(health) {}
 	~CHealth() override = default;
 	CHealth(const CHealth& other) = delete;
 	CHealth(CHealth&& other) noexcept = delete;
@@ -14,7 +14,7 @@ public:
 
 	void SetHealth(int hp);
 	int GetHealth() const { return m_Health; }
-
+	void Damage();
 private:
 	int m_Health{};
 };

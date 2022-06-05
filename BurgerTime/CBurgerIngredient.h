@@ -33,6 +33,7 @@ public:
 	void Update(float) override;
 	
 	bool ReachedBottom() { return m_ReachedBottom; }
+	bool IsOnPlate();
 
 private:
 	Ingredient m_Ingredient;
@@ -51,6 +52,5 @@ private:
 	void SetTexture();
 	void ResetPositions();
 	void CheckPlayerCollision();
-	bool IsOnPlate();
 	void CheckForOtherIngredients();
 };
