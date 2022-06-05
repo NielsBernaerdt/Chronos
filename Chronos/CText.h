@@ -1,5 +1,6 @@
 #pragma once
 #include "CBase.h"
+#include "SDL.h"
 
 class Font;
 class CRender;

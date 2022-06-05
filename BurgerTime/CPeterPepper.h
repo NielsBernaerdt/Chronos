@@ -35,6 +35,7 @@ private:
 	int m_SrcLength{ 16 };
 	int m_AnimationIndex{ 0 };
 	int m_AnimSpriteRow{ 0 };
+	int m_WasWalkingUpwards{ -1 };
 	void SetTexture();
 
 	//State

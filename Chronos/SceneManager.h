@@ -9,6 +9,8 @@ public:
 
 	void Update(float deltaTime);
 	void Render();
+
+	Scene* GetScene(int index) { return m_Scenes[index].get(); }
 private:
 	friend class Singleton<SceneManager>;
 	SceneManager() = default;

@@ -29,7 +29,8 @@ void CEnemyPlayer::Update(float deltaTime)
 
 	//ANIMATION//
 	m_AccTime += deltaTime;
-	if (m_AccTime >= m_AnimationDuration)
+	if (m_AccTime >= m_AnimationDuration
+		&& (m_AccMovement.x != 0 || m_AccMovement.y != 0))
 	{
 		m_AccTime = 0.f;
 		m_AnimationIndex = (m_AnimationIndex + 1) % 3;

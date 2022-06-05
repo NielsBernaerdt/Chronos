@@ -9,6 +9,7 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Scene.h"
+#include "SoundEffect.h"
 
 void PrintSDLVersion()
 {
@@ -53,13 +54,19 @@ void Chronos::Initialize()
  * Code constructing the scene world starts here
  */
 
- void Chronos::LoadGame() const
+ bool Chronos::LoadGame() const
 {
 	 Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	 m_pGame->SetupLevelLayout(scene);
+	 bool exitGame = m_pGame->SetupLevelLayout(scene);
+	 if (exitGame)
+	 {
+		 std::cout << "Wrong file layout. Exiting...\n";
+		 return true;
+	 }
 
 	 InitializeObjects(scene.GetObjects());
+	 return false;
 }
 
 void Chronos::Cleanup()
@@ -83,11 +90,12 @@ void Chronos::Run()
 	const auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 
-	LoadGame();
+	bool doContinue = true;
+
+	if (LoadGame()) doContinue = false;
 	auto inputManagers = ConfigureInput();
 
 	{
-		bool doContinue = true;
 		auto lastTime = std::chrono::high_resolution_clock::now();
 		while (doContinue)
 		{
@@ -105,7 +113,6 @@ void Chronos::Run()
 
 			sceneManager.Update(deltaTime);
 			renderer.Render();
-			AudioManager::GetInstance().Update();
 			
 			auto sleepTime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime + std::chrono::milliseconds(m_MsPerFrame) - std::chrono::high_resolution_clock::now());
 			std::this_thread::sleep_for(sleepTime);

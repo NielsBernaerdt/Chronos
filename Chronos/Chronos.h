@@ -14,7 +14,7 @@ public:
 
 	void Initialize();
 	void InitializeObjects(const std::vector<std::shared_ptr<GameObject>>& objects) const;
-	void LoadGame() const;
+	bool LoadGame() const;
 	void Cleanup();
 	void Run();
 
@@ -26,4 +26,6 @@ private:
 	virtual std::vector<InputManager*> ConfigureInput() const {
 		return m_pGame->ConfigureInput();
 	}
+
+	bool m_RestartGame{ false };
 };

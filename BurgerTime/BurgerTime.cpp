@@ -20,17 +20,48 @@
 //Observers
 #include "GameState.h"
 
-void BurgerTime::ReadFromFile()
+bool BurgerTime::ReadFromFile()
 {
 	std::fstream newfile;
-	newfile.open("../Data/LevelLayout.txt", std::ios::in); //open a file to perform read operation using file object
-	if (newfile.is_open()) { //checking whether the file is open
+	newfile.open("../Data/LevelLayout.txt", std::ios::in);
+	if (newfile.is_open()) {
 		std::string tp;
-		while (getline(newfile, tp)) { //read data from file object and put it into string.
-			std::cout << tp << "\n"; //print the data of the string
-		}
-		newfile.close(); //close the file object.
+
+		std::getline(newfile, tp, '\n'); //First line "Level:"
+		std::getline(newfile, tp, '\n'); //Second line "1"
+		m_Map = std::stoi(tp);
+		std::getline(newfile, tp, '\n'); //Third line "GameMode:" 
+		std::getline(newfile, tp, '\n'); //Fourth line "SinglePlayer"
+		m_GameMode = tp;
+		std::getline(newfile, tp, '\n'); //Fifth line "Nr Enemies:"
+		std::getline(newfile, tp, '\n'); //Sixth line "5"
+		m_NrEnemies = std::stoi(tp);
+		std::getline(newfile, tp, '\n'); //Seventh line "Nr BurgerIngredients:"
+		std::getline(newfile, tp, '\n'); //Eight line "8"
+		m_NrBurgerIngredients = std::stoi(tp);
+
+		newfile.close();
 	}
+	if(m_Map < 0 || m_Map >= 3)
+	{
+		return true;
+	}
+	if (m_GameMode != "Singleplayer" && m_GameMode != "SinglePlayer"
+		&& m_GameMode != "Versus"
+		&& m_GameMode != "Coop")
+	{
+		return true;
+	}
+	if (m_NrEnemies < 0 || m_NrEnemies >= 10)
+	{
+		return true;
+	}
+	if(m_NrBurgerIngredients < 2
+		|| m_NrBurgerIngredients >= 21)
+	{
+		return true;
+	}
+	return false;
 }
 
 void BurgerTime::CreateLevel(Scene& scene)
@@ -38,10 +69,12 @@ void BurgerTime::CreateLevel(Scene& scene)
 	//OBSERVERS
 	auto observer = std::make_shared<GameState>();
 
+	std::string mapName{"level"};
+	mapName += std::to_string(m_Map) + ".png";
 	//Background image
 	std::shared_ptr<GameObject> background = std::make_shared<GameObject>(std::string{ "Background" });
 	background->GetTransform()->SetScale(620, 620);
-	auto bgTexture = ResourceManager::GetInstance().LoadTexture("level0.png");
+	auto bgTexture = ResourceManager::GetInstance().LoadTexture(mapName);
 	std::unique_ptr<CRender> bgCRender = std::make_unique<CRender>(background.get(), bgTexture, true);
 	background->AddComponent(std::move(bgCRender));
 	scene.Add(background);
@@ -453,7 +486,7 @@ std::vector<InputManager*> BurgerTime::ConfigureInput()
 	inputPlayerOne->SetPawn(m_pPlayerOnePawn);
 	inputManagers.push_back(inputPlayerOne);
 
-	if (m_GameMode != "SinglePlayer")
+	if (m_GameMode != "Singleplayer")
 	{
 		//INPUT PAWN TWO
 		InputManager* inputPlayerTwo = new InputManager{ 0 };

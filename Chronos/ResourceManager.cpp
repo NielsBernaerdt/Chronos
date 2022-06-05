@@ -56,22 +56,20 @@ std::shared_ptr<Font> ResourceManager::LoadFont(const std::string& file, unsigne
 	return std::make_shared<Font>(m_DataPath + file, size);
 }
 
-WAV ResourceManager::LoadWAV(const std::string& file) const
+SoundEffect* ResourceManager::LoadAudioFile(const std::string& file, int volume)
 {
 	const auto fullPath = m_DataPath + file;
 
-	WAV params;
-	if (SDL_LoadWAV(fullPath.c_str(), &params.spec, &params.buffer, &params.length) == NULL)
+	for(const auto& e : m_SoundEffects)
 	{
-		std::cout << "ERROR AUDIO::UPDATE\n";
+		if(e->GetId() == file)
+		{
+			return e.get();
+		}
 	}
-
-	// set the callback function
-	params.spec.callback = Audio::AudioCallBack;
-	params.spec.userdata = NULL;
-	// set our global static variables
-	Audio::audio_pos = params.buffer; // copy sound buffer
-	Audio::audio_len = params.length; // copy file length
-
-	return params;
+	std::unique_ptr<SoundEffect> sound = std::make_unique<SoundEffect>(fullPath, file);
+	sound->SetVolume(volume);
+	SoundEffect* temp = sound.get();
+	m_SoundEffects.push_back(std::move(sound));
+	return temp;
 }

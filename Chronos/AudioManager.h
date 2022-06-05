@@ -1,7 +1,8 @@
 #pragma once
 #include <future>
 #include "Singleton.h"
-#include "Audio.h"
+
+class SoundEffect;
 
 class AudioManager : public Singleton<AudioManager>
 {
@@ -12,13 +13,11 @@ public:
 
 private:
 	static constexpr int m_MaxPending = 16;
-	PlayMessage m_PendingMessages[m_MaxPending]{};
+	SoundEffect* m_PendingMessages[m_MaxPending]{};
 	int m_Head{};
 	int m_Tail{};
 
-	std::mutex m_Mutex{};
-	std::vector<std::future<void>> m_Threads;
-
-	void OpenAudioDevice(WAV resource) const;
-	void CleanThreads();
+	std::mutex m_AudioMutex{};
+	std::thread m_AudioThread;
+	std::condition_variable m_ConditionThread;
 };

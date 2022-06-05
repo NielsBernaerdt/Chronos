@@ -86,14 +86,14 @@
     <ClInclude Include="BState.h">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
     <ClInclude Include="Rect.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="CCollisionBox.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundEffect.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -145,11 +145,11 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Base</Filter>
     </ClCompile>
-    <ClCompile Include="Audio.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
     <ClCompile Include="CCollisionBox.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundEffect.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

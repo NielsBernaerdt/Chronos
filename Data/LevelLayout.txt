@@ -1,7 +1,8 @@
 Level:
-1 2 3
+2
 GameMode:
-Singleplayer Coop Versus
-Difficulty:
+Coop
 Nr Enemies:
+5
 Nr BurgerIngredients:
+8

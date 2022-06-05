@@ -1,4 +1,7 @@
 #include "CPeterPepper.h"
+
+#include <iostream>
+
 #include "CCollisionBox.h"
 #include "CollisionGroups.h"
 #include "CRender.h"
@@ -77,6 +80,7 @@ void CPeterPepper::ClimbLadder(int moveUp)
  */
 {
 	m_AccMovement.y -= moveUp * m_MovSpeed;
+	m_WasWalkingUpwards = moveUp;
 }
 
 void CPeterPepper::SetTexture()
@@ -91,6 +95,14 @@ void CPeterPepper::SetTexture()
 
 void CPeterPepper::SetAnimSpriteRow(int rowNr)
 {
+
 	m_AnimSpriteRow = rowNr;
+
+	if (rowNr == 1
+		&& m_WasWalkingUpwards == 1)
+	{
+		m_AnimSpriteRow = 2;
+	}
+
 	SetTexture();
 }

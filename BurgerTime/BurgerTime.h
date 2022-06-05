@@ -18,7 +18,7 @@ private:
 	int m_NrEnemies{};
 	int m_NrBurgerIngredients{};
 
-	void ReadFromFile();
+	bool ReadFromFile();
 	void CreateLevel(Scene& scene);
 	void CreateNPCs(Scene& scene, std::shared_ptr<GameState> pObserver);
 	void CreatePlayerPawns(Scene& scene, std::shared_ptr<GameState> pObserver);
@@ -26,9 +26,11 @@ private:
 	void CreateTerrain(Scene& scene);
 
 public:
-	void SetupLevelLayout(Scene& scene) override {
-		ReadFromFile();
+	bool SetupLevelLayout(Scene& scene) override {
+		bool exitGame = ReadFromFile();
+		if (exitGame) return true;
 		CreateLevel(scene);
+		return false;
 	}
 	std::vector<InputManager*> ConfigureInput() override;
 };
