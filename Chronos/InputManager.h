@@ -37,5 +37,6 @@ public:
 	bool ProcessInput() const;
 	void HandleInput() const;
 	void BindCommandToButton(ControllerButton button, std::unique_ptr<BCommand> command) const;
+	void BindCommandToButton(int keyboardButton, std::unique_ptr<BCommand> command) const;
 	void SetPawn(GameObject* pPawn) const;
 };

@@ -439,10 +439,10 @@ std::vector<InputManager*> BurgerTime::ConfigureInput()
 
 	//INPUT PAWN TWO
 	InputManager* inputPlayerTwo = new InputManager{ 0 };
-	inputPlayerTwo->BindCommandToButton(ControllerButton::ButtonB, std::make_unique<MoveRight>());
-	inputPlayerTwo->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<MoveLeft>());
-	inputPlayerTwo->BindCommandToButton(ControllerButton::ButtonY, std::make_unique<ClimbUp>());
-	inputPlayerTwo->BindCommandToButton(ControllerButton::ButtonA, std::make_unique<ClimbDown>());
+	inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_RIGHT, std::make_unique<MoveRight>());
+	inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_LEFT, std::make_unique<MoveLeft>());
+	inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_UP, std::make_unique<ClimbUp>());
+	inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_DOWN, std::make_unique<ClimbDown>());
 
 	inputPlayerTwo->SetPawn(m_pPlayerTwoPawn);
 	inputManagers.push_back(inputPlayerTwo);
