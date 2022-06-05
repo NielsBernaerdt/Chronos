@@ -18,9 +18,9 @@ private:
 	int m_Head{};
 	int m_Tail{};
 
-	std::mutex m_Mutex;
+	std::mutex m_Mutex{};
 	std::vector<std::future<void>> m_Threads;
 
-	void OpenAudioDevice(WAV resource);
+	void OpenAudioDevice(WAV resource) const;
 	void CleanThreads();
 };

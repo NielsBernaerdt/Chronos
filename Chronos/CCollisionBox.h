@@ -16,8 +16,8 @@ public:
 	CCollisionBox& operator=(CCollisionBox&& other) noexcept = delete;
 
 	static std::vector<CCollisionBox*> m_pCollisionBoxes;
-	std::vector<GameObject*> GetOverlappingObjects(CollisionGroup filter);
-	CollisionGroup GetCollisinoGroup() { return m_CollisionGroup; }
+	std::vector<GameObject*> GetOverlappingObjects(CollisionGroup filter) const;
+	CollisionGroup GetCollisionGroup() const { return m_CollisionGroup; }
 
 	void Initialize() override;
 	void Update(float) override;
@@ -27,5 +27,5 @@ private:
 	Rect m_Rect{ 0,0,0,0 };
 	CollisionGroup m_CollisionGroup;
 
-	bool IsRectOverlapping(glm::vec2 topLeft, glm::vec2 bottomRight, glm::vec2 topLeft2, glm::vec2 bottomRight2);
+	bool IsRectOverlapping(glm::vec2 topLeft, glm::vec2 bottomRight, glm::vec2 topLeft2, glm::vec2 bottomRight2) const;
 };

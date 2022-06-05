@@ -18,5 +18,5 @@ public:
 	virtual void Update(float) {}
 
 protected:
-	GameObject* m_OwnerObject;
+	GameObject* m_OwnerObject = nullptr;
 };

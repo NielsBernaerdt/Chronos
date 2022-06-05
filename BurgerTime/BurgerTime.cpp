@@ -353,7 +353,7 @@ void BurgerTime::SandboxScene(Scene& scene)
 
 }
 
-void BurgerTime::ConfigureInput(InputManager* input)
+void BurgerTime::ConfigureInput(InputManager* input) const
 {
 	input->BindCommandToButton(ControllerButton::DPadRight, std::make_unique<MoveRight>());
 	input->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveLeft>());

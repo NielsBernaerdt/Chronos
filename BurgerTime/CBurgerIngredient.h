@@ -1,8 +1,11 @@
 #pragma once
 #include <CBase.h>
-#include <memory>
+
 #include <vector>
 
+class CCollisionBox;
+class CRender;
+class CTransform;
 class Texture2D;
 
 enum class Ingredient
@@ -37,8 +40,13 @@ private:
 	int m_Scale{ 24 };
 	bool m_ReachedBottom{ false };
 
+	CTransform* m_pTransform = nullptr;
+	int m_FallingSpeed = 70;
+
 	std::vector<GameObject*> m_Children;
 	std::vector<bool> m_IsTriggered;
+	std::vector<CRender*> m_pChildRender;
+	std::vector<CCollisionBox*> m_pChildCollision;
 
 	void SetTexture();
 	void ResetPositions();

@@ -18,5 +18,5 @@ public:
 	virtual void Execute() = 0;
 
 protected:
-	GameObject* m_Actor;
+	GameObject* m_Actor = nullptr;
 };

@@ -5,6 +5,7 @@
 #include "CBase.h"
 #include "CTransform.h"
 
+class CRender;
 enum class Event;
 class BObserver;
 class CTransform;
@@ -27,32 +28,32 @@ public:
 	CBase* GetComponent() const;
 	CTransform* GetTransform();
 
-	std::string GetName() { return m_Name; }
+	const std::string& GetName() const { return m_Name; }
 
 private:
 	std::vector<std::unique_ptr<CBase>> m_pComponents;
-	std::string m_Name;
+	std::string m_Name{};
 
 	//scenegraph
 public:
-	GameObject* GetParent();
+	GameObject* GetParent() const;
 	void SetParent(GameObject* parent);
 
-	std::vector<GameObject*> GetChildren() { return m_pChildren; }
+	std::vector<GameObject*> GetChildren() const { return m_pChildren; }
 private:
 	void AddChild(GameObject* child);
-	void RemoveChild(GameObject* child);
 
 	GameObject* m_pParent = nullptr;
 	std::vector<GameObject*> m_pChildren;
 	CTransform* m_pCTransform = nullptr;
+	CRender* m_pRender = nullptr;
 
 	//Observers
 public:
 	void AddObserver(std::shared_ptr<BObserver> observer);
 	void RemoveObserver(std::shared_ptr<BObserver> observer);
 
-	void Notify(GameObject* gameObject, Event event);
+	void Notify(GameObject* gameObject, Event event) const;
 
 private:
 	std::vector<std::shared_ptr<BObserver>> m_pObservers;

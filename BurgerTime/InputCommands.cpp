@@ -1,7 +1,6 @@
 #include "InputCommands.h"
 
 #include "CPeterPepper.h"
-#include "AudioManager.h"
 #include "CTransform.h"
 
 //#define SHOW_DEBUG
@@ -88,5 +87,4 @@ void Fire::Execute()
 #endif
 
 	m_Actor->GetTransform()->SetPosition(100, 0);
-	//AudioManager::GetInstance().PlaySound("../Data/Clock.wav", 1);
 }

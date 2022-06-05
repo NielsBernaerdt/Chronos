@@ -15,5 +15,5 @@ public:
 	Game& operator=(Game&& other) noexcept = delete;
 
 	virtual void SetupObjects(Scene& scene) = 0;
-	virtual void ConfigureInput(InputManager* input) = 0;
+	virtual void ConfigureInput(InputManager* input) const = 0;
 };

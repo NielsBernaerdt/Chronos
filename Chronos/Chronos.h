@@ -13,7 +13,7 @@ public:
 	Chronos(Game* pGame) : m_pGame(pGame) {};
 
 	void Initialize();
-	static void InitializeObjects(const std::vector<std::shared_ptr<GameObject>>& objects);
+	void InitializeObjects(const std::vector<std::shared_ptr<GameObject>>& objects) const;
 	void LoadGame() const;
 	void Cleanup();
 	void Run();
@@ -23,7 +23,7 @@ private:
 	SDL_Window* m_Window{};
 	Game* m_pGame = nullptr;
 
-	virtual void ConfigureInput() {
+	virtual void ConfigureInput() const {
 		m_pGame->ConfigureInput(m_Input);
 	}
 

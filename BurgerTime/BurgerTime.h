@@ -16,5 +16,5 @@ public:
 	void SetupObjects(Scene& scene) override {
 		SandboxScene(scene);
 	}
-	void ConfigureInput(InputManager* input) override;
+	void ConfigureInput(InputManager* input) const override;
 };

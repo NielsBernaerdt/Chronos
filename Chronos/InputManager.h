@@ -34,8 +34,8 @@ public:
 	InputManager& operator=(const InputManager& other) = delete;
 	InputManager& operator=(InputManager&& other) noexcept = delete;
 	//
-	bool ProcessInput();
-	void HandleInput();
-	void BindCommandToButton(ControllerButton button, std::unique_ptr<BCommand> command);
-	void SetPawn(GameObject* pPawn);
+	bool ProcessInput() const;
+	void HandleInput() const;
+	void BindCommandToButton(ControllerButton button, std::unique_ptr<BCommand> command) const;
+	void SetPawn(GameObject* pPawn) const;
 };

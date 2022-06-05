@@ -60,7 +60,7 @@ public:
 	{
 		return (m_ButtonsReleasedThisFrame & button);
 	}
-	void Handle()
+	void Handle() const
 	{
 		for (const auto& e : m_ConsoleCommands)
 		{
@@ -91,19 +91,19 @@ InputManager::~InputManager()
 	delete m_pInputManagerImpl;
 }
 
-bool InputManager::ProcessInput()
+bool InputManager::ProcessInput() const
 {
 	return m_pInputManagerImpl->Process();
 }
-void InputManager::HandleInput()
+void InputManager::HandleInput() const
 {
 	m_pInputManagerImpl->Handle();
 }
-void InputManager::BindCommandToButton(ControllerButton button, std::unique_ptr<BCommand> command)
+void InputManager::BindCommandToButton(ControllerButton button, std::unique_ptr<BCommand> command) const
 {
 	m_pInputManagerImpl->CommandToButton(button, std::move(command));
 }
-void InputManager::SetPawn(GameObject* pPawn)
+void InputManager::SetPawn(GameObject* pPawn) const
 {
 	m_pInputManagerImpl->Pawn(pPawn);
 }

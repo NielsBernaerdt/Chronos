@@ -113,7 +113,7 @@ void Chronos::Run()
 	Cleanup();
 }
 
-void Chronos::InitializeObjects(const std::vector < std::shared_ptr<GameObject>>& objects)
+void Chronos::InitializeObjects(const std::vector < std::shared_ptr<GameObject>>& objects) const
 {
 	for (const auto e : objects)
 	{

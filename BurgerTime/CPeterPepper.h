@@ -31,8 +31,8 @@ private:
 	glm::vec3 m_PrevPosition{};
 	glm::vec3 m_AccMovement{};
 
-	CTransform* m_PawnTransform;
-	CCollisionBox* m_pCollision;
+	CTransform* m_PawnTransform = nullptr;
+	CCollisionBox* m_pCollision = nullptr;
 
 	float m_AccTime{};
 	float m_AnimationDuration{ 0.125f };

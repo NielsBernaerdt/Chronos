@@ -1,12 +1,10 @@
 #include "CBurgerIngredient.h"
 #include "GameObject.h"
-#include <string>
 
 #include "GameState.h"
 #include "CCollisionBox.h"
 #include "CRender.h"
 #include "CollisionGroups.h"
-#include "CPlate.h"
 #include "CTransform.h"
 
 void CBurgerIngredient::Initialize()
@@ -15,8 +13,11 @@ void CBurgerIngredient::Initialize()
 	{
 		m_Children.push_back(e);
 		m_IsTriggered.push_back(false);
+		m_pChildRender.push_back(dynamic_cast<CRender*>(e->GetComponent<CRender>()));
+		m_pChildCollision.push_back(dynamic_cast<CCollisionBox*>(e->GetComponent<CCollisionBox>()));
 	}
 
+	m_pTransform = m_OwnerObject->GetTransform();
 
 	SetTexture();
 }
@@ -32,24 +33,23 @@ void CBurgerIngredient::Update(float deltaTime)
 		CheckForOtherIngredients();
 
 		//FALLING CALCULATIONS
-		auto transform = m_OwnerObject->GetTransform();
-		auto pos = transform->GetPosition();
-		pos.y += 70 * deltaTime;
-		transform->SetPosition(pos);
+		auto pos = m_pTransform->GetPosition();
+		pos.y += m_FallingSpeed * deltaTime;
+		m_pTransform->SetPosition(pos);
 	}
 }
 
 void CBurgerIngredient::SetTexture()
 {
 	int index{};
-	for (auto e : m_Children)
+	for (const auto& e : m_pChildRender)
 	{
 		glm::vec2 bottomLeft{};
 		bottomLeft.x = float(index * m_SideLength);
 		bottomLeft.y = float(int(m_Ingredient) * m_SideLength);
 		Rect src{ (int)bottomLeft.x, (int)bottomLeft.y, m_SideLength, m_SideLength };
 
-		dynamic_cast<CRender*>(e->GetComponent<CRender>())->SetSourceRect(src);
+		e->SetSourceRect(src);
 
 		++index;
 	}
@@ -65,12 +65,12 @@ void CBurgerIngredient::ResetPositions()
 
 	if (shouldReset == true)
 	{
-		auto pos = m_OwnerObject->GetTransform()->GetPosition();
+		auto pos = m_pTransform->GetPosition();
 		pos.y += 1.3f * m_Children[0]->GetTransform()->GetScale().y;
-		m_OwnerObject->GetTransform()->SetPosition(pos);
+		m_pTransform->SetPosition(pos);
 
 		int index{};
-		for (auto child : m_Children)
+		for (const auto& child : m_Children)
 		{
 			child->GetTransform()->SetPosition(index * m_Scale, 0);
 			++index;
@@ -86,48 +86,44 @@ void CBurgerIngredient::ResetPositions()
 
 void CBurgerIngredient::CheckPlayerCollision()
 {
-	int i{};
-	for (auto e : m_Children)
+
+	for(size_t i{}; i < m_Children.size(); ++i)
 	{
-		if (m_IsTriggered[i] == false)
+		if(m_IsTriggered[i] == false)
 		{
-			CCollisionBox* box = dynamic_cast<CCollisionBox*>(e->GetComponent<CCollisionBox>());
-			if (box->GetOverlappingObjects(CollisionGroup::Pawn).size() >= 1)
+			if(m_pChildCollision[i]->GetOverlappingObjects(CollisionGroup::Pawn).size() >= 1)
 			{
 				m_IsTriggered[i] = true;
 
 				glm::vec3 pos{};
-				pos.x += i * e->GetTransform()->GetScale().x;
-				pos.y += 1.3f * e->GetTransform()->GetScale().y ;
+				pos.x += i * m_Children[i]->GetTransform()->GetScale().x;
+				pos.y += 1.3f * m_Children[i]->GetTransform()->GetScale().y;
 
-				e->GetTransform()->SetPosition(pos);
+				m_Children[i]->GetTransform()->SetPosition(pos);
 
 				ResetPositions();
 			}
 		}
-		++i;
 	}
 }
 
 bool CBurgerIngredient::IsOnPlate()
 {
-	for (auto child : m_Children)
+	for(const auto& childCollision : m_pChildCollision)
 	{
-		auto collisionbox = dynamic_cast<CCollisionBox*>(child->GetComponent<CCollisionBox>());
 		//CHECK FOR PLATE
-		if (collisionbox->GetOverlappingObjects(CollisionGroup::Plate).size() >= 1)
+		if (childCollision->GetOverlappingObjects(CollisionGroup::Plate).size() >= 1)
 		{
 			m_ReachedBottom = true;
 			return true;
 		}
 		//CHECK FOR GROUND
-		auto overlappingObjects = collisionbox->GetOverlappingObjects(CollisionGroup::Ground);
-		if (overlappingObjects.size() >= 1)
+		if (childCollision->GetOverlappingObjects(CollisionGroup::Ground).size() >= 1)
 		{
 			return true;
 		}
 		//CHECK FOR OTHER BURGERS (ALREADY ON PLATE)
-		auto otherBurgers = collisionbox->GetOverlappingObjects(CollisionGroup::Burger);
+		const auto &otherBurgers = childCollision->GetOverlappingObjects(CollisionGroup::Burger);
 		if (otherBurgers.size() >= 1)
 		{
 			if (dynamic_cast<CBurgerIngredient*>(otherBurgers[0]->GetParent()->GetComponent<CBurgerIngredient>())->ReachedBottom())
@@ -137,7 +133,6 @@ bool CBurgerIngredient::IsOnPlate()
 				{
 					m_OwnerObject->Notify(m_OwnerObject, Event::BurgerCompleted);
 
-					//
 					m_ReachedBottom = true;
 					return true;
 				}
@@ -151,12 +146,11 @@ void CBurgerIngredient::CheckForOtherIngredients()
 {
 	if (m_Children.size() == 0)
 		return;
+	
+	const auto& vector = m_pChildCollision[0]->GetOverlappingObjects(CollisionGroup::Burger);
 
-	auto collisionboxChild = dynamic_cast<CCollisionBox*>(m_Children[0]->GetComponent<CCollisionBox>());
-	auto vector = collisionboxChild->GetOverlappingObjects(CollisionGroup::Burger);
 
-
-	for(auto overlap : vector)
+	for(const auto& overlap : vector)
 	{
 		if (overlap->GetParent() != m_OwnerObject)
 		{

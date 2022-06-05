@@ -18,7 +18,7 @@ void AudioManager::PlaySound(std::string id, int volume)
 {
 	m_Mutex.lock();
 
-	//either aggregate here, check for optimization -> maybe in update? since that's on a seperate thread
+	//Aggregation here
 	for (size_t i = m_Head; i != m_Tail; i = (i + 1) % m_MaxPending)
 	{
 		if (m_PendingMessages[i].id == id)
@@ -57,7 +57,7 @@ void AudioManager::Update() //todo call this from dedicated audio thread
 	CleanThreads();
 }
 
-void AudioManager::OpenAudioDevice(WAV resource)
+void AudioManager::OpenAudioDevice(WAV resource) const
 {
 	if (SDL_OpenAudio(&resource.spec, NULL) < 0) {
 		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());

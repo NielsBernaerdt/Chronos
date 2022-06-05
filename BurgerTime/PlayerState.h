@@ -1,5 +1,5 @@
 #pragma once
-//#include "BState.h"
+#include "BState.h"
 
 #pragma warning(push, 0)
 #include <glm/glm.hpp>
@@ -9,7 +9,7 @@ class CCollisionBox;
 class CPeterPepper;
 class GameObject;
 
-class PlayerState
+class PlayerState : BState
 {
 public:
 	PlayerState() = default;
@@ -20,9 +20,6 @@ public:
 	PlayerState& operator=(PlayerState&& other) noexcept = delete;
 
 	virtual PlayerState* Update(GameObject*, CPeterPepper*) { return nullptr; }
-
-	//virtual void OnEnter(GameObject* pPawn) {}
-	//virtual void OnExit() {}
 };
 
 class IdleState : public PlayerState
@@ -36,8 +33,6 @@ public:
 	IdleState& operator=(IdleState&& other) noexcept = delete;
 
 	PlayerState* Update(GameObject* pPawn, CPeterPepper* pPeter) override;
-
-	//void OnEnter(GameObject* pPawn) override;
 private:
 	glm::vec3 m_PrevPos{};
 	bool m_DoOnce = true;
@@ -55,14 +50,11 @@ public:
 
 	PlayerState* Update(GameObject* pPawn, CPeterPepper* pPeter) override;
 
-	//void OnEnter() override {}
-	//void OnExit() override {}
-
 private:
 	glm::vec3 m_PrevPos{};
 	bool m_DoOnce = true;
 
-	CCollisionBox* m_pCollision;
+	CCollisionBox* m_pCollision = nullptr;
 };
 
 class ClimbingState : public PlayerState
@@ -80,5 +72,5 @@ public:
 private:
 	bool m_DoOnce = true;
 
-	CCollisionBox* m_pCollision;
+	CCollisionBox* m_pCollision = nullptr;
 };
