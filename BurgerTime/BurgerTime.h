@@ -10,11 +10,12 @@ class BurgerTime : public Game
 private:
 	void SandboxScene(Scene& scene);
 
-	GameObject* m_pPlayerPawn = nullptr;
+	GameObject* m_pPlayerOnePawn = nullptr;
+	GameObject* m_pPlayerTwoPawn = nullptr;
 
 public:
 	void SetupObjects(Scene& scene) override {
 		SandboxScene(scene);
 	}
-	void ConfigureInput(InputManager* input) const override;
+	std::vector<InputManager*> ConfigureInput() override;
 };

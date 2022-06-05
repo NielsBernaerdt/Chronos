@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 class Scene;
 class InputManager;
@@ -15,5 +16,5 @@ public:
 	Game& operator=(Game&& other) noexcept = delete;
 
 	virtual void SetupObjects(Scene& scene) = 0;
-	virtual void ConfigureInput(InputManager* input) const = 0;
+	virtual std::vector<InputManager*> ConfigureInput() = 0;
 };

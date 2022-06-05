@@ -16,15 +16,12 @@ CMrHotDog::CMrHotDog(GameObject* gameObject)
 }
 CMrHotDog::~CMrHotDog()
 {
-	delete m_State;
-	m_State = nullptr;
 }
 
 void CMrHotDog::Initialize()
 {
 	SetTexture();
 	m_pCollision = dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>());
-	m_State = new IdleState{};
 }
 void CMrHotDog::Update(float deltaTime)
 {

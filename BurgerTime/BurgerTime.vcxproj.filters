@@ -52,6 +52,9 @@
     <ClCompile Include="CMrHotDog.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="CEnemyPlayer.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h">
@@ -85,6 +88,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="CMrHotDog.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyPlayer.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

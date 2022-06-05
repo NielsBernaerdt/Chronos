@@ -1,6 +1,7 @@
 #pragma once
 #include "BCommand.h"
 
+class CEnemyPlayer;
 class CPeterPepper;
 
 //----------------------------------MOVERIGHT----------------------------------
@@ -13,7 +14,9 @@ public:
 	void Execute() override;
 
 private:
+	bool usePepper = true;
 	CPeterPepper* CPepper = nullptr;
+	CEnemyPlayer* CHotDog = nullptr;
 };
 //----------------------------------MOVELEFT----------------------------------
 class MoveLeft : public BCommand
@@ -25,7 +28,9 @@ public:
 	void Execute() override;
 
 private:
+	bool usePepper = true;
 	CPeterPepper* CPepper = nullptr;
+	CEnemyPlayer* CHotDog = nullptr;
 };
 //----------------------------------CLIMBUP----------------------------------
 class ClimbUp : public BCommand
@@ -37,7 +42,9 @@ public:
 	void Execute() override;
 
 private:
+	bool usePepper = true;
 	CPeterPepper* CPepper = nullptr;
+	CEnemyPlayer* CHotDog = nullptr;
 };
 //----------------------------------CLIMBDOWN----------------------------------
 class ClimbDown : public BCommand
@@ -49,7 +56,9 @@ public:
 	void Execute() override;
 
 private:
+	bool usePepper = true;
 	CPeterPepper* CPepper = nullptr;
+	CEnemyPlayer* CHotDog = nullptr;
 };
 //----------------------------------FIRE----------------------------------
 class Fire : public BCommand

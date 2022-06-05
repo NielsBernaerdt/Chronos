@@ -23,6 +23,7 @@
 #include "GameState.h"
 #include "CBurgerIngredient.h"
 #include "CCollisionBox.h"
+#include "CEnemyPlayer.h"
 #include "CMrHotDog.h"
 #include "CPeterPepper.h"
 #include "CPlate.h"
@@ -372,7 +373,7 @@ void BurgerTime::SandboxScene(Scene& scene)
 
 #pragma endregion MrHotDog
 	
-	//PAWN
+	//PAWN ONE
 	const auto peterPepper = std::make_shared<GameObject>(std::string{ "Peter" });
 	peterPepper->GetTransform()->SetPosition(200, 200);
 	peterPepper->GetTransform()->SetScale(44, 44);
@@ -387,17 +388,64 @@ void BurgerTime::SandboxScene(Scene& scene)
 	peterPepper->AddComponent(std::move(peterCHealth));
 	peterPepper->AddObserver(observer);
 	scene.Add(peterPepper);
-	
-	m_pPlayerPawn = peterPepper.get();
+	m_pPlayerOnePawn = peterPepper.get();
+	//PAWN TWO (COOP)
+	//const auto peterPepper2 = std::make_shared<GameObject>(std::string{ "Peter" });
+	//peterPepper2->GetTransform()->SetPosition(400, 400);
+	//peterPepper2->GetTransform()->SetScale(44, 44);
+	//std::unique_ptr<CCollisionBox> peterCollision2 = std::make_unique<CCollisionBox>(peterPepper2.get(), CollisionGroup::Pawn);
+	//peterPepper2->AddComponent(std::move(peterCollision2));
+	//const auto peterTexture2 = ResourceManager::GetInstance().LoadTexture("PeterSprites.png");
+	//std::unique_ptr<CRender> peterCRender2 = std::make_unique<CRender>(peterPepper2.get(), peterTexture2, true);
+	//peterPepper2->AddComponent(std::move(peterCRender2));
+	//std::unique_ptr<CPeterPepper> peterCPeterPepper2 = std::make_unique<CPeterPepper>(peterPepper2.get());
+	//peterPepper2->AddComponent(std::move(peterCPeterPepper2));
+	//std::unique_ptr<CHealth> peterCHealth2 = std::make_unique<CHealth>(peterPepper2.get(), 3);
+	//peterPepper2->AddComponent(std::move(peterCHealth2));
+	//peterPepper2->AddObserver(observer);
+	//scene.Add(peterPepper2);
+	//m_pPlayerTwoPawn = peterPepper2.get();
+	//PAWN TWO (VERSUS)
+	const auto peterPepper2 = std::make_shared<GameObject>(std::string{ "Peter" });
+	peterPepper2->GetTransform()->SetPosition(400, 400);
+	peterPepper2->GetTransform()->SetScale(44, 44);
+	std::unique_ptr<CCollisionBox> peterCollision2 = std::make_unique<CCollisionBox>(peterPepper2.get(), CollisionGroup::Pawn);
+	peterPepper2->AddComponent(std::move(peterCollision2));
+	std::unique_ptr<CRender> peterCRender2 = std::make_unique<CRender>(peterPepper2.get(), hotDogTexture, true);
+	peterPepper2->AddComponent(std::move(peterCRender2));
+	std::unique_ptr<CEnemyPlayer> peterCPeterPepper2 = std::make_unique<CEnemyPlayer>(peterPepper2.get());
+	peterPepper2->AddComponent(std::move(peterCPeterPepper2));
+	std::unique_ptr<CHealth> peterCHealth2 = std::make_unique<CHealth>(peterPepper2.get(), 3);
+	peterPepper2->AddComponent(std::move(peterCHealth2));
+	peterPepper2->AddObserver(observer);
+	scene.Add(peterPepper2);
+	m_pPlayerTwoPawn = peterPepper2.get();
 
 }
 
-void BurgerTime::ConfigureInput(InputManager* input) const
+std::vector<InputManager*> BurgerTime::ConfigureInput()
 {
-	input->BindCommandToButton(ControllerButton::DPadRight, std::make_unique<MoveRight>());
-	input->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveLeft>());
-	input->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<ClimbUp>());
-	input->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<ClimbDown>());
+	std::vector<InputManager*> inputManagers;
 
-	input->SetPawn(m_pPlayerPawn);
+	//INPUT PAWN ONE
+	InputManager* inputPlayerOne = new InputManager{ 0 };
+	inputPlayerOne->BindCommandToButton(ControllerButton::DPadRight, std::make_unique<MoveRight>());
+	inputPlayerOne->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveLeft>());
+	inputPlayerOne->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<ClimbUp>());
+	inputPlayerOne->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<ClimbDown>());
+
+	inputPlayerOne->SetPawn(m_pPlayerOnePawn);
+	inputManagers.push_back(inputPlayerOne);
+
+	//INPUT PAWN TWO
+	InputManager* inputPlayerTwo = new InputManager{ 0 };
+	inputPlayerTwo->BindCommandToButton(ControllerButton::ButtonB, std::make_unique<MoveRight>());
+	inputPlayerTwo->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<MoveLeft>());
+	inputPlayerTwo->BindCommandToButton(ControllerButton::ButtonY, std::make_unique<ClimbUp>());
+	inputPlayerTwo->BindCommandToButton(ControllerButton::ButtonA, std::make_unique<ClimbDown>());
+
+	inputPlayerTwo->SetPawn(m_pPlayerTwoPawn);
+	inputManagers.push_back(inputPlayerTwo);
+
+	return inputManagers;
 }

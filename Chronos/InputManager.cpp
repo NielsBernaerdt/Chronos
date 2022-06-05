@@ -11,8 +11,9 @@
 class InputManager::InputManagerImpl
 {
 private:
-	XINPUT_STATE m_CurrentState{};
-	XINPUT_STATE m_PreviousState{};
+	//GAMEPAD
+	XINPUT_STATE m_CurrentGamepadState{};
+	XINPUT_STATE m_PreviousGamepadState{};
 
 	WORD m_ButtonsPressedThisFrame{};
 	WORD m_ButtonsReleasedThisFrame{};
@@ -22,13 +23,17 @@ private:
 
 	using ControllerCommandsMap = std::map<ControllerButton, std::unique_ptr<BCommand>>;
 	ControllerCommandsMap m_ConsoleCommands{};
+	//KEYBOARD
+
+	const Uint8* m_CurrentKeyboardState;
+	const Uint8* m_PreviousKeyboardState;
 
 public:
 	explicit InputManagerImpl(int controllerIndex = 0)
 		:m_ControllerIndex{ controllerIndex }
 	{
-		ZeroMemory(&m_PreviousState, sizeof(XINPUT_STATE));
-		ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
+		ZeroMemory(&m_PreviousGamepadState, sizeof(XINPUT_STATE));
+		ZeroMemory(&m_CurrentGamepadState, sizeof(XINPUT_STATE));
 	}
 	~InputManagerImpl() = default;
 	InputManagerImpl(const InputManagerImpl& other) = delete;
@@ -38,15 +43,19 @@ public:
 
 	bool Process()
 	{
-		CopyMemory(&m_PreviousState, &m_CurrentState, sizeof(XINPUT_STATE));
-		ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
-		XInputGetState(m_ControllerIndex, &m_CurrentState);
+		//KEYBOARD
+		m_CurrentKeyboardState = SDL_GetKeyboardState(NULL);
 
-		auto buttonChanges = m_CurrentState.Gamepad.wButtons ^ m_PreviousState.Gamepad.wButtons;
-		m_ButtonsPressedThisFrame = buttonChanges & m_CurrentState.Gamepad.wButtons;
-		m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentState.Gamepad.wButtons);
+		//GAMEPAD
+		CopyMemory(&m_PreviousGamepadState, &m_CurrentGamepadState, sizeof(XINPUT_STATE));
+		ZeroMemory(&m_CurrentGamepadState, sizeof(XINPUT_STATE));
+		XInputGetState(m_ControllerIndex, &m_CurrentGamepadState);
 
-		return !(m_CurrentState.Gamepad.wButtons & XINPUT_GAMEPAD_START);
+		auto buttonChanges = m_CurrentGamepadState.Gamepad.wButtons ^ m_PreviousGamepadState.Gamepad.wButtons;
+		m_ButtonsPressedThisFrame = buttonChanges & m_CurrentGamepadState.Gamepad.wButtons;
+		m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentGamepadState.Gamepad.wButtons);
+
+		return !(m_CurrentGamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_START);
 	}
 	bool Pressed(unsigned int button) const
 	{
@@ -54,7 +63,7 @@ public:
 	}
 	bool Down(unsigned int button) const
 	{
-		return (m_CurrentState.Gamepad.wButtons & button);
+		return (m_CurrentGamepadState.Gamepad.wButtons & button);
 	}
 	bool Released(unsigned int button) const
 	{

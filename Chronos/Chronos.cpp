@@ -69,8 +69,7 @@ void Chronos::Cleanup()
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
 	SDL_Quit();
-	delete m_Input;
-	m_Input = nullptr;
+
 	delete m_pGame;
 	m_pGame = nullptr;
 }
@@ -84,10 +83,9 @@ void Chronos::Run()
 
 	const auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
-	m_Input = new InputManager(0);
-	
+
 	LoadGame();
-	ConfigureInput();
+	auto inputManagers = ConfigureInput();
 
 	{
 		bool doContinue = true;
@@ -98,9 +96,14 @@ void Chronos::Run()
 			const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 			lastTime = currentTime;
 
-			doContinue = m_Input->ProcessInput();
+			for(const auto& input : inputManagers)
+			{
+				if (input->ProcessInput() == false)
+					doContinue = false;
 
-			m_Input->HandleInput();
+				input->HandleInput();
+			}
+
 			sceneManager.Update(deltaTime);
 			renderer.Render();
 			AudioManager::GetInstance().Update();
@@ -111,6 +114,12 @@ void Chronos::Run()
 	}
 
 	Cleanup();
+
+	for(auto inputManager : inputManagers)
+	{
+		delete inputManager;
+		inputManager = nullptr;
+	}
 }
 
 void Chronos::InitializeObjects(const std::vector < std::shared_ptr<GameObject>>& objects) const
