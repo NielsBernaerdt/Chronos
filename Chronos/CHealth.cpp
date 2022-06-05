@@ -1,5 +1,5 @@
 #include "CHealth.h"
-#include "../BurgerTime/Achievements.h"
+#include "../BurgerTime/GameState.h"
 
 void CHealth::SetHealth(int hp)
 {

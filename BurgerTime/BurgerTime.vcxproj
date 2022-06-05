@@ -161,7 +161,7 @@
   <ItemGroup>
     <ClCompile Include="..\Chronos\CHealth.cpp" />
     <ClCompile Include="..\Chronos\CPoints.cpp" />
-    <ClCompile Include="Achievements.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="CBurgerIngredient.cpp" />
     <ClCompile Include="CPeterPepper.cpp" />
@@ -173,7 +173,7 @@
   <ItemGroup>
     <ClInclude Include="..\Chronos\CHealth.h" />
     <ClInclude Include="..\Chronos\CPoints.h" />
-    <ClInclude Include="Achievements.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="BurgerTime.h" />
     <ClInclude Include="CBurgerIngredient.h" />
     <ClInclude Include="CollisionGroups.h" />

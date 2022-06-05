@@ -20,7 +20,7 @@
 #include "CText.h"
 #include "CTransform.h"
 //Observers
-#include "Achievements.h"
+#include "GameState.h"
 #include "CBurgerIngredient.h"
 #include "CCollisionBox.h"
 #include "CPeterPepper.h"
@@ -29,6 +29,9 @@
 //OWN SCENES//
 void BurgerTime::SandboxScene(Scene& scene)
 {
+	//OBSERVERS
+	auto observer = std::make_shared<GameState>();
+	//
 	//Background image
 	std::shared_ptr<GameObject> background = std::make_shared<GameObject>(std::string{ "Background" });
 	background->GetTransform()->SetScale(620, 620);
@@ -254,8 +257,8 @@ void BurgerTime::SandboxScene(Scene& scene)
 	int scale{ 24 };
 	//TRYOUT PATTY
 	const auto pat1 = std::make_shared<GameObject>(std::string{ "second supree patty" });
-	pat1->GetTransform()->SetPosition(50, 130);
-	std::unique_ptr<CBurgerIngredient> pattyIngredientComp1 = std::make_unique<CBurgerIngredient>(pat1.get(), Ingredient::BunTop);
+	pat1->GetTransform()->SetPosition(40, 130);
+	std::unique_ptr<CBurgerIngredient> pattyIngredientComp1 = std::make_unique<CBurgerIngredient>(pat1.get(), Ingredient::BunBottom);
 	pat1->AddComponent(std::move(pattyIngredientComp1));
 	for (size_t i{}; i < nrBurgerParts; ++i)
 	{
@@ -272,7 +275,7 @@ void BurgerTime::SandboxScene(Scene& scene)
 	scene.Add(pat1);
 
 	const auto pat2 = std::make_shared<GameObject>(std::string{ "second supree patty" });
-	pat2->GetTransform()->SetPosition(50, 50);
+	pat2->GetTransform()->SetPosition(40, 50);
 	std::unique_ptr<CBurgerIngredient> pattyIngredientComp2 = std::make_unique<CBurgerIngredient>(pat2.get(), Ingredient::BunTop);
 	pat2->AddComponent(std::move(pattyIngredientComp2));
 	for (size_t i{}; i < nrBurgerParts; ++i)
@@ -287,6 +290,7 @@ void BurgerTime::SandboxScene(Scene& scene)
 		child->SetParent(pat2.get());
 		scene.Add(child);
 	}
+	pat2->AddObserver(observer);
 	scene.Add(pat2);
 
 #pragma endregion BurgerIngredients
@@ -297,7 +301,7 @@ void BurgerTime::SandboxScene(Scene& scene)
 	const auto plateTexture = ResourceManager::GetInstance().LoadEmptyTexture();
 	//
 	const auto plate = std::make_shared<GameObject>(std::string{ "plate" });
-	plate->GetTransform()->SetPosition(35, 439);
+	plate->GetTransform()->SetPosition(35, 539);
 	plate->GetTransform()->SetScale(160, 5);
 	std::unique_ptr<CRender> plateCRender = std::make_unique<CRender>(plate.get(), plateTexture);
 	plate->AddComponent(std::move(plateCRender));
@@ -307,28 +311,28 @@ void BurgerTime::SandboxScene(Scene& scene)
 	plate->AddComponent(std::move(plateCPlate));
 	scene.Add(plate);
 
-	//1//
-	const auto plate1 = std::make_shared<GameObject>(std::string{ "plate" });
-	plate1->GetTransform()->SetPosition(35, 162);
-	plate1->GetTransform()->SetScale(160, 5);
-	std::unique_ptr<CRender> plateCRender1 = std::make_unique<CRender>(plate1.get(), plateTexture);
-	plate1->AddComponent(std::move(plateCRender1));
-	std::unique_ptr<CCollisionBox> plateCCollision1 = std::make_unique<CCollisionBox>(plate1.get(), CollisionGroup::Plate);
-	plate1->AddComponent(std::move(plateCCollision1));
-	std::unique_ptr<CPlate> plateCPlate1 = std::make_unique<CPlate>(plate1.get(), true);
-	plate1->AddComponent(std::move(plateCPlate1));
-	scene.Add(plate1);
-	//2//
-	const auto plate2 = std::make_shared<GameObject>(std::string{ "plate" });
-	plate2->GetTransform()->SetPosition(35, 100);
-	plate2->GetTransform()->SetScale(160, 5);
-	std::unique_ptr<CRender> plateCRender2 = std::make_unique<CRender>(plate2.get(), plateTexture);
-	plate2->AddComponent(std::move(plateCRender2));
-	std::unique_ptr<CCollisionBox> plateCCollision2 = std::make_unique<CCollisionBox>(plate2.get(), CollisionGroup::Plate);
-	plate2->AddComponent(std::move(plateCCollision2));
-	std::unique_ptr<CPlate> plateCPlate2 = std::make_unique<CPlate>(plate2.get(), true);
-	plate2->AddComponent(std::move(plateCPlate2));
-	scene.Add(plate2);
+	////1//
+	//const auto plate1 = std::make_shared<GameObject>(std::string{ "plate" });
+	//plate1->GetTransform()->SetPosition(35, 162);
+	//plate1->GetTransform()->SetScale(160, 5);
+	//std::unique_ptr<CRender> plateCRender1 = std::make_unique<CRender>(plate1.get(), plateTexture);
+	//plate1->AddComponent(std::move(plateCRender1));
+	//std::unique_ptr<CCollisionBox> plateCCollision1 = std::make_unique<CCollisionBox>(plate1.get(), CollisionGroup::Plate);
+	//plate1->AddComponent(std::move(plateCCollision1));
+	//std::unique_ptr<CPlate> plateCPlate1 = std::make_unique<CPlate>(plate1.get(), true);
+	//plate1->AddComponent(std::move(plateCPlate1));
+	//scene.Add(plate1);
+	////2//
+	//const auto plate2 = std::make_shared<GameObject>(std::string{ "plate" });
+	//plate2->GetTransform()->SetPosition(35, 100);
+	//plate2->GetTransform()->SetScale(160, 5);
+	//std::unique_ptr<CRender> plateCRender2 = std::make_unique<CRender>(plate2.get(), plateTexture);
+	//plate2->AddComponent(std::move(plateCRender2));
+	//std::unique_ptr<CCollisionBox> plateCCollision2 = std::make_unique<CCollisionBox>(plate2.get(), CollisionGroup::Plate);
+	//plate2->AddComponent(std::move(plateCCollision2));
+	//std::unique_ptr<CPlate> plateCPlate2 = std::make_unique<CPlate>(plate2.get(), true);
+	//plate2->AddComponent(std::move(plateCPlate2));
+	//scene.Add(plate2);
 
 #pragma endregion Plates
 	

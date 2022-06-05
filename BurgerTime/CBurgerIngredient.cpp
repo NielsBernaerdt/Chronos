@@ -1,6 +1,8 @@
 #include "CBurgerIngredient.h"
 #include "GameObject.h"
 #include <string>
+
+#include "GameState.h"
 #include "CCollisionBox.h"
 #include "CRender.h"
 #include "CollisionGroups.h"
@@ -64,7 +66,7 @@ void CBurgerIngredient::ResetPositions()
 	if (shouldReset == true)
 	{
 		auto pos = m_OwnerObject->GetTransform()->GetPosition();
-		pos.y += 1.2f * m_Children[0]->GetTransform()->GetScale().y;
+		pos.y += 1.3f * m_Children[0]->GetTransform()->GetScale().y;
 		m_OwnerObject->GetTransform()->SetPosition(pos);
 
 		int index{};
@@ -96,7 +98,7 @@ void CBurgerIngredient::CheckPlayerCollision()
 
 				glm::vec3 pos{};
 				pos.x += i * e->GetTransform()->GetScale().x;
-				pos.y += 1.2f * e->GetTransform()->GetScale().y ;
+				pos.y += 1.3f * e->GetTransform()->GetScale().y ;
 
 				e->GetTransform()->SetPosition(pos);
 
@@ -109,17 +111,37 @@ void CBurgerIngredient::CheckPlayerCollision()
 
 bool CBurgerIngredient::IsOnPlate()
 {
-	for(auto child : m_Children)
+	for (auto child : m_Children)
 	{
 		auto collisionbox = dynamic_cast<CCollisionBox*>(child->GetComponent<CCollisionBox>());
-		auto overlappingObjects = collisionbox->GetOverlappingObjects(CollisionGroup::Plate);
-		if(overlappingObjects.size() >= 1)
+		//CHECK FOR PLATE
+		if (collisionbox->GetOverlappingObjects(CollisionGroup::Plate).size() >= 1)
 		{
-			if (dynamic_cast<CPlate*>(overlappingObjects[0]->GetComponent<CPlate>())->IsFinalPlate() == true)
-			{
-				m_ReachedBottom = true;
-			}
+			m_ReachedBottom = true;
 			return true;
+		}
+		//CHECK FOR GROUND
+		auto overlappingObjects = collisionbox->GetOverlappingObjects(CollisionGroup::Ground);
+		if (overlappingObjects.size() >= 1)
+		{
+			return true;
+		}
+		//CHECK FOR OTHER BURGERS (ALREADY ON PLATE)
+		auto otherBurgers = collisionbox->GetOverlappingObjects(CollisionGroup::Burger);
+		if (otherBurgers.size() >= 1)
+		{
+			if (dynamic_cast<CBurgerIngredient*>(otherBurgers[0]->GetParent()->GetComponent<CBurgerIngredient>())->ReachedBottom())
+			{
+				//NOTIFY OBSERVER
+				if (m_Ingredient == Ingredient::BunTop)
+				{
+					m_OwnerObject->Notify(m_OwnerObject, Event::BurgerCompleted);
+
+					//
+					m_ReachedBottom = true;
+					return true;
+				}
+			}
 		}
 	}
 	return false;
@@ -139,7 +161,7 @@ void CBurgerIngredient::CheckForOtherIngredients()
 		if (overlap->GetParent() != m_OwnerObject)
 		{
 			auto pos = overlap->GetParent()->GetTransform()->GetPosition();
-			pos.y += 1.2f * m_Scale;
+			pos.y += 1.3f * m_Scale;
 			overlap->GetParent()->GetTransform()->SetPosition(pos);
 			return;
 		}

@@ -108,11 +108,11 @@ void GameObject::RemoveChild(GameObject* child)
 #pragma endregion Scenegraph
 
 #pragma region Observers
-void GameObject::AddObserver(BObserver* observer)
+void GameObject::AddObserver(std::shared_ptr<BObserver> observer)
 {
 	m_pObservers.push_back(observer);
 }
-void GameObject::RemoveObserver(BObserver* observer)
+void GameObject::RemoveObserver(std::shared_ptr<BObserver> observer)
 {
 	const auto it = std::ranges::find(m_pObservers, observer);
 

@@ -37,7 +37,7 @@
     <ClCompile Include="PlayerState.cpp">
       <Filter>State</Filter>
     </ClCompile>
-    <ClCompile Include="Achievements.cpp">
+    <ClCompile Include="GameState.cpp">
       <Filter>Observers</Filter>
     </ClCompile>
     <ClCompile Include="CPeterPepper.cpp">
@@ -66,7 +66,7 @@
     <ClInclude Include="PlayerState.h">
       <Filter>State</Filter>
     </ClInclude>
-    <ClInclude Include="Achievements.h">
+    <ClInclude Include="GameState.h">
       <Filter>Observers</Filter>
     </ClInclude>
     <ClInclude Include="CPeterPepper.h">

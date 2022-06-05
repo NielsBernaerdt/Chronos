@@ -49,13 +49,13 @@ private:
 
 	//Observers
 public:
-	void AddObserver(BObserver* observer);
-	void RemoveObserver(BObserver* observer);
+	void AddObserver(std::shared_ptr<BObserver> observer);
+	void RemoveObserver(std::shared_ptr<BObserver> observer);
 
 	void Notify(GameObject* gameObject, Event event);
 
 private:
-	std::vector<BObserver*> m_pObservers;
+	std::vector<std::shared_ptr<BObserver>> m_pObservers;
 };
 
 template <typename T>
