@@ -137,7 +137,7 @@ void BurgerTime::DetermineObjectsLocations()
 void BurgerTime::CreateLevel(Scene& scene)
 {
 	//OBSERVERS
-	auto observer = std::make_shared<GameState>();
+	auto observer = std::make_shared<GameState>(nullptr);
 
 	std::string mapName{"level"};
 	mapName += std::to_string(m_Map) + ".png";
@@ -196,6 +196,7 @@ void BurgerTime::CreatePlayerPawns(Scene& scene, std::shared_ptr<GameState> pObs
 	peterPepper->AddObserver(pObserver);
 	scene.Add(peterPepper);
 	m_pPlayerOnePawn = peterPepper.get();
+	pObserver->SetPawn(peterPepper.get());
 	//HUD PAWN ONE
 	const auto playerHud = std::make_shared<GameObject>(std::string{ "playerHud" });
 	playerHud->GetTransform()->SetPosition(200, 0);

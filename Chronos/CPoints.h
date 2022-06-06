@@ -13,7 +13,7 @@ public:
 
 	void SetPoints(int points) { m_Points = points; }
 	int GetPoints() const { return m_Points; }
-
+	void GivePoints(int value) { m_Points += value; }
 private:
 	int m_Points{};
 };

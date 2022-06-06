@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "AudioManager.h"
+#include "CPoints.h"
 
 void GameState::Notify(GameObject*, Event event)
 {
@@ -16,7 +17,7 @@ void GameState::Notify(GameObject*, Event event)
 		break;
 	case Event::NPCKilled:
 		AudioManager::GetInstance().PlaySound("KillEnemy.wav", 25);
-		std::cout << "+100\n";
+		dynamic_cast<CPoints*>(m_pPawn->GetComponent<CPoints>())->GivePoints(1000);
 		break;
 	case Event::BurgerCompleted:
 		CheckPlayerVictory();
