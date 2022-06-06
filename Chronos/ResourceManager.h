@@ -13,7 +13,7 @@ public:
 	std::shared_ptr<Texture2D> LoadEmptyTexture() const;
 	std::shared_ptr<Texture2D> LoadTexture(const std::string& file) const;        
 	std::shared_ptr<Font> LoadFont(const std::string& file, unsigned int size) const;
-	SoundEffect* LoadAudioFile(const std::string& file, int volume);
+	SoundEffect* LoadAudioFile(const std::string& file, int volume, int loops = 0);
 private:
 	friend class Singleton<ResourceManager>;
 	ResourceManager() = default;

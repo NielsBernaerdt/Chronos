@@ -1,4 +1,7 @@
 #include "CEnemyPlayer.h"
+
+#include <iostream>
+
 #include "CBurgerIngredient.h"
 #include "CCollisionBox.h"
 #include "CollisionGroups.h"
@@ -36,18 +39,7 @@ void CEnemyPlayer::Update(float deltaTime)
 		m_AnimationIndex = (m_AnimationIndex + 1) % 3;
 		SetTexture();
 	}
-
-
-	//MOVEMENT//
-	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Ladder).size() == 0)
-	{
-		m_AccMovement.y = 0;
-	}
-	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Ground).size() == 0)
-	{
-		m_AccMovement.x = 0;
-	}
-
+	
 	//PLAYER//
 	DamagePlayer();
 
@@ -124,6 +116,7 @@ void CEnemyPlayer::BurgerCollision()
 		{
 			if (dynamic_cast<CBurgerIngredient*>(burger->GetParent()->GetComponent<CBurgerIngredient>())->IsOnPlate() == false)
 			{
+				std::cout << "Noooooo\n";
 				dynamic_cast<CHealth*>(m_OwnerObject->GetComponent<CHealth>())->Damage();
 			}
 		}

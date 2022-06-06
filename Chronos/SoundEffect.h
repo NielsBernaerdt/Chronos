@@ -5,7 +5,7 @@
 class SoundEffect
 {
 public:
-    explicit SoundEffect(const std::string& path, std::string id);
+    explicit SoundEffect(const std::string& path, std::string id, int loops = 0);
     ~SoundEffect();
     SoundEffect(const SoundEffect& other) = delete;
     SoundEffect& operator=(const SoundEffect& rhs) = delete;
@@ -23,4 +23,5 @@ public:
 private:
     Mix_Chunk* m_pMixChunk;
     std::string id{};
+    int m_Loops{};
 };

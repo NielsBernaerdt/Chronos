@@ -19,11 +19,15 @@ void CHealth::Damage()
 	auto peterComp = dynamic_cast<CPeterPepper*>(m_OwnerObject->GetComponent<CPeterPepper>());
 	if(peterComp != nullptr)
 	{
-		m_OwnerObject->GetTransform()->SetPosition(200, 200);
+		m_OwnerObject->GetTransform()->SetPosition(590, 35);
 
 		if (m_Health == 0)
 		{
 			m_OwnerObject->Notify(m_OwnerObject, Event::ActorDied);
+		}
+		else
+		{
+			m_OwnerObject->Notify(m_OwnerObject, Event::ActorDamaged);
 		}
 	}
 	else

@@ -4,6 +4,8 @@
 #pragma warning (pop)
 #include <string>
 #include <memory>
+
+#include "AudioManager.h"
 #include "CBurgerIngredient.h"
 #include "Game.h"
 
@@ -31,7 +33,9 @@ private:
 	void CreateNPCs(Scene& scene, std::shared_ptr<GameState> pObserver);
 	void CreatePlayerPawns(Scene& scene, std::shared_ptr<GameState> pObserver);
 	void CreateGameplayObjects(Scene& scene, std::shared_ptr<GameState> pObserver);
-	void CreateTerrain(Scene& scene);
+	void CreateTerrainLevel0(Scene& scene);
+	void CreateTerrainLevel1(Scene& scene);
+	void CreateTerrainLevel2(Scene& scene);
 
 public:
 	bool SetupLevelLayout(Scene& scene) override {
@@ -39,6 +43,7 @@ public:
 		if (exitGame) return true;
 		DetermineObjectsLocations();
 		CreateLevel(scene);
+		AudioManager::GetInstance().PlaySound("BackgroundMusic.wav", 10, 999);
 		return false;
 	}
 	std::vector<InputManager*> ConfigureInput() override;

@@ -8,7 +8,7 @@ class AudioManager : public Singleton<AudioManager>
 {
 public:
 	void Init();
-	void PlaySound(std::string id, int volume);
+	void PlaySound(std::string id, int volume, int loops = 0);
 	void Update();
 
 private:

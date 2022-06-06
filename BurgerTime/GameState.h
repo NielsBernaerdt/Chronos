@@ -5,6 +5,7 @@
 enum class Event
 {
 	ActorDied,
+	ActorDamaged,
 	NPCKilled,
 	BurgerCompleted,
 };

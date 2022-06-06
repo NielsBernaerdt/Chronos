@@ -56,7 +56,7 @@ std::shared_ptr<Font> ResourceManager::LoadFont(const std::string& file, unsigne
 	return std::make_shared<Font>(m_DataPath + file, size);
 }
 
-SoundEffect* ResourceManager::LoadAudioFile(const std::string& file, int volume)
+SoundEffect* ResourceManager::LoadAudioFile(const std::string& file, int volume, int loops)
 {
 	const auto fullPath = m_DataPath + file;
 
@@ -67,7 +67,7 @@ SoundEffect* ResourceManager::LoadAudioFile(const std::string& file, int volume)
 			return e.get();
 		}
 	}
-	std::unique_ptr<SoundEffect> sound = std::make_unique<SoundEffect>(fullPath, file);
+	std::unique_ptr<SoundEffect> sound = std::make_unique<SoundEffect>(fullPath, file, loops);
 	sound->SetVolume(volume);
 	SoundEffect* temp = sound.get();
 	m_SoundEffects.push_back(std::move(sound));

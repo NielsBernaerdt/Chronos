@@ -1,14 +1,21 @@
 #include "GameState.h"
 #include <iostream>
 
+#include "AudioManager.h"
+
 void GameState::Notify(GameObject*, Event event)
 {
 	switch (event)
 	{
 	case Event::ActorDied:
-		std::cout << "DEAD\n";
+		AudioManager::GetInstance().PlaySound("DeathSound.wav", 30);
+		std::cout << "PLAYER DIED\n";
+		break;
+	case Event::ActorDamaged:
+		AudioManager::GetInstance().PlaySound("DamageSound.wav", 30);
 		break;
 	case Event::NPCKilled:
+		AudioManager::GetInstance().PlaySound("KillEnemy.wav", 25);
 		std::cout << "+100\n";
 		break;
 	case Event::BurgerCompleted:
@@ -19,7 +26,7 @@ void GameState::Notify(GameObject*, Event event)
 
 void GameState::CheckPlayerVictory()
 {
-	std::cout << "Have I won?" << std::endl;
+	AudioManager::GetInstance().PlaySound("VictorySound.wav", 25);
 
-	//CHECK M_BOTTOM OF ALL BURGERS
+	//WINCONDITION HERE
 }

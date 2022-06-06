@@ -17,11 +17,20 @@ void AudioManager::Init()
 	m_AudioThread = std::thread{ &AudioManager::Update, this };
 }
 
-void AudioManager::PlaySound(std::string id, int volume)
+void AudioManager::PlaySound(std::string id, int volume, int loops)
 {
+	//Aggregation here
+	for (size_t i = m_Head; i != m_Tail; i = (i + 1) % m_MaxPending)
+	{
+		if (m_PendingMessages[i]->GetId() == id)
+		{
+			m_PendingMessages[i]->SetVolume(std::max(volume, m_PendingMessages[i]->GetVolume()));
+			return;
+		}
+	}
 	assert((m_Tail + 1) % m_MaxPending != m_Head);
 
-	m_PendingMessages[m_Tail] = ResourceManager::GetInstance().LoadAudioFile(id, volume);
+	m_PendingMessages[m_Tail] = ResourceManager::GetInstance().LoadAudioFile(id, volume, loops);
 	m_Tail = (m_Tail + 1) % m_MaxPending;
 
 	m_ConditionThread.notify_one();

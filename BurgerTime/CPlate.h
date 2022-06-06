@@ -4,7 +4,7 @@
 class CPlate : public CBase
 {
 public:
-	CPlate(GameObject* gameObject, bool final = false) : CBase(gameObject), m_IsFinal(final) {}
+	CPlate(GameObject* gameObject, bool final = true) : CBase(gameObject), m_IsFinal(final) {}
 	~CPlate() override = default;
 	CPlate(const CPlate& other) = delete;
 	CPlate(CPlate&& other) noexcept = delete;

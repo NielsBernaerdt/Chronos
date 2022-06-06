@@ -3,9 +3,10 @@
 
 #include <iostream>
 
-SoundEffect::SoundEffect(const std::string& path, std::string id)
+SoundEffect::SoundEffect(const std::string& path, std::string id, int loops)
     :m_pMixChunk{ Mix_LoadWAV(path.c_str()) }
 	, id(id)
+	, m_Loops(loops)
 {
     if (m_pMixChunk == nullptr)
     {
@@ -24,7 +25,7 @@ bool SoundEffect::IsLoaded() const
     return m_pMixChunk != nullptr;
 }
 
-bool SoundEffect::Play(int loops, float volume)
+bool SoundEffect::Play(int, float volume)
 {
     SetVolume(int(volume));
     // Don't save the channel as a data member, 
@@ -32,7 +33,7 @@ bool SoundEffect::Play(int loops, float volume)
     // and available for usage by other effects
     if (m_pMixChunk != nullptr)
     {
-        int channel{ Mix_PlayChannel(-1, m_pMixChunk, loops) };
+        int channel{ Mix_PlayChannel(-1, m_pMixChunk, m_Loops) };
         return channel == -1 ? false : true;
     }
     else
