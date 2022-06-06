@@ -1,8 +1,8 @@
 Level (0 - 1 - 2):
 2
 GameMode ( "Singleplayer" - "Versus" - "Coop"):
-Versus
-Nr Enemies (0 - ... - 6):
+SinglePlayer
+Nr Enemies (0 <= x <= 6):
 6
 Nr BurgerIngredients (3 OR 6 OR 10 OR 14):
 14

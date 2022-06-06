@@ -3,6 +3,12 @@
 #include <SDL_mixer.h>
 #include "ResourceManager.h"
 
+AudioManager::~AudioManager()
+{
+	m_ConditionThread.notify_one();
+	m_AudioThread.join();
+}
+
 void AudioManager::Init()
 {
 	m_Head = 0;
@@ -40,13 +46,15 @@ void AudioManager::Update() //todo call this from dedicated audio thread
 {
 	do
 	{
+		if (m_LeaveThread == true)
+			return;
+
 		if (m_Head != m_Tail)
 		{
 			m_PendingMessages[m_Head]->Play(0, (float)m_PendingMessages[m_Head]->GetVolume());
 
 			m_Head = (m_Head + 1) % m_MaxPending;
 		}
-
 		std::unique_lock<std::mutex> lock{ m_AudioMutex };
 		if(m_Head == m_Tail)
 		{

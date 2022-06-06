@@ -55,6 +55,9 @@
     <ClCompile Include="CHealth.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="CHUDElement.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BurgerTime.h">
@@ -91,6 +94,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="CHealth.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CHUDElement.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

@@ -125,6 +125,8 @@ void Chronos::Run()
 		delete inputManager;
 		inputManager = nullptr;
 	}
+
+	AudioManager::GetInstance().LeaveThread(true);
 }
 
 void Chronos::InitializeObjects(const std::vector < std::shared_ptr<GameObject>>& objects) const

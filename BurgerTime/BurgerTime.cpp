@@ -17,7 +17,9 @@
 #include "CMrHotDog.h"
 #include "CPeterPepper.h"
 #include "CPlate.h"
+#include "CPoints.h"
 //Observers
+#include "CHUDElement.h"
 #include "GameState.h"
 
 bool BurgerTime::ReadFromFile()
@@ -154,7 +156,7 @@ void BurgerTime::CreateLevel(Scene& scene)
 	std::unique_ptr<CFPS> fpsComp = std::make_unique<CFPS>(fpsCounter.get());
 	fpsCounter->AddComponent(std::move(fpsComp));
 	auto fpsTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	std::unique_ptr<CRender> fpsCRender = std::make_unique<CRender>(fpsCounter.get(), fpsTexture);
+	std::unique_ptr<CRender> fpsCRender = std::make_unique<CRender>(fpsCounter.get(), fpsTexture, false);
 	fpsCounter->AddComponent(std::move(fpsCRender));
 	scene.Add(fpsCounter);
 
@@ -189,9 +191,22 @@ void BurgerTime::CreatePlayerPawns(Scene& scene, std::shared_ptr<GameState> pObs
 	peterPepper->AddComponent(std::move(peterCPeterPepper));
 	std::unique_ptr<CHealth> peterCHealth = std::make_unique<CHealth>(peterPepper.get(), 3);
 	peterPepper->AddComponent(std::move(peterCHealth));
+	std::unique_ptr<CPoints> peterCPoints = std::make_unique<CPoints>(peterPepper.get());
+	peterPepper->AddComponent(std::move(peterCPoints));
 	peterPepper->AddObserver(pObserver);
 	scene.Add(peterPepper);
 	m_pPlayerOnePawn = peterPepper.get();
+	//HUD PAWN ONE
+	const auto playerHud = std::make_shared<GameObject>(std::string{ "playerHud" });
+	playerHud->GetTransform()->SetPosition(200, 0);
+	const auto hudTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	std::unique_ptr<CText> hudText = std::make_unique<CText>(playerHud.get(), "HelloWorldItsaMe", 36);
+	playerHud->AddComponent(std::move(hudText));
+	std::unique_ptr<CHUDElement> hudCHud = std::make_unique<CHUDElement>(playerHud.get(), peterPepper.get());
+	playerHud->AddComponent(std::move(hudCHud));
+	std::unique_ptr<CRender> hudRender = std::make_unique<CRender>(playerHud.get(), hudTexture, false);
+	playerHud->AddComponent(std::move(hudRender));
+	scene.Add(playerHud);
 
 	if (m_GameMode == "Coop")
 	{
@@ -359,7 +374,6 @@ void BurgerTime::CreateGameplayObjects(Scene& scene, std::shared_ptr<GameState>)
 	plate3->AddComponent(std::move(plateCPlate3));
 	scene.Add(plate3);
 }
-
 
 void BurgerTime::CreateTerrainLevel0(Scene& scene)
 {

@@ -162,6 +162,7 @@
     <ClCompile Include="..\Chronos\CPoints.cpp" />
     <ClCompile Include="CEnemyPlayer.cpp" />
     <ClCompile Include="CHealth.cpp" />
+    <ClCompile Include="CHUDElement.cpp" />
     <ClCompile Include="CMrHotDog.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="BurgerTime.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="..\Chronos\CPoints.h" />
     <ClInclude Include="CEnemyPlayer.h" />
     <ClInclude Include="CHealth.h" />
+    <ClInclude Include="CHUDElement.h" />
     <ClInclude Include="CMrHotDog.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="BurgerTime.h" />

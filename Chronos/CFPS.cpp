@@ -33,6 +33,6 @@ void CFPS::Update(float deltaTime)
 	{
 		m_AccTime = 0;
 		m_PreviousFPS = fps;
-		m_pTextComponent->SetText(std::to_string(fps));
+		m_pTextComponent->SetText("FPS: " + std::to_string(fps));
 	}
 }
