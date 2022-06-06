@@ -51,29 +51,6 @@ MoveLeft::~MoveLeft()
 }
 void MoveLeft::Execute()
 {
-	//ATTEMPT AT SPAWNING
-	//const auto ladderTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-
-	//const auto ladder0 = std::make_shared<GameObject>(std::string{ "Ladder" });
-	//ladder0->GetTransform()->SetPosition(300, 400);
-	//ladder0->GetTransform()->SetScale(30, 200);
-	//std::unique_ptr<CCollisionBox> ladderCCollision0 = std::make_unique<CCollisionBox>(ladder0.get(), CollisionGroup::Ladder);
-	//ladder0->AddComponent(std::move(ladderCCollision0));
-	//std::unique_ptr<CRender> ladderCRender0 = std::make_unique<CRender>(ladder0.get(), ladderTexture, true);
-	//ladder0->AddComponent(std::move(ladderCRender0));
-
-	//SceneManager::GetInstance().GetScene(0)->Add(ladder0);
-
-	//ladder0->Initialize();
-
-
-
-
-
-
-
-
-
 #ifdef SHOW_DEBUG
 	std::cout << "MoveLeft\n";
 #endif
