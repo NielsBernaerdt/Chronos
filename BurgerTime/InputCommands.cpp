@@ -27,6 +27,7 @@ void MoveRight::Execute()
 	#endif
 	if (CPepper == nullptr && CHotDog == nullptr)
 	{
+		if (!m_Actor) return;
 		if (m_Actor->GetComponent<CPeterPepper>()) usePepper = true;
 		else if (m_Actor->GetComponent<CEnemyPlayer>()) usePepper = false;
 	}
@@ -56,6 +57,7 @@ void MoveLeft::Execute()
 #endif
 	if (CPepper == nullptr && CHotDog == nullptr)
 	{
+		if (!m_Actor) return;
 		if (m_Actor->GetComponent<CPeterPepper>()) usePepper = true;
 		else if (m_Actor->GetComponent<CEnemyPlayer>()) usePepper = false;
 	}
@@ -85,6 +87,7 @@ void ClimbUp::Execute()
 #endif
 	if (CPepper == nullptr && CHotDog == nullptr)
 	{
+		if (!m_Actor) return;
 		if (m_Actor->GetComponent<CPeterPepper>()) usePepper = true;
 		else if (m_Actor->GetComponent<CEnemyPlayer>()) usePepper = false;
 	}
@@ -114,6 +117,7 @@ void ClimbDown::Execute()
 #endif
 	if(CPepper == nullptr && CHotDog == nullptr)
 	{
+		if (!m_Actor) return;
 		if (m_Actor->GetComponent<CPeterPepper>()) usePepper = true;
 		else if (m_Actor->GetComponent<CEnemyPlayer>()) usePepper = false;
 	}

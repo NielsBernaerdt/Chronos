@@ -1102,6 +1102,18 @@ std::vector<InputManager*> BurgerTime::ConfigureInput()
 		inputPlayerTwo->SetPawn(m_pPlayerTwoPawn);
 		inputManagers.push_back(inputPlayerTwo);
 	}
+	else
+	{
+		//INPUT PAWN TWO
+		InputManager* inputPlayerTwo = new InputManager{ 0 };
+		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_RIGHT, std::make_unique<MoveRight>());
+		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_LEFT, std::make_unique<MoveLeft>());
+		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_UP, std::make_unique<ClimbUp>());
+		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_DOWN, std::make_unique<ClimbDown>());
+
+		inputPlayerTwo->SetPawn(m_pPlayerOnePawn);
+		inputManagers.push_back(inputPlayerTwo);
+	}
 
 	return inputManagers;
 }
