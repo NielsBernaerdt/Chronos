@@ -46,5 +46,5 @@ public:
 		AudioManager::GetInstance().PlaySound("BackgroundMusic.wav", 10, 999);
 		return false;
 	}
-	std::vector<InputManager*> ConfigureInput() override;
+	InputManager* ConfigureInput() override;
 };

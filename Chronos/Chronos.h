@@ -23,7 +23,7 @@ private:
 	SDL_Window* m_Window{};
 	Game* m_pGame = nullptr;
 
-	virtual std::vector<InputManager*> ConfigureInput() const {
+	virtual InputManager* ConfigureInput() const {
 		return m_pGame->ConfigureInput();
 	}
 

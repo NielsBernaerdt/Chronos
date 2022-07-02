@@ -27,7 +27,7 @@ class InputManager
 	class InputManagerImpl;
 	InputManagerImpl* m_pInputManagerImpl;
 public:
-	explicit InputManager(int controllerIndex);
+	explicit InputManager();
 	~InputManager();
 	InputManager(const InputManager& other) = delete;
 	InputManager(InputManager&& other) noexcept = delete;
@@ -35,8 +35,7 @@ public:
 	InputManager& operator=(InputManager&& other) noexcept = delete;
 	//
 	bool ProcessInput() const;
-	void HandleInput() const;
 	void BindCommandToButton(ControllerButton button, std::unique_ptr<BCommand> command) const;
 	void BindCommandToButton(int keyboardButton, std::unique_ptr<BCommand> command) const;
-	void SetPawn(GameObject* pPawn) const;
+	void AddController(int controllerIndex, GameObject* pPawn) const;
 };

@@ -1076,44 +1076,37 @@ void BurgerTime::CreateTerrainLevel2(Scene& scene)
 }
 
 
-std::vector<InputManager*> BurgerTime::ConfigureInput()
+InputManager* BurgerTime::ConfigureInput()
 {
-	std::vector<InputManager*> inputManagers;
+	InputManager* inputManager = new InputManager{};
 
 	//INPUT PAWN ONE
-	InputManager* inputPlayerOne = new InputManager{ 0 };
-	inputPlayerOne->BindCommandToButton(ControllerButton::DPadRight, std::make_unique<MoveRight>());
-	inputPlayerOne->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveLeft>());
-	inputPlayerOne->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<ClimbUp>());
-	inputPlayerOne->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<ClimbDown>());
+	inputManager->BindCommandToButton(ControllerButton::DPadRight, std::make_unique<MoveRight>());
+	inputManager->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveLeft>());
+	inputManager->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<ClimbUp>());
+	inputManager->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<ClimbDown>());
 
-	inputPlayerOne->SetPawn(m_pPlayerOnePawn);
-	inputManagers.push_back(inputPlayerOne);
+	inputManager->AddController(0, m_pPlayerOnePawn);
 
 	if (m_GameMode != "Singleplayer")
 	{
-		//INPUT PAWN TWO
-		InputManager* inputPlayerTwo = new InputManager{ 0 };
-		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_RIGHT, std::make_unique<MoveRight>());
-		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_LEFT, std::make_unique<MoveLeft>());
-		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_UP, std::make_unique<ClimbUp>());
-		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_DOWN, std::make_unique<ClimbDown>());
+		//INPUT KEYBOARD PAWN TWO
+		inputManager->BindCommandToButton(SDL_SCANCODE_RIGHT, std::make_unique<MoveRight>());
+		inputManager->BindCommandToButton(SDL_SCANCODE_LEFT, std::make_unique<MoveLeft>());
+		inputManager->BindCommandToButton(SDL_SCANCODE_UP, std::make_unique<ClimbUp>());
+		inputManager->BindCommandToButton(SDL_SCANCODE_DOWN, std::make_unique<ClimbDown>());
 
-		inputPlayerTwo->SetPawn(m_pPlayerTwoPawn);
-		inputManagers.push_back(inputPlayerTwo);
+		inputManager->AddController(4, m_pPlayerTwoPawn);
 	}
 	else
 	{
-		//INPUT PAWN TWO
-		InputManager* inputPlayerTwo = new InputManager{ 0 };
-		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_RIGHT, std::make_unique<MoveRight>());
-		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_LEFT, std::make_unique<MoveLeft>());
-		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_UP, std::make_unique<ClimbUp>());
-		inputPlayerTwo->BindCommandToButton(SDL_SCANCODE_DOWN, std::make_unique<ClimbDown>());
+		//INPUT KEYBOARD PAWN ONE
+		inputManager->BindCommandToButton(SDL_SCANCODE_RIGHT, std::make_unique<MoveRight>());
+		inputManager->BindCommandToButton(SDL_SCANCODE_LEFT, std::make_unique<MoveLeft>());
+		inputManager->BindCommandToButton(SDL_SCANCODE_UP, std::make_unique<ClimbUp>());
+		inputManager->BindCommandToButton(SDL_SCANCODE_DOWN, std::make_unique<ClimbDown>());
 
-		inputPlayerTwo->SetPawn(m_pPlayerOnePawn);
-		inputManagers.push_back(inputPlayerTwo);
+		inputManager->AddController(4, m_pPlayerOnePawn);
 	}
-
-	return inputManagers;
+	return inputManager;
 }

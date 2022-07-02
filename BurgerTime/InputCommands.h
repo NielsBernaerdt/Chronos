@@ -8,10 +8,10 @@ class CPeterPepper;
 class MoveRight : public BCommand
 {
 public:
-	MoveRight(GameObject* actor = nullptr);
+	MoveRight();
 	~MoveRight() override;
 
-	void Execute() override;
+	void Execute(GameObject* actor) override;
 
 private:
 	bool usePepper = true;
@@ -22,10 +22,10 @@ private:
 class MoveLeft : public BCommand
 {
 public:
-	MoveLeft(GameObject* actor = nullptr);
+	MoveLeft();
 	~MoveLeft() override;
 
-	void Execute() override;
+	void Execute(GameObject* actor) override;
 
 private:
 	bool usePepper = true;
@@ -36,10 +36,10 @@ private:
 class ClimbUp : public BCommand
 {
 public:
-	ClimbUp(GameObject* actor = nullptr);
+	ClimbUp();
 	~ClimbUp() override;
 
-	void Execute() override;
+	void Execute(GameObject* actor) override;
 
 private:
 	bool usePepper = true;
@@ -50,10 +50,10 @@ private:
 class ClimbDown : public BCommand
 {
 public:
-	ClimbDown(GameObject* actor = nullptr);
+	ClimbDown();
 	~ClimbDown() override;
 
-	void Execute() override;
+	void Execute(GameObject* actor) override;
 
 private:
 	bool usePepper = true;
@@ -64,8 +64,8 @@ private:
 class Fire : public BCommand
 {
 public:
-	Fire(GameObject* actor);
+	Fire();
 	~Fire() override;
 
-	void Execute() override;
+	void Execute(GameObject* actor) override;
 };

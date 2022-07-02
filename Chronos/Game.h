@@ -16,5 +16,5 @@ public:
 	Game& operator=(Game&& other) noexcept = delete;
 
 	virtual bool SetupLevelLayout(Scene& scene) = 0;
-	virtual std::vector<InputManager*> ConfigureInput() = 0;
+	virtual InputManager* ConfigureInput() = 0;
 };

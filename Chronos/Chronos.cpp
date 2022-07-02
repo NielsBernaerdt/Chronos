@@ -92,7 +92,7 @@ void Chronos::Run()
 	bool doContinue = true;
 
 	if (LoadGame()) doContinue = false;
-	auto inputManagers = ConfigureInput();
+	auto inputManager = ConfigureInput();
 
 	{
 		auto lastTime = std::chrono::high_resolution_clock::now();
@@ -102,13 +102,9 @@ void Chronos::Run()
 			const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 			lastTime = currentTime;
 
-			for(const auto& input : inputManagers)
-			{
-				if (input->ProcessInput() == false)
-					doContinue = false;
 
-				input->HandleInput();
-			}
+			if (inputManager->ProcessInput() == false)
+					doContinue = false;
 
 			sceneManager.Update(deltaTime);
 			renderer.Render();
@@ -120,11 +116,8 @@ void Chronos::Run()
 
 	Cleanup();
 
-	for(auto inputManager : inputManagers)
-	{
-		delete inputManager;
-		inputManager = nullptr;
-	}
+	delete inputManager;
+	inputManager = nullptr;
 
 	AudioManager::GetInstance().LeaveThread(true);
 }
