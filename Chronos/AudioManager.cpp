@@ -42,7 +42,7 @@ void AudioManager::PlaySound(std::string id, int volume, int loops)
 	m_ConditionThread.notify_one();
 }
 
-void AudioManager::Update() //todo call this from dedicated audio thread
+void AudioManager::Update() //IS ON ITS OWN THREAD
 {
 	do
 	{

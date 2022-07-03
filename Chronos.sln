@@ -10,6 +10,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BurgerTime", "BurgerTime\Bu
 		{41B0EC47-D48C-4B0F-951B-D98595FFAE0A} = {41B0EC47-D48C-4B0F-951B-D98595FFAE0A}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tron", "Tron\Tron.vcxproj", "{1E71E42E-065E-4C38-B0D4-6EA0B4DE0A07}"
+	ProjectSection(ProjectDependencies) = postProject
+		{41B0EC47-D48C-4B0F-951B-D98595FFAE0A} = {41B0EC47-D48C-4B0F-951B-D98595FFAE0A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +39,14 @@ Global
 		{0CB7EE0B-1F5B-4195-9C13-D6A591069E55}.Release|x64.Build.0 = Release|x64
 		{0CB7EE0B-1F5B-4195-9C13-D6A591069E55}.Release|x86.ActiveCfg = Release|Win32
 		{0CB7EE0B-1F5B-4195-9C13-D6A591069E55}.Release|x86.Build.0 = Release|Win32
+		{1E71E42E-065E-4C38-B0D4-6EA0B4DE0A07}.Debug|x64.ActiveCfg = Debug|x64
+		{1E71E42E-065E-4C38-B0D4-6EA0B4DE0A07}.Debug|x64.Build.0 = Debug|x64
+		{1E71E42E-065E-4C38-B0D4-6EA0B4DE0A07}.Debug|x86.ActiveCfg = Debug|Win32
+		{1E71E42E-065E-4C38-B0D4-6EA0B4DE0A07}.Debug|x86.Build.0 = Debug|Win32
+		{1E71E42E-065E-4C38-B0D4-6EA0B4DE0A07}.Release|x64.ActiveCfg = Release|x64
+		{1E71E42E-065E-4C38-B0D4-6EA0B4DE0A07}.Release|x64.Build.0 = Release|x64
+		{1E71E42E-065E-4C38-B0D4-6EA0B4DE0A07}.Release|x86.ActiveCfg = Release|Win32
+		{1E71E42E-065E-4C38-B0D4-6EA0B4DE0A07}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
