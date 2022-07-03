@@ -25,6 +25,8 @@ void AudioManager::Init()
 
 void AudioManager::PlaySound(std::string id, int volume, int loops)
 {
+	m_AudioMutex.lock();
+
 	//Aggregation here
 	for (size_t i = m_Head; i != m_Tail; i = (i + 1) % m_MaxPending)
 	{
@@ -39,6 +41,7 @@ void AudioManager::PlaySound(std::string id, int volume, int loops)
 	m_PendingMessages[m_Tail] = ResourceManager::GetInstance().LoadAudioFile(id, volume, loops);
 	m_Tail = (m_Tail + 1) % m_MaxPending;
 
+	m_AudioMutex.unlock();
 	m_ConditionThread.notify_one();
 }
 
