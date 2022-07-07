@@ -13,6 +13,9 @@ class GameState;
 class Tron : public Game
 {
 private:
+	GameObject* m_pPlayerOnePawn = nullptr;
+	GameObject* m_pPlayerTwoPawn = nullptr;
+
 	bool ReadFromFile();
 	void CreateLevel(Scene& scene);
 	void CreateNPCs(Scene& scene, std::shared_ptr<GameState> pObserver);
