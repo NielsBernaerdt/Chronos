@@ -28,3 +28,29 @@ void MoveHorizontal::Execute(GameObject* actor)
 		m_CTron->MoveHorizontally(m_DirectionValue);
 	}
 }
+//----------------------------------MOVERIGHT----------------------------------
+MoveVertical::MoveVertical(bool moveUp)
+	: BCommand()
+	, m_DirectionValue(1)
+	, m_IsPlayerPawn(false)
+{
+	if (moveUp == false)
+		m_DirectionValue = -1;
+}
+MoveVertical::~MoveVertical()
+{
+}
+void MoveVertical::Execute(GameObject* actor)
+{
+	if (m_CTron == nullptr)
+	{
+		if (!actor) return;
+		if (actor->GetComponent<CTankTron>()) m_IsPlayerPawn = true;
+		else m_IsPlayerPawn = false;
+	}
+	if (m_IsPlayerPawn == true)
+	{
+		if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
+		m_CTron->MoveVertically(m_DirectionValue);
+	}
+}

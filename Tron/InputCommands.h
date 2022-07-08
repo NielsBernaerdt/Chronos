@@ -17,3 +17,17 @@ private:
 	bool m_IsPlayerPawn;
 	CTankTron* m_CTron = nullptr;
 };
+//----------------------------------MOVEUP----------------------------------
+class MoveVertical : public BCommand
+{
+public:
+	MoveVertical(bool moveUp);
+	~MoveVertical() override;
+
+	void Execute(GameObject* actor) override;
+
+private:
+	int m_DirectionValue;
+	bool m_IsPlayerPawn;
+	CTankTron* m_CTron = nullptr;
+};

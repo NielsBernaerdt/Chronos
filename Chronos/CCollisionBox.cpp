@@ -55,11 +55,11 @@ std::vector<GameObject*> CCollisionBox::GetOverlappingObjects(CollisionGroup fil
 
 bool CCollisionBox::IsRectOverlapping(glm::vec2 topLeft, glm::vec2 bottomRight, glm::vec2 topLeft2, glm::vec2 bottomRight2) const
 {
-    // If one rectangle is on left side of other
+    // If one rectangle is on left||right side of other
     if (topLeft.x > bottomRight2.x || topLeft2.x > bottomRight.x)
         return false;
 
-    // If one rectangle is above other
+    // If one rectangle is above||below other
     if (bottomRight.y > topLeft2.y || bottomRight2.y > topLeft.y)
         return false;
 
