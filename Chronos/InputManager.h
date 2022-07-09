@@ -36,6 +36,7 @@ public:
 	//
 	bool ProcessInput() const;
 	void BindCommandToButton(ControllerButton button, std::unique_ptr<BCommand> command) const;
-	void BindCommandToButton(int keyboardButton, std::unique_ptr<BCommand> command) const;
+	void BindCommandToButton(int keyboardButton, std::unique_ptr<BCommand> command, bool isMouseButton = false) const;
 	void AddController(int controllerIndex, GameObject* pPawn) const;
+	static const glm::vec2& GetMousePos();
 };

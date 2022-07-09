@@ -4,6 +4,7 @@
 #include <ResourceManager.h>
 #include <CRender.h>
 #include <Scene.h>
+#include <SDL_mouse.h>
 
 #include "CTankTron.h"
 #include "InputCommands.h"
@@ -71,6 +72,7 @@ InputManager* Tron::ConfigureInput()
 	inputManager->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveHorizontal>(false));
 	inputManager->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<MoveVertical>(true));
 	inputManager->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<MoveVertical>(false));
+	inputManager->BindCommandToButton(SDL_BUTTON_LMASK, std::make_unique<Shoot>());
 
 	inputManager->AddController(0, m_pPlayerOnePawn);
 

@@ -25,10 +25,14 @@ private:
 
 	//KEYBOARD
 	const Uint8* m_CurrentKeyboardState;
-	const Uint8* m_PreviousKeyboardState;
 	using KeyboardCommandsMap = std::map<int, std::unique_ptr<BCommand>>;
 	KeyboardCommandsMap m_ConsoleCommandsKB{};
 
+	//MOUSE
+	int m_MouseX{}, m_MouseY{};
+	Uint32 m_CurrentMouseButtons{};
+	using MouseCommandsMap = std::map<int, std::unique_ptr<BCommand>>;
+	MouseCommandsMap m_ConsoleCommandsMouse{};
 
 public:
 	explicit InputManagerImpl()
@@ -67,6 +71,9 @@ public:
 			}
 		}
 		m_CurrentKeyboardState = SDL_GetKeyboardState(NULL);
+
+		//MOUSE
+		m_CurrentMouseButtons = SDL_GetMouseState(&m_MouseX, &m_MouseY);
 
 		//GAMEPAD
 		for (int i{}; i < 4; ++i)
@@ -132,20 +139,36 @@ public:
 	}
 	void HandleKBInput() const
 	{
-		//KEYBOARD IS LAST INDEX
+		//KEYBOARD IS LAST INDEX - > pawns.back
 		for (const auto& kb : m_ConsoleCommandsKB)
 		{
 			if (Down(kb.first))
 				kb.second->Execute(m_pPawns.back());
 		}
 	}
+	void HandleMouseButton() const
+	{
+		//KEYBOARD IS LAST INDEX - > pawns.back
+		for(const auto& mb : m_ConsoleCommandsMouse)
+		{
+			if ((m_CurrentMouseButtons & mb.first) != 0)
+				mb.second->Execute(m_pPawns.back());
+		}
+	}
 	void CommandToButton(ControllerButton button, std::unique_ptr<BCommand> command)
 	{
 		m_ConsoleCommandsGP.insert(std::make_pair<>(button, std::move(command)));
 	}
-	void CommandToButton(int keyboardButton, std::unique_ptr<BCommand> command)
+	void CommandToButton(int keyboardButton, std::unique_ptr<BCommand> command, bool isMouseButton)
 	{
-		m_ConsoleCommandsKB.insert(std::make_pair<>(keyboardButton, std::move(command)));
+		if(isMouseButton)
+		{
+			m_ConsoleCommandsMouse.insert(std::make_pair<>(keyboardButton, std::move(command)));
+		}
+		else
+		{
+			m_ConsoleCommandsKB.insert(std::make_pair<>(keyboardButton, std::move(command)));
+		}
 	}
 	void Pawn(int controllerIndex, GameObject* pPawn)
 	{
@@ -154,6 +177,11 @@ public:
 			if (i == controllerIndex)
 				m_pPawns[i] = pPawn;
 		}
+	}
+	static const glm::vec2& MousePos()
+	{
+		if(this != nullptr)
+		return glm::vec2{ m_MouseX, m_MouseY };
 	}
 };
 InputManager::InputManager()
@@ -174,11 +202,15 @@ void InputManager::BindCommandToButton(ControllerButton button, std::unique_ptr<
 {
 	m_pInputManagerImpl->CommandToButton(button, std::move(command));
 }
-void InputManager::BindCommandToButton(int keyboardButton, std::unique_ptr<BCommand> command) const
+void InputManager::BindCommandToButton(int keyboardButton, std::unique_ptr<BCommand> command, bool isMouseButton) const
 {
-	m_pInputManagerImpl->CommandToButton(keyboardButton, std::move(command));
+	m_pInputManagerImpl->CommandToButton(keyboardButton, std::move(command), isMouseButton);
 }
 void InputManager::AddController(int controllerIndex, GameObject* pPawn) const
 {
 	m_pInputManagerImpl->Pawn(controllerIndex, pPawn);
+}
+const glm::vec2& InputManager::GetMousePos()
+{
+	return InputManagerImpl::MousePos();
 }

@@ -31,3 +31,16 @@ private:
 	bool m_IsPlayerPawn;
 	CTankTron* m_CTron = nullptr;
 };
+//----------------------------------SHOOT----------------------------------
+class Shoot : public BCommand
+{
+public:
+	Shoot();
+	~Shoot() override;
+
+	void Execute(GameObject* actor) override;
+
+private:
+	bool m_IsPlayerPawn;
+	CTankTron* m_CTron = nullptr;
+};

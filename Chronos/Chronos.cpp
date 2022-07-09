@@ -88,7 +88,7 @@ void Chronos::Run()
 
 	const auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
-
+	
 	bool doContinue = true;
 
 	if (LoadGame()) doContinue = false;

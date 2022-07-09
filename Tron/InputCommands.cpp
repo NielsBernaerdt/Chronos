@@ -1,5 +1,7 @@
 #include "InputCommands.h"
 #include <GameObject.h>
+#include <iostream>
+
 #include "CTankTron.h"
 
 //----------------------------------MOVERIGHT----------------------------------
@@ -52,5 +54,31 @@ void MoveVertical::Execute(GameObject* actor)
 	{
 		if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
 		m_CTron->MoveVertically(m_DirectionValue);
+	}
+}
+//----------------------------------SHOOT----------------------------------
+Shoot::Shoot()
+	: BCommand()
+	, m_IsPlayerPawn(false)
+{
+}
+Shoot::~Shoot()
+{
+}
+void Shoot::Execute(GameObject* actor)
+{
+	if (m_CTron == nullptr)
+	{
+		if (!actor) return;
+		if (actor->GetComponent<CTankTron>()) m_IsPlayerPawn = true;
+		else m_IsPlayerPawn = false;
+	}
+	if (m_IsPlayerPawn == true)
+	{
+		if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
+
+		
+
+		std::cout << "MousePos X: " << ... << " & Y: " << ... << std::endl;
 	}
 }
