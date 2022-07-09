@@ -1,7 +1,6 @@
 #include "InputCommands.h"
 #include <GameObject.h>
 #include <iostream>
-
 #include "CTankTron.h"
 
 //----------------------------------MOVERIGHT----------------------------------
@@ -77,8 +76,6 @@ void Shoot::Execute(GameObject* actor)
 	{
 		if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
 
-		
-
-		std::cout << "MousePos X: " << ... << " & Y: " << ... << std::endl;
+		std::cout << "Mouse clicked\n";
 	}
 }

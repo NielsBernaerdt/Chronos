@@ -68,13 +68,15 @@ InputManager* Tron::ConfigureInput()
 	InputManager* inputManager = new InputManager{};
 
 	//INPUT PAWN ONE
+	// GAMEPAD
 	inputManager->BindCommandToButton(ControllerButton::DPadRight, std::make_unique<MoveHorizontal>(true));
 	inputManager->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveHorizontal>(false));
 	inputManager->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<MoveVertical>(true));
 	inputManager->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<MoveVertical>(false));
-	inputManager->BindCommandToButton(SDL_BUTTON_LMASK, std::make_unique<Shoot>());
-
 	inputManager->AddController(0, m_pPlayerOnePawn);
+	//KEYBOARD|MOUSE
+	inputManager->BindCommandToButton(SDL_BUTTON_LMASK, std::make_unique<Shoot>(), true);
+	inputManager->AddController(4, m_pPlayerOnePawn);
 
 	return inputManager;
 }

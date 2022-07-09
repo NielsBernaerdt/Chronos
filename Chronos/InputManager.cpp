@@ -29,7 +29,7 @@ private:
 	KeyboardCommandsMap m_ConsoleCommandsKB{};
 
 	//MOUSE
-	int m_MouseX{}, m_MouseY{};
+	static int m_MouseX, m_MouseY;
 	Uint32 m_CurrentMouseButtons{};
 	using MouseCommandsMap = std::map<int, std::unique_ptr<BCommand>>;
 	MouseCommandsMap m_ConsoleCommandsMouse{};
@@ -100,6 +100,7 @@ public:
 			HandleGPInput(i);
 		}
 		HandleKBInput();
+		HandleMouseButtons();
 		return true;
 	}
 	bool Pressed(unsigned int button) const
@@ -146,7 +147,7 @@ public:
 				kb.second->Execute(m_pPawns.back());
 		}
 	}
-	void HandleMouseButton() const
+	void HandleMouseButtons() const
 	{
 		//KEYBOARD IS LAST INDEX - > pawns.back
 		for(const auto& mb : m_ConsoleCommandsMouse)
@@ -178,12 +179,20 @@ public:
 				m_pPawns[i] = pPawn;
 		}
 	}
-	static const glm::vec2& MousePos()
+	static glm::vec2 MousePos()
 	{
-		if(this != nullptr)
 		return glm::vec2{ m_MouseX, m_MouseY };
 	}
+	static void SetMouse(int x, int y)
+	{
+		m_MouseX = x;
+		m_MouseY = y;
+	}
 };
+
+int InputManager::InputManagerImpl::m_MouseX = 0;
+int InputManager::InputManagerImpl::m_MouseY = 0;
+
 InputManager::InputManager()
 	:m_pInputManagerImpl{new InputManagerImpl{}}
 {
@@ -210,7 +219,11 @@ void InputManager::AddController(int controllerIndex, GameObject* pPawn) const
 {
 	m_pInputManagerImpl->Pawn(controllerIndex, pPawn);
 }
-const glm::vec2& InputManager::GetMousePos()
+glm::vec2 InputManager::GetMousePos()
 {
 	return InputManagerImpl::MousePos();
+}
+void InputManager::SetMousePos(int x, int y)
+{
+	InputManagerImpl::SetMouse(x, y);
 }

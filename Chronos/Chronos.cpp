@@ -90,7 +90,7 @@ void Chronos::Run()
 	auto& sceneManager = SceneManager::GetInstance();
 	
 	bool doContinue = true;
-
+	
 	if (LoadGame()) doContinue = false;
 	auto inputManager = ConfigureInput();
 
@@ -105,6 +105,9 @@ void Chronos::Run()
 
 			if (inputManager->ProcessInput() == false)
 					doContinue = false;
+			int mouseX, mouseY;
+			SDL_GetMouseState(&mouseX, &mouseY);
+			InputManager::SetMousePos(mouseX, mouseY);
 
 			sceneManager.Update(deltaTime);
 			renderer.Render();
