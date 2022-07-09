@@ -22,9 +22,12 @@ public:
 	void Render() const;
 	void SetTexture(std::shared_ptr<Texture2D> texture);
 	void SetSourceRect(Rect rect);
+	void RotateTexture(int angle);
 private:
 	std::shared_ptr<Texture2D> m_Texture{};
 	bool m_ScaleToObject{};
+	bool m_ShouldRotate{ false };
+	double m_RotationAngle{};
 	glm::vec3 m_Scale{};
 	Rect m_SourceRect{0,0,0,0};
 };

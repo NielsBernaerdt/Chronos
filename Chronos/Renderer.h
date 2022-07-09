@@ -17,7 +17,9 @@ public:
 	void Destroy();
 
 	void RenderTexture(const Texture2D& texture, float x, float y, Rect srcRect = { 0,0,0,0 }) const;
+	void RenderTextureRotated(const Texture2D& texture, float x, float y, double angle, Rect srcRect = { 0 ,0,0,0 }) const;
 	void RenderTexture(const Texture2D& texture, float x, float y, float width, float height, Rect srcRect = { 0 ,0,0,0 }) const;
+	void RenderTextureRotated(const Texture2D& texture, float x, float y, float width, float height, double angle, Rect srcRect = { 0 ,0,0,0 }) const;
 
 	SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
 

@@ -2,7 +2,11 @@
 
 #include <GameObject.h>
 #include <CCollisionBox.h>
+#include <CRender.h>
+#include <iostream>
+
 #include "CollisionGroups.h"
+#include "InputManager.h"
 
 CTankTron::CTankTron(GameObject* gameObject)
 	: CBase(gameObject)
@@ -23,6 +27,37 @@ void CTankTron::Initialize()
 }
 void CTankTron::Update(float deltaTime)
 {
+	//m_AccTime += deltaTime;
+	////LET BARREL ROTATE
+	//auto child = m_OwnerObject->GetChildren()[0];
+	//auto baseComp = child->GetComponent<CRender>();
+	//auto renderComp = dynamic_cast<CRender*>(baseComp);
+	//std::cout << "Float time: " << m_AccTime << std::endl;
+	//std::cout << "Int time: " << (int)m_AccTime << std::endl;
+
+	//renderComp->RotateTexture(15 * int(m_AccTime));
+
+	m_AccTime += deltaTime;
+	//LET BARREL ROTATE
+	auto child = m_OwnerObject->GetChildren()[0];
+	auto baseComp = child->GetComponent<CRender>();
+	auto renderComp = dynamic_cast<CRender*>(baseComp);
+
+	//MATH HERE//
+	float angle{};
+	glm::vec2 mousePos = InputManager::GetMousePos();
+
+	mousePos.x -= m_OwnerObject->GetTransform()->GetPosition().x;
+	mousePos.y -= m_OwnerObject->GetTransform()->GetPosition().y;
+
+	angle = atanf(mousePos.y/ mousePos.x);
+	angle = float(angle * 180 / 3.14159265358979323846264338327950288);
+	std::cout << "Float angle: " << angle << std::endl;
+	std::cout << "Int time: " << (int)angle << std::endl;
+	//
+	renderComp->RotateTexture(int(angle));
+
+
 	//STATES//
 	//PlayerState* state = m_State->Update(this->m_OwnerObject, this);
 	//if (state != nullptr)
