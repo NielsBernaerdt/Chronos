@@ -32,6 +32,9 @@
     <ClCompile Include="InputCommands.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tron.h">
@@ -45,6 +48,9 @@
     </ClInclude>
     <ClInclude Include="CollisionGroups.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

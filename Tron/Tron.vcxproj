@@ -159,12 +159,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CTankTron.cpp" />
     <ClCompile Include="InputCommands.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Tron.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CBullet.h" />
     <ClInclude Include="CollisionGroups.h" />
     <ClInclude Include="CTankTron.h" />
     <ClInclude Include="InputCommands.h" />

@@ -52,8 +52,8 @@ void CTankTron::Update(float deltaTime)
 
 	angle = atanf(mousePos.y/ mousePos.x);
 	angle = float(angle * 180 / 3.14159265358979323846264338327950288);
-	std::cout << "Float angle: " << angle << std::endl;
-	std::cout << "Int time: " << (int)angle << std::endl;
+	//std::cout << "Float angle: " << angle << std::endl;
+	//std::cout << "Int time: " << int(angle) << std::endl;
 	//
 	renderComp->RotateTexture(int(angle));
 
@@ -65,23 +65,13 @@ void CTankTron::Update(float deltaTime)
 	//	delete m_State;
 	//	m_State = state;
 	//}
+
 	//MOVEMENT//
-	//if (m_pCollision->GetOverlappingObjects(CollisionGroup::Ladder).size() == 0)
-	//{
-	//	m_AccMovement.y = 0;
-	//}
-	//if (m_pCollision->GetOverlappingObjects(CollisionGroup::Ground).size() == 0)
-	//{
-	//	m_AccMovement.x = 0;
-	//}
-
-
-	//if (m_pCollision->GetOverlappingObjects(CollisionGroup::Ladder).size() < 1
-	//	&& m_pCollision->GetOverlappingObjects(CollisionGroup::Ground).size() < 1)
-	//{
-	//	m_PawnTransform->SetPosition(m_PrevPosition);
-	//}
-
+	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Wall).empty() == false)
+	{
+		m_AccMovement = { 0, 0, 0 };
+		m_PawnTransform->SetPosition(m_PrevPosition);
+	}
 	m_PrevPosition = m_PawnTransform->GetPosition();
 	m_PawnTransform->SetPosition(m_PawnTransform->GetPosition() + (m_AccMovement * deltaTime));
 	m_AccMovement = { 0,0,0 };
