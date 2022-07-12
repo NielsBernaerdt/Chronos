@@ -2,6 +2,8 @@
 #pragma warning(push, 0)
 #include <glm/glm.hpp>
 #pragma warning (pop)
+#include <map>
+
 #include "CBase.h"
 #include <vector>
 #include "Rect.h"
@@ -18,7 +20,8 @@ public:
 	CCollisionBox& operator=(const CCollisionBox& other) = delete;
 	CCollisionBox& operator=(CCollisionBox&& other) noexcept = delete;
 
-	static std::vector<CCollisionBox*> m_pCollisionBoxes;
+	//static std::vector<CCollisionBox*> m_pCollisionBoxes;
+	static std::map<CCollisionBox*, int> m_pCollisionBoxes;
 	std::vector<GameObject*> GetOverlappingObjects(CollisionGroup filter) const;
 	CollisionGroup GetCollisionGroup() const { return m_CollisionGroup; }
 

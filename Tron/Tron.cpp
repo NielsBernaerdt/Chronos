@@ -15,20 +15,23 @@
 
 bool Tron::ReadFromFile()
 {
+	//READ FILE, RETURN TRUE IF INVALID
+	CreateScenes();
 	return false;
 }
 
-void Tron::CreateLevel(Scene& scene)
+void Tron::CreateScenes()
 {
-	std::shared_ptr<GameState> temp;
-	CreatePlayerPawns(scene, temp);
-	CreateNPCs(scene, temp);
-	CreateGameplayObjects(scene, temp);
-	CreateTerrainLevel0(scene);
+	CreateScene0();
+	CreateScene1();
+	CreateScene2();
 }
 
-void Tron::CreatePlayerPawns(Scene& scene, std::shared_ptr<GameState> /*pObserver*/)
+void Tron::CreateScene0()
 {
+	auto& scene = SceneManager::GetInstance().CreateScene("Level0");
+	scene.SetActive(true);
+#pragma region PlayerPawn
 	const auto tronTank = std::make_shared<GameObject>(std::string{ "TronPawnOne" });
 	tronTank->GetTransform()->SetPosition(0, 90);
 	tronTank->GetTransform()->SetScale(44, 44);
@@ -58,14 +61,9 @@ void Tron::CreatePlayerPawns(Scene& scene, std::shared_ptr<GameState> /*pObserve
 	scene.Add(tronTankBarrel);
 
 	tronTankBarrel->SetParent(tronTank.get());
-}
+#pragma endregion PlayerPawn
 
-void Tron::CreateNPCs(Scene& /*scene*/, std::shared_ptr<GameState> /*pObserver*/)
-{
-}
-
-void Tron::CreateGameplayObjects(Scene& scene, std::shared_ptr<GameState> /*pObserver*/)
-{
+#pragma region GameplayObjects
 	const auto bullet = std::make_shared<GameObject>(std::string{ "bullet" });
 	bullet->GetTransform()->SetPosition(150, 150);
 	bullet->GetTransform()->SetScale(20, 20);
@@ -81,12 +79,11 @@ void Tron::CreateGameplayObjects(Scene& scene, std::shared_ptr<GameState> /*pObs
 	bullet->AddComponent(std::move(bulletCBullet));
 
 	scene.Add(bullet);
-}
+#pragma endregion GameplayObjects
 
-void Tron::CreateTerrainLevel0(Scene& scene)
-{
+#pragma region Terrain
 	const auto wallTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-//1//
+	//1//
 	const auto wall = std::make_shared<GameObject>(std::string{ "WallOne" });
 	//CTRANSFORM
 	wall->GetTransform()->SetPosition(100, 100);
@@ -98,7 +95,7 @@ void Tron::CreateTerrainLevel0(Scene& scene)
 	std::unique_ptr<CCollisionBox> wallCCollision = std::make_unique<CCollisionBox>(wall.get(), CollisionGroup::Wall);
 	wall->AddComponent(std::move(wallCCollision));
 	scene.Add(wall);
-//2//
+	//2//
 	const auto wall2 = std::make_shared<GameObject>(std::string{ "WallOne" });
 	//CTRANSFORM
 	wall2->GetTransform()->SetPosition(400, 100);
@@ -110,7 +107,7 @@ void Tron::CreateTerrainLevel0(Scene& scene)
 	std::unique_ptr<CCollisionBox> wallCCollision2 = std::make_unique<CCollisionBox>(wall2.get(), CollisionGroup::Wall);
 	wall2->AddComponent(std::move(wallCCollision2));
 	scene.Add(wall2);
-//3//
+	//3//
 	const auto wall3 = std::make_shared<GameObject>(std::string{ "WallOne" });
 	//CTRANSFORM
 	wall3->GetTransform()->SetPosition(100, 400);
@@ -122,7 +119,7 @@ void Tron::CreateTerrainLevel0(Scene& scene)
 	std::unique_ptr<CCollisionBox> wallCCollision3 = std::make_unique<CCollisionBox>(wall3.get(), CollisionGroup::Wall);
 	wall3->AddComponent(std::move(wallCCollision3));
 	scene.Add(wall3);
-//4//
+	//4//
 	const auto wall4 = std::make_shared<GameObject>(std::string{ "WallOne" });
 	//CTRANSFORM
 	wall4->GetTransform()->SetPosition(100, 100);
@@ -134,6 +131,78 @@ void Tron::CreateTerrainLevel0(Scene& scene)
 	std::unique_ptr<CCollisionBox> wallCCollision4 = std::make_unique<CCollisionBox>(wall4.get(), CollisionGroup::Wall);
 	wall4->AddComponent(std::move(wallCCollision4));
 	scene.Add(wall4);
+#pragma endregion Terrain
+}
+
+void Tron::CreateScene1()
+{
+	auto& scene = SceneManager::GetInstance().CreateScene("Level1");
+	//scene.SetActive(true);
+
+	const auto tronTank = std::make_shared<GameObject>(std::string{ "TronPawnOne" });
+	tronTank->GetTransform()->SetPosition(300, 90);
+	tronTank->GetTransform()->SetScale(44, 44);
+
+	const auto tronTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankRed.png");
+	std::unique_ptr<CRender> tronCRender = std::make_unique<CRender>(tronTank.get(), tronTexture, true);
+	tronTank->AddComponent(std::move(tronCRender));
+
+	std::unique_ptr<CTankTron> tronCTankTron = std::make_unique<CTankTron>(tronTank.get());
+	tronTank->AddComponent(std::move(tronCTankTron));
+
+	std::unique_ptr<CCollisionBox> tronCCollision = std::make_unique<CCollisionBox>(tronTank.get(), CollisionGroup::Pawn);
+	tronTank->AddComponent(std::move(tronCCollision));
+
+	scene.Add(tronTank);
+
+	/////////////////TANKBARREL////////////////////
+	const auto tronTankBarrel = std::make_shared<GameObject>(std::string{ "TronPawnOneBarrel" });
+	tronTankBarrel->GetTransform()->SetPosition(22, 22);
+	tronTankBarrel->GetTransform()->SetScale(40, 10);
+
+	const auto tronBarrelTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	std::unique_ptr<CRender> tronBarrelCRender = std::make_unique<CRender>(tronTankBarrel.get(), tronBarrelTexture, true);
+	tronTankBarrel->AddComponent(std::move(tronBarrelCRender));
+
+	scene.Add(tronTankBarrel);
+
+	tronTankBarrel->SetParent(tronTank.get());
+
+	//m_pPlayerOnePawn = tronTank.get();
+}
+
+void Tron::CreateScene2()
+{
+	auto& scene = SceneManager::GetInstance().CreateScene("Level2");
+
+	const auto tronTank = std::make_shared<GameObject>(std::string{ "TronPawnOne" });
+	tronTank->GetTransform()->SetPosition(500, 90);
+	tronTank->GetTransform()->SetScale(44, 44);
+
+	const auto tronTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankRed.png");
+	std::unique_ptr<CRender> tronCRender = std::make_unique<CRender>(tronTank.get(), tronTexture, true);
+	tronTank->AddComponent(std::move(tronCRender));
+
+	std::unique_ptr<CTankTron> tronCTankTron = std::make_unique<CTankTron>(tronTank.get());
+	tronTank->AddComponent(std::move(tronCTankTron));
+
+	std::unique_ptr<CCollisionBox> tronCCollision = std::make_unique<CCollisionBox>(tronTank.get(), CollisionGroup::Pawn);
+	tronTank->AddComponent(std::move(tronCCollision));
+
+	scene.Add(tronTank);
+
+	/////////////////TANKBARREL////////////////////
+	const auto tronTankBarrel = std::make_shared<GameObject>(std::string{ "TronPawnOneBarrel" });
+	tronTankBarrel->GetTransform()->SetPosition(22, 22);
+	tronTankBarrel->GetTransform()->SetScale(40, 10);
+
+	const auto tronBarrelTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	std::unique_ptr<CRender> tronBarrelCRender = std::make_unique<CRender>(tronTankBarrel.get(), tronBarrelTexture, true);
+	tronTankBarrel->AddComponent(std::move(tronBarrelCRender));
+
+	scene.Add(tronTankBarrel);
+
+	tronTankBarrel->SetParent(tronTank.get());
 }
 
 InputManager* Tron::ConfigureInput()

@@ -15,6 +15,6 @@ public:
 	Game& operator=(const Game& other) = delete;
 	Game& operator=(Game&& other) noexcept = delete;
 
-	virtual bool SetupLevelLayout(Scene& scene) = 0;
+	virtual bool SetupGameScenes() = 0;
 	virtual InputManager* ConfigureInput() = 0;
 };

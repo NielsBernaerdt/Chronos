@@ -13,7 +13,7 @@ public:
 	Chronos(Game* pGame) : m_pGame(pGame) {};
 
 	void Initialize();
-	void InitializeObjects(const std::vector<std::shared_ptr<GameObject>>& objects) const;
+	void InitializeObjects() const;
 	bool LoadGame() const;
 	void Cleanup();
 	void Run();

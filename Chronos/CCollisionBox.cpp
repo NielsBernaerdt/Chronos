@@ -1,8 +1,11 @@
 #include "ChronosPCH.h"
 #include "CCollisionBox.h"
 #include "GameObject.h"
+#include "Scene.h"
+#include "SceneManager.h"
 
-std::vector<CCollisionBox*> CCollisionBox::m_pCollisionBoxes;
+std::map<CCollisionBox*, int> CCollisionBox::m_pCollisionBoxes;
+//std::vector<CCollisionBox*> CCollisionBox::m_pCollisionBoxes;
 
 CCollisionBox::CCollisionBox(GameObject* gameObject, CollisionGroup group, bool useScale, Rect sizeRect)
 	: CBase(gameObject)
@@ -10,7 +13,8 @@ CCollisionBox::CCollisionBox(GameObject* gameObject, CollisionGroup group, bool 
 	, m_UseScale(useScale)
 	, m_Rect(sizeRect)
 {
-	m_pCollisionBoxes.push_back(this);
+	//m_pCollisionBoxes.push_back(this);
+	m_pCollisionBoxes.insert(std::make_pair<>(this, 0));
 }
 void CCollisionBox::Initialize()
 {
@@ -38,15 +42,16 @@ std::vector<GameObject*> CCollisionBox::GetOverlappingObjects(CollisionGroup fil
 	std::vector<GameObject*> temp;
 	for (const auto e : m_pCollisionBoxes)
 	{
-		if (e->m_CollisionGroup != filter) continue;
+		if (e.second != SceneManager::GetInstance().GetActiveScene()
+			|| e.first->m_CollisionGroup != filter) continue;
 
 		if (IsRectOverlapping(glm::vec2(m_Rect.left, m_Rect.bottom + m_Rect.height)
-							, glm::vec2(m_Rect.left + m_Rect.width, m_Rect.bottom)
-							, glm::vec2(e->m_Rect.left, e->m_Rect.bottom + e->m_Rect.height)
-							, glm::vec2(e->m_Rect.left + e->m_Rect.width, e->m_Rect.bottom))
-			&& e != this)
+			, glm::vec2(m_Rect.left + m_Rect.width, m_Rect.bottom)
+			, glm::vec2(e.first->m_Rect.left, e.first->m_Rect.bottom + e.first->m_Rect.height)
+			, glm::vec2(e.first->m_Rect.left + e.first->m_Rect.width, e.first->m_Rect.bottom))
+			&& e.first != this)
 		{
-			temp.push_back(e->m_OwnerObject);
+			temp.push_back(e.first->m_OwnerObject);
 		}
 	}
 

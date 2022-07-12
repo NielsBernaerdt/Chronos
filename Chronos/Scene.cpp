@@ -29,3 +29,15 @@ void Scene::Render() const
 	}
 }
 
+void Scene::SetActive(bool active)
+{
+	if (active == true)
+	{
+		for (auto scene : SceneManager::GetInstance().GetScenes())
+		{
+			if (scene != nullptr)
+				scene->SetActive(false);
+		}
+	}
+	m_IsActive = active;
+}

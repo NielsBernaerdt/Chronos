@@ -56,16 +56,15 @@ void Chronos::Initialize()
 
  bool Chronos::LoadGame() const
 {
-	 Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
-
-	 bool exitGame = m_pGame->SetupLevelLayout(scene);
-	 if (exitGame)
+	 bool invalidFile = m_pGame->SetupGameScenes();
+	 if (invalidFile)
 	 {
-		 std::cout << "Wrong file layout. Exiting...\n";
+		 std::cout << "Wrong file layout. Press a key to exit...\n";
+		 std::cin.get();
 		 return true;
 	 }
 
-	 InitializeObjects(scene.GetObjects());
+	 InitializeObjects();
 	 return false;
 }
 
@@ -125,10 +124,7 @@ void Chronos::Run()
 	AudioManager::GetInstance().LeaveThread(true);
 }
 
-void Chronos::InitializeObjects(const std::vector < std::shared_ptr<GameObject>>& objects) const
+void Chronos::InitializeObjects() const
 {
-	for (const auto e : objects)
-	{
-		e->Initialize();
-	}
+	SceneManager::GetInstance().InitializeObjects();
 }

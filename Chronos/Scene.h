@@ -12,6 +12,9 @@ public:
 	void Update(float deltaTime);
 	void Render() const;
 
+	void SetActive(bool active);
+	bool IsActive() const { return m_IsActive; }
+
 	~Scene();
 	Scene(const Scene& other) = delete;
 	Scene(Scene&& other) = delete;
@@ -22,6 +25,7 @@ private:
 	explicit Scene(const std::string& name);
 
 	std::string m_Name;
+	bool m_IsActive{ false };
 	std::vector < std::shared_ptr<GameObject>> m_Objects{};
 
 	static unsigned int m_IdCounter;

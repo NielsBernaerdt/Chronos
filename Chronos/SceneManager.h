@@ -7,10 +7,13 @@ class SceneManager final : public Singleton<SceneManager>
 public:
 	Scene& CreateScene(const std::string& name);
 
+	void InitializeObjects();
 	void Update(float deltaTime);
 	void Render();
 
+	std::vector<std::shared_ptr<Scene>>& GetScenes() { return m_Scenes; }
 	Scene* GetScene(int index) { return m_Scenes[index].get(); }
+	int GetActiveScene();
 private:
 	friend class Singleton<SceneManager>;
 	SceneManager() = default;
