@@ -5,6 +5,7 @@
 #include <CRender.h>
 #include <Scene.h>
 #include <SDL_mouse.h>
+#include <SDL_scancode.h>
 
 #include "CBullet.h"
 #include "CCollisionBox.h"
@@ -75,7 +76,7 @@ void Tron::CreateScene0()
 	std::unique_ptr<CCollisionBox> bulletCCollision = std::make_unique<CCollisionBox>(bullet.get(), CollisionGroup::Wall);
 	bullet->AddComponent(std::move(bulletCCollision));
 
-	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get());
+	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), glm::vec3{100, 100, 0});
 	bullet->AddComponent(std::move(bulletCBullet));
 
 	scene.Add(bullet);
@@ -217,6 +218,10 @@ InputManager* Tron::ConfigureInput()
 	inputManager->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<MoveVertical>(false));
 	inputManager->AddController(0, m_pPlayerOnePawn);
 	//KEYBOARD|MOUSE
+	inputManager->BindCommandToButton(SDL_SCANCODE_D, std::make_unique<MoveHorizontal>(true));
+	inputManager->BindCommandToButton(SDL_SCANCODE_A, std::make_unique<MoveHorizontal>(false));
+	inputManager->BindCommandToButton(SDL_SCANCODE_W, std::make_unique<MoveVertical>(true));
+	inputManager->BindCommandToButton(SDL_SCANCODE_S, std::make_unique<MoveVertical>(false));
 	inputManager->BindCommandToButton(SDL_BUTTON_LMASK, std::make_unique<Shoot>(), true);
 	inputManager->AddController(4, m_pPlayerOnePawn);
 

@@ -3,11 +3,14 @@
 #include "CollisionGroups.h"
 #include <GameObject.h>
 
-CBullet::CBullet(GameObject* gameObject)
+CBullet::CBullet(GameObject* gameObject, glm::vec3 velocity)
 	: CBase(gameObject)
+	, m_Velocity(velocity)
 {
 	if (m_OwnerObject)
 		m_PawnTransform = m_OwnerObject->GetTransform();
+
+	m_Velocity *= m_BulletSpeed;
 }
 void CBullet::Initialize()
 {

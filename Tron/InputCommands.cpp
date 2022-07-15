@@ -76,6 +76,6 @@ void Shoot::Execute(GameObject* actor)
 	{
 		if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
 
-		std::cout << "Mouse clicked\n";
+		m_CTron->Shoot();
 	}
 }

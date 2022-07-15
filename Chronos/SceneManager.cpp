@@ -13,6 +13,7 @@ void SceneManager::InitializeObjects()
 			obj->Initialize();
 		}
 	}
+	m_IsGameActive = true;
 }
 
 void SceneManager::Update(float deltaTime)

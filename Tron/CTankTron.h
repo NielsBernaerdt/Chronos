@@ -22,12 +22,16 @@ public:
 	void MoveHorizontally(int moveRight);
 	void MoveVertically(int moveUp);
 
+	void Shoot();
+
 private:
 	float m_MovSpeed{ 200 };
 	glm::vec3 m_PrevPosition{};
 	glm::vec3 m_AccMovement{};
-
-	float m_AccTime{};
+	
+	glm::vec3 m_BarrelDirection{};
+	float m_AccTimeShooting{ 1.f };
+	float m_ShootingCooldown{ 1.f };
 
 	CTransform* m_PawnTransform = nullptr;
 	CCollisionBox* m_pCollision = nullptr;

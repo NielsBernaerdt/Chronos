@@ -10,7 +10,7 @@ class CCollisionBox;
 class CBullet : public CBase
 {
 public:
-	CBullet(GameObject* gameObject);
+	CBullet(GameObject* gameObject, glm::vec3 velocity = glm::vec3{});
 	~CBullet() override = default;
 	CBullet(const CBullet& other) = delete;
 	CBullet(CBullet&& other) noexcept = delete;
@@ -23,7 +23,8 @@ public:
 private:
 	int m_NrBounces{};
 	glm::vec3 m_PrevPosition{};
-	glm::vec3 m_Velocity{200, 50, 0};
+	glm::vec3 m_Velocity{};
+	float m_BulletSpeed{ 3 };
 
 	CTransform* m_PawnTransform = nullptr;
 	CCollisionBox* m_pCollision = nullptr;

@@ -4,9 +4,13 @@
 #include <CCollisionBox.h>
 #include <CRender.h>
 #include <iostream>
-
 #include "CollisionGroups.h"
 #include "InputManager.h"
+//SPAWN BULLET
+#include "ResourceManager.h"
+#include "CBullet.h"
+#include "Scene.h"
+#include "SceneManager.h"
 
 CTankTron::CTankTron(GameObject* gameObject)
 	: CBase(gameObject)
@@ -37,7 +41,7 @@ void CTankTron::Update(float deltaTime)
 
 	//renderComp->RotateTexture(15 * int(m_AccTime));
 
-	m_AccTime += deltaTime;
+	m_AccTimeShooting += deltaTime;
 	//LET BARREL ROTATE
 	auto child = m_OwnerObject->GetChildren()[0];
 	auto baseComp = child->GetComponent<CRender>();
@@ -49,6 +53,10 @@ void CTankTron::Update(float deltaTime)
 
 	mousePos.x -= m_OwnerObject->GetTransform()->GetPosition().x;
 	mousePos.y -= m_OwnerObject->GetTransform()->GetPosition().y;
+
+	//
+	m_BarrelDirection = { mousePos.x, mousePos.y, 0 };
+	//
 
 	angle = atanf(mousePos.y/ mousePos.x);
 	angle = float(angle * 180 / 3.14159265358979323846264338327950288);
@@ -92,4 +100,31 @@ void CTankTron::MoveVertically(int moveUp)
  */
 {
 	m_AccMovement.y -= moveUp * m_MovSpeed;
+}
+
+void CTankTron::Shoot()
+{
+	if (m_AccTimeShooting <= m_ShootingCooldown)
+		return;
+	m_AccTimeShooting = 0.f;
+
+	const auto bullet = std::make_shared<GameObject>(std::string{ "bullet" });
+	auto startingPos = m_OwnerObject->GetTransform()->GetPosition();
+	bullet->GetTransform()->SetPosition(startingPos);
+	bullet->GetTransform()->SetScale(20, 20);
+
+	const auto bulletTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	std::unique_ptr<CRender> bulletCRender = std::make_unique<CRender>(bullet.get(), bulletTexture, true);
+	bullet->AddComponent(std::move(bulletCRender));
+
+	std::unique_ptr<CCollisionBox> bulletCCollision = std::make_unique<CCollisionBox>(bullet.get(), CollisionGroup::Wall);
+	bullet->AddComponent(std::move(bulletCCollision));
+
+	//todo why does this not work correctly
+	glm::normalize(m_BarrelDirection);
+	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), m_BarrelDirection);
+	bullet->AddComponent(std::move(bulletCBullet));
+
+	int currentScene = SceneManager::GetInstance().GetActiveScene();
+	SceneManager::GetInstance().GetScene(currentScene)->Add(bullet);
 }
