@@ -34,6 +34,14 @@ void SceneManager::Render()
 	}
 }
 
+void SceneManager::EraseObjects()
+{
+	for (const auto& scene : m_Scenes)
+	{
+		scene->EraseObjects();
+	}
+}
+
 Scene& SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
@@ -41,7 +49,7 @@ Scene& SceneManager::CreateScene(const std::string& name)
 	return *scene;
 }
 
-int SceneManager::GetActiveScene()
+int SceneManager::GetActiveSceneIdx()
 {
 	int sceneIndex{ 0 };
 	for(const auto& scene : m_Scenes)
@@ -51,4 +59,14 @@ int SceneManager::GetActiveScene()
 		++sceneIndex;
 	}
 	return -1;
+}
+
+Scene* SceneManager::GetActiveScene()
+{
+	for (const auto& scene : m_Scenes)
+	{
+		if (scene->IsActive() == true)
+			return scene.get();
+	}
+	return nullptr;
 }

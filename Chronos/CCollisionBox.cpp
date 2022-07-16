@@ -42,7 +42,7 @@ std::vector<GameObject*> CCollisionBox::GetOverlappingObjects(CollisionGroup fil
 	std::vector<GameObject*> temp;
 	for (const auto e : m_pCollisionBoxes)
 	{
-		if (e.second != SceneManager::GetInstance().GetActiveScene()
+		if (e.second != SceneManager::GetInstance().GetActiveSceneIdx()
 			|| e.first->m_CollisionGroup != filter) continue;
 
 		if (IsRectOverlapping(glm::vec2(m_Rect.left, m_Rect.bottom + m_Rect.height)

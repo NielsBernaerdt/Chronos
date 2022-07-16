@@ -44,3 +44,20 @@ void Scene::SetActive(bool active)
 	}
 	m_IsActive = active;
 }
+
+void Scene::RemoveObject(GameObject* gameObject)
+{
+	m_ObjectsToDelete.push_back(gameObject);
+}
+
+void Scene::EraseObjects()
+{
+	for(auto obj : m_ObjectsToDelete)
+	{
+		std::vector<std::shared_ptr<GameObject>>::iterator i =	std::find_if(m_Objects.begin(), m_Objects.end(),
+				[&](std::shared_ptr<GameObject> e) { return e.get() == obj; });
+
+		m_Objects.erase(i);
+	}
+	m_ObjectsToDelete = std::vector <GameObject*>{};
+}

@@ -15,6 +15,9 @@ public:
 	void SetActive(bool active);
 	bool IsActive() const { return m_IsActive; }
 
+	void RemoveObject(GameObject* gameObject);
+	void EraseObjects();
+
 	~Scene();
 	Scene(const Scene& other) = delete;
 	Scene(Scene&& other) = delete;
@@ -27,6 +30,7 @@ private:
 	std::string m_Name;
 	bool m_IsActive{ false };
 	std::vector < std::shared_ptr<GameObject>> m_Objects{};
+	std::vector <GameObject*> m_ObjectsToDelete{};
 
 	static unsigned int m_IdCounter;
 };

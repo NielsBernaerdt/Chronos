@@ -34,7 +34,7 @@ void Tron::CreateScene0()
 	scene.SetActive(true);
 #pragma region PlayerPawn
 	const auto tronTank = std::make_shared<GameObject>(std::string{ "TronPawnOne" });
-	tronTank->GetTransform()->SetPosition(0, 90);
+	tronTank->GetTransform()->SetPosition(150, 150);
 	tronTank->GetTransform()->SetScale(44, 44);
 
 	const auto tronTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankRed.png");
@@ -65,21 +65,21 @@ void Tron::CreateScene0()
 #pragma endregion PlayerPawn
 
 #pragma region GameplayObjects
-	const auto bullet = std::make_shared<GameObject>(std::string{ "bullet" });
-	bullet->GetTransform()->SetPosition(150, 150);
-	bullet->GetTransform()->SetScale(20, 20);
+	//const auto bullet = std::make_shared<GameObject>(std::string{ "bullet" });
+	//bullet->GetTransform()->SetPosition(150, 150);
+	//bullet->GetTransform()->SetScale(20, 20);
 
-	const auto bulletTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	std::unique_ptr<CRender> bulletCRender = std::make_unique<CRender>(bullet.get(), bulletTexture, true);
-	bullet->AddComponent(std::move(bulletCRender));
+	//const auto bulletTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	//std::unique_ptr<CRender> bulletCRender = std::make_unique<CRender>(bullet.get(), bulletTexture, true);
+	//bullet->AddComponent(std::move(bulletCRender));
 
-	std::unique_ptr<CCollisionBox> bulletCCollision = std::make_unique<CCollisionBox>(bullet.get(), CollisionGroup::Wall);
-	bullet->AddComponent(std::move(bulletCCollision));
+	//std::unique_ptr<CCollisionBox> bulletCCollision = std::make_unique<CCollisionBox>(bullet.get(), CollisionGroup::Wall);
+	//bullet->AddComponent(std::move(bulletCCollision));
 
-	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), glm::vec3{100, 100, 0});
-	bullet->AddComponent(std::move(bulletCBullet));
+	//std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), glm::vec3{100, 25, 0});
+	//bullet->AddComponent(std::move(bulletCBullet));
 
-	scene.Add(bullet);
+	//scene.Add(bullet);
 #pragma endregion GameplayObjects
 
 #pragma region Terrain

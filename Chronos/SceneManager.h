@@ -10,10 +10,12 @@ public:
 	void InitializeObjects();
 	void Update(float deltaTime);
 	void Render();
+	void EraseObjects();
 
 	std::vector<std::shared_ptr<Scene>>& GetScenes() { return m_Scenes; }
 	Scene* GetScene(int index) { return m_Scenes[index].get(); }
-	int GetActiveScene();
+	int GetActiveSceneIdx();
+	Scene* GetActiveScene();
 	bool IsGameActive() const { return m_IsGameActive; }
 private:
 	friend class Singleton<SceneManager>;

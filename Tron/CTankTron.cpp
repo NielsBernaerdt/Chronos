@@ -125,6 +125,5 @@ void CTankTron::Shoot()
 	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), m_BarrelDirection);
 	bullet->AddComponent(std::move(bulletCBullet));
 
-	int currentScene = SceneManager::GetInstance().GetActiveScene();
-	SceneManager::GetInstance().GetScene(currentScene)->Add(bullet);
+	SceneManager::GetInstance().GetActiveScene()->Add(bullet);
 }

@@ -22,6 +22,7 @@ public:
 
 private:
 	int m_NrBounces{};
+	const int m_MaxNrBounces{ 5 };
 	glm::vec3 m_PrevPosition{};
 	glm::vec3 m_Velocity{};
 	float m_BulletSpeed{ 3 };

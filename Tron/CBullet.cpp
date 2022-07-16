@@ -3,6 +3,9 @@
 #include "CollisionGroups.h"
 #include <GameObject.h>
 
+#include "Scene.h"
+#include "SceneManager.h"
+
 CBullet::CBullet(GameObject* gameObject, glm::vec3 velocity)
 	: CBase(gameObject)
 	, m_Velocity(velocity)
@@ -32,8 +35,15 @@ void CBullet::Update(float deltaTime)
 
 	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Wall).empty() == false)
 	{
-		++m_NrBounces;
-		BounceBullet();
+		if (m_NrBounces < m_MaxNrBounces)
+		{
+			BounceBullet();
+			++m_NrBounces;
+		}
+		else
+		{
+			SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
+		}
 	}	
 }
 

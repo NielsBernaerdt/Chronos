@@ -110,7 +110,7 @@ void Chronos::Run()
 
 			sceneManager.Update(deltaTime);
 			renderer.Render();
-			
+			sceneManager.EraseObjects();
 			auto sleepTime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime + std::chrono::milliseconds(m_MsPerFrame) - std::chrono::high_resolution_clock::now());
 			std::this_thread::sleep_for(sleepTime);
 		}
