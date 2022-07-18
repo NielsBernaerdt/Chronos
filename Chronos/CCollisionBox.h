@@ -27,6 +27,7 @@ public:
 
 	void Initialize() override;
 	void Update(float) override;
+	void SetRect(glm::vec2 pos);
 
 private:
 	bool m_UseScale{ true };

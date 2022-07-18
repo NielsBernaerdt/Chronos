@@ -36,6 +36,11 @@ void CCollisionBox::Update(float)
 	m_Rect.bottom = (int)pos.y;
 }
 
+void CCollisionBox::SetRect(glm::vec2 pos)
+{
+	m_Rect.left = (int)pos.x;
+	m_Rect.bottom = (int)pos.y;
+}
 
 std::vector<GameObject*> CCollisionBox::GetOverlappingObjects(CollisionGroup filter) const
 {

@@ -26,6 +26,14 @@ void Renderer::Init(SDL_Window * window)
 	}
 }
 
+glm::vec2 Renderer::GetWindowSize() const
+{
+	int x{};
+	int y{};
+	SDL_GetWindowSize(m_Window, &x, &y);
+	return glm::vec2{ x, y };
+}
+
 void Renderer::Render() const
 {
 	const auto& color = GetBackgroundColor();

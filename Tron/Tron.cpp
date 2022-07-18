@@ -9,6 +9,7 @@
 
 #include "CBullet.h"
 #include "CCollisionBox.h"
+#include "CDiamond.h"
 #include "CHealth.h"
 #include "CollisionGroups.h"
 #include "CTankNPC.h"
@@ -66,7 +67,7 @@ void Tron::CreateScene0()
 	tronTankBarrel->SetParent(tronTank.get());
 #pragma endregion PlayerPawn
 
-#pragma region GameplayObjects
+#pragma region NPC
 	const auto npc = std::make_shared<GameObject>("blueTank0");
 	npc->GetTransform()->SetPosition(350, 150);
 	npc->GetTransform()->SetScale(44, 44);
@@ -85,6 +86,24 @@ void Tron::CreateScene0()
 	npc->AddComponent(std::move(npcCTankNPC));
 
 	scene.Add(npc);
+#pragma endregion NPC
+
+#pragma region GameplayObjects
+	const auto diamond = std::make_shared<GameObject>(std::string{ "Diamond" });
+	diamond->GetTransform()->SetPosition(225, 300);
+	diamond->GetTransform()->SetScale(60, 60);
+
+	const auto diamondTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	std::unique_ptr<CRender> diamondCRender = std::make_unique<CRender>(diamond.get(), diamondTexture, true);
+	diamond->AddComponent(std::move(diamondCRender));
+
+	std::unique_ptr<CCollisionBox> diamondCCollision = std::make_unique<CCollisionBox>(diamond.get(), CollisionGroup::Pawn);
+	diamond->AddComponent(std::move(diamondCCollision));
+
+	std::unique_ptr<CDiamond> diamondCDiamond = std::make_unique<CDiamond>(diamond.get());
+	diamond->AddComponent(std::move(diamondCDiamond));
+
+	scene.Add(diamond);
 #pragma endregion GameplayObjects
 
 #pragma region Terrain

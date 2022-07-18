@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CBullet.cpp" />
+    <ClCompile Include="CDiamond.cpp" />
     <ClCompile Include="CHealth.cpp" />
     <ClCompile Include="CTankNPC.cpp" />
     <ClCompile Include="CTankTron.cpp" />
@@ -169,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBullet.h" />
+    <ClInclude Include="CDiamond.h" />
     <ClInclude Include="CHealth.h" />
     <ClInclude Include="CollisionGroups.h" />
     <ClInclude Include="CPoints.h" />

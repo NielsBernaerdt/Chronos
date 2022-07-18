@@ -1,6 +1,7 @@
 #pragma once
 #include "Rect.h"
 #include "Singleton.h"
+#include <SDL.h>
 
 class Texture2D;
 /**
@@ -22,6 +23,7 @@ public:
 	void RenderTextureRotated(const Texture2D& texture, float x, float y, float width, float height, double angle, Rect srcRect = { 0 ,0,0,0 }) const;
 
 	SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
+	glm::vec2 GetWindowSize() const;
 
 	const SDL_Color& GetBackgroundColor() const { return m_clearColor; }
 	void SetBackgroundColor(const SDL_Color& color) { m_clearColor = color; }
