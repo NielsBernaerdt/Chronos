@@ -2,7 +2,9 @@
 #include <CCollisionBox.h>
 #include "CollisionGroups.h"
 #include <GameObject.h>
+#include <iostream>
 
+#include "CHealth.h"
 #include "Scene.h"
 #include "SceneManager.h"
 
@@ -44,7 +46,17 @@ void CBullet::Update(float deltaTime)
 		{
 			SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
 		}
-	}	
+	}
+
+	auto enemies = m_pCollision->GetOverlappingObjects(CollisionGroup::NPC);
+	if (enemies.empty() == false)
+	{
+		for(const auto& e : enemies)
+		{
+			dynamic_cast<CHealth*>(e->GetComponent<CHealth>())->Damage();
+		}
+		SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
+	}
 }
 
 void CBullet::BounceBullet()

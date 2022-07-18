@@ -9,7 +9,9 @@
 
 #include "CBullet.h"
 #include "CCollisionBox.h"
+#include "CHealth.h"
 #include "CollisionGroups.h"
+#include "CTankNPC.h"
 #include "CTankTron.h"
 #include "InputCommands.h"
 
@@ -65,21 +67,24 @@ void Tron::CreateScene0()
 #pragma endregion PlayerPawn
 
 #pragma region GameplayObjects
-	//const auto bullet = std::make_shared<GameObject>(std::string{ "bullet" });
-	//bullet->GetTransform()->SetPosition(150, 150);
-	//bullet->GetTransform()->SetScale(20, 20);
+	const auto npc = std::make_shared<GameObject>("blueTank0");
+	npc->GetTransform()->SetPosition(350, 150);
+	npc->GetTransform()->SetScale(44, 44);
 
-	//const auto bulletTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	//std::unique_ptr<CRender> bulletCRender = std::make_unique<CRender>(bullet.get(), bulletTexture, true);
-	//bullet->AddComponent(std::move(bulletCRender));
+	const auto blueTankTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankBlue.png");
+	std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), blueTankTexture, true);
+	npc->AddComponent(std::move(npcCRender));
 
-	//std::unique_ptr<CCollisionBox> bulletCCollision = std::make_unique<CCollisionBox>(bullet.get(), CollisionGroup::Wall);
-	//bullet->AddComponent(std::move(bulletCCollision));
+	std::unique_ptr<CCollisionBox> npcCCollision = std::make_unique<CCollisionBox>(npc.get(), CollisionGroup::NPC);
+	npc->AddComponent(std::move(npcCCollision));
 
-	//std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), glm::vec3{100, 25, 0});
-	//bullet->AddComponent(std::move(bulletCBullet));
+	std::unique_ptr<CHealth> npcCHealth = std::make_unique<CHealth>(npc.get());
+	npc->AddComponent(std::move(npcCHealth));
 
-	//scene.Add(bullet);
+	std::unique_ptr<CTankNPC> npcCTankNPC = std::make_unique<CTankNPC>(npc.get(), TankType::BlueTank);
+	npc->AddComponent(std::move(npcCTankNPC));
+
+	scene.Add(npc);
 #pragma endregion GameplayObjects
 
 #pragma region Terrain

@@ -35,6 +35,12 @@
     <ClCompile Include="CBullet.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="CTankNPC.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CHealth.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tron.h">
@@ -50,6 +56,15 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="CBullet.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CTankNPC.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CPoints.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CHealth.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
