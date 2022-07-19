@@ -28,9 +28,6 @@ void CTankTron::Initialize()
 {
 	m_pCollision = dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>());
 	//m_State = new IdleState{};
-
-	//auto barrelCRender = dynamic_cast<CRender*>(m_OwnerObject->GetChildren()[0]->GetComponent<CRender>());
-	//barrelCRender->SetTexture(ResourceManager::GetInstance().LoadEmptyTexture());
 }
 void CTankTron::Update(float deltaTime)
 {
@@ -49,7 +46,6 @@ void CTankTron::Update(float deltaTime)
 	{
 		//LET BARREL ROTATE
 		auto child = m_OwnerObject->GetChildren()[0];
-		std::cout << child->GetName() << std::endl;
 		auto baseComp = child->GetComponent<CRender>();
 		auto renderComp = dynamic_cast<CRender*>(baseComp);
 
@@ -66,9 +62,7 @@ void CTankTron::Update(float deltaTime)
 
 		angle = atanf(mousePos.y / mousePos.x);
 		angle = float(angle * 180 / 3.14159265358979323846264338327950288);
-		//std::cout << "Float angle: " << angle << std::endl;
-		//std::cout << "Int time: " << int(angle) << std::endl;
-		//
+
 		renderComp->RotateTexture(int(angle));
 	}
 

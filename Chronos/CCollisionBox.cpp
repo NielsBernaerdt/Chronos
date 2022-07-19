@@ -5,7 +5,6 @@
 #include "SceneManager.h"
 
 std::map<CCollisionBox*, int> CCollisionBox::m_pCollisionBoxes;
-//std::vector<CCollisionBox*> CCollisionBox::m_pCollisionBoxes;
 
 CCollisionBox::CCollisionBox(GameObject* gameObject, CollisionGroup group, bool useScale, Rect sizeRect)
 	: CBase(gameObject)
@@ -13,7 +12,6 @@ CCollisionBox::CCollisionBox(GameObject* gameObject, CollisionGroup group, bool 
 	, m_UseScale(useScale)
 	, m_Rect(sizeRect)
 {
-	//m_pCollisionBoxes.push_back(this);
 	m_pCollisionBoxes.insert(std::make_pair<>(this, 0));
 }
 void CCollisionBox::Initialize()

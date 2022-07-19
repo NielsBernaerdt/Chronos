@@ -3,6 +3,7 @@
 #include <GameObject.h>
 #include <ResourceManager.h>
 #include <CRender.h>
+#include <iostream>
 #include <Scene.h>
 #include <SDL_mouse.h>
 #include <SDL_scancode.h>
@@ -52,16 +53,16 @@ void Tron::CreatePawns()
 
 	m_pPlayerOnePawn = tronTank;
 
-	///////////////////TANKBARREL////////////////////
-	//const auto tronTankBarrel = std::make_shared<GameObject>(std::string{ "TronPawnOneBarrel" });
-	//tronTankBarrel->GetTransform()->SetPosition(22, 22);
-	//tronTankBarrel->GetTransform()->SetScale(40, 10);
+	/////////////////TANKBARREL////////////////////
+	const auto tronTankBarrel = std::make_shared<GameObject>(std::string{ "TronPawnOneBarrel" });
+	tronTankBarrel->GetTransform()->SetPosition(22, 22);
+	tronTankBarrel->GetTransform()->SetScale(40, 10);
 
-	//const auto tronBarrelTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	//std::unique_ptr<CRender> tronBarrelCRender = std::make_unique<CRender>(tronTankBarrel.get(), tronBarrelTexture, true);
-	//tronTankBarrel->AddComponent(std::move(tronBarrelCRender));
+	const auto tronBarrelTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	std::unique_ptr<CRender> tronBarrelCRender = std::make_unique<CRender>(tronTankBarrel.get(), tronBarrelTexture, true);
+	tronTankBarrel->AddComponent(std::move(tronBarrelCRender));
 
-	//tronTankBarrel->SetParent(m_pPlayerOnePawn.get());
+	tronTankBarrel->SetParent(m_pPlayerOnePawn.get(), tronTankBarrel);
 #pragma endregion PlayerPawn
 }
 
@@ -78,6 +79,9 @@ void Tron::CreateSceneByIndex(int index)
 	case 2:
 		CreateScene2();
 		break;
+	default:
+		std::cout << "Incorrect given index\n";
+		break;
 	}
 }
 
@@ -91,6 +95,7 @@ void Tron::CreateScene0()
 	{
 		scene->Add(m_pPlayerOnePawn);
 		m_pPlayerOnePawn->GetTransform()->SetPosition(150, 150);
+		scene->Add(m_pPlayerOnePawn->GetChildren()[0]);
 	}
 #pragma endregion PlayerPawns
 
@@ -195,6 +200,7 @@ void Tron::CreateScene1()
 	{
 		scene->Add(m_pPlayerOnePawn);
 		m_pPlayerOnePawn->GetTransform()->SetPosition(350, 150);
+		scene->Add(m_pPlayerOnePawn->GetChildren()[0]);
 	}
 #pragma endregion PlayerPawns
 }
@@ -208,6 +214,7 @@ void Tron::CreateScene2()
 	{
 		scene->Add(m_pPlayerOnePawn);
 		m_pPlayerOnePawn->GetTransform()->SetPosition(150, 350);
+		scene->Add(m_pPlayerOnePawn->GetChildren()[0]);
 	}
 #pragma endregion PlayerPawns
 }

@@ -37,14 +37,14 @@ private:
 	//scenegraph
 public:
 	GameObject* GetParent() const;
-	void SetParent(GameObject* parent);
+	void SetParent(GameObject* parent, std::shared_ptr<GameObject> child);
 
-	std::vector<GameObject*> GetChildren() const { return m_pChildren; }
+	std::vector<std::shared_ptr<GameObject>> GetChildren() const { return m_pChildren; }
 private:
-	void AddChild(GameObject* child);
+	void AddChild(std::shared_ptr<GameObject> child);
 
 	GameObject* m_pParent = nullptr;
-	std::vector<GameObject*> m_pChildren;
+	std::vector<std::shared_ptr<GameObject>> m_pChildren;
 	CTransform* m_pCTransform = nullptr;
 	CRender* m_pRender = nullptr;
 
@@ -70,4 +70,3 @@ CBase* GameObject::GetComponent() const
 
 	return nullptr;
 }
-

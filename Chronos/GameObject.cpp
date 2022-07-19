@@ -12,19 +12,11 @@ GameObject::GameObject(std::string name)
 }
 GameObject::~GameObject()
 {
-	for(auto c : m_pChildren)
-	{
-		delete c;
-	}
 	m_pChildren.clear();
 }
 
 void GameObject::Initialize()
 {
-	for (const auto& obj : m_pChildren)
-	{
-		obj->Initialize();
-	}
 	for (const auto& comp : m_pComponents)
 	{
 		comp->Initialize();
@@ -37,10 +29,6 @@ void GameObject::Initialize()
 
 void GameObject::Update(float deltaTime)
 {
-	for (const auto& obj : m_pChildren)
-	{
-		obj->Update(deltaTime);
-	}
 	for (const auto& comp : m_pComponents)
 	{
 		comp->Update(deltaTime);
@@ -49,10 +37,6 @@ void GameObject::Update(float deltaTime)
 
 void GameObject::Render() const
 {
-	for (const auto& obj : m_pChildren)
-	{
-		obj->Render();
-	}
 	if(m_pRender) m_pRender->Render();
 }
 
@@ -76,12 +60,12 @@ GameObject* GameObject::GetParent() const
 {
 	return m_pParent;
 }
-void GameObject::SetParent(GameObject* parent)
+void GameObject::SetParent(GameObject* parent, std::shared_ptr<GameObject> child)
 {
 	m_pParent = parent;
-	m_pParent->AddChild(this);
+	m_pParent->AddChild(child);
 }
-void GameObject::AddChild(GameObject* child)
+void GameObject::AddChild(std::shared_ptr<GameObject> child)
 {
 	m_pChildren.push_back(child);
 }

@@ -17,6 +17,7 @@ public:
 	int GetActiveSceneIdx();
 	Scene* GetActiveScene();
 	bool IsGameActive() const { return m_IsGameActive; }
+	void SetGameNonActive() { m_IsGameActive = false; }
 	void OpenScene(int idx);
 private:
 	friend class Singleton<SceneManager>;
