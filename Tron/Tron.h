@@ -19,9 +19,10 @@ public:
 	static std::shared_ptr<GameObject> m_pPlayerOnePawn;
 
 	void CreatePawns();
+	static void CreateSceneByIndex(int index);
 	static void CreateScene0();
-	void CreateScene1();
-	void CreateScene2();
+	static void CreateScene1();
+	static void CreateScene2();
 
 	bool SetupGameScenes() override {
 		const bool invalidFile = ReadFromFile();

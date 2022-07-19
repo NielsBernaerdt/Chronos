@@ -26,46 +26,11 @@ bool Tron::ReadFromFile()
 
 void Tron::CreateScenes()
 {
-	//Find some way for a universal pawn//
-#pragma region PlayerPawn
-	//const auto tronTank = std::make_shared<GameObject>(std::string{ "TronPawnOne" });
-	//tronTank->GetTransform()->SetPosition(150, 150);
-	//tronTank->GetTransform()->SetScale(44, 44);
-
-	//const auto tronTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankRed.png");
-	//std::unique_ptr<CRender> tronCRender = std::make_unique<CRender>(tronTank.get(), tronTexture, true);
-	//tronTank->AddComponent(std::move(tronCRender));
-
-	//std::unique_ptr<CTankTron> tronCTankTron = std::make_unique<CTankTron>(tronTank.get());
-	//tronTank->AddComponent(std::move(tronCTankTron));
-
-	//std::unique_ptr<CCollisionBox> tronCCollision = std::make_unique<CCollisionBox>(tronTank.get(), CollisionGroup::Pawn);
-	//tronTank->AddComponent(std::move(tronCCollision));
-
-	//scene.Add(tronTank);
-	//m_pPlayerOnePawn = tronTank.get();
-
-	///////////////////TANKBARREL////////////////////
-	//const auto tronTankBarrel = std::make_shared<GameObject>(std::string{ "TronPawnOneBarrel" });
-	//tronTankBarrel->GetTransform()->SetPosition(22, 22);
-	//tronTankBarrel->GetTransform()->SetScale(40, 10);
-
-	//const auto tronBarrelTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	//std::unique_ptr<CRender> tronBarrelCRender = std::make_unique<CRender>(tronTankBarrel.get(), tronBarrelTexture, true);
-	//tronTankBarrel->AddComponent(std::move(tronBarrelCRender));
-
-	//scene.Add(tronTankBarrel);
-
-	//tronTankBarrel->SetParent(tronTank.get());
-#pragma endregion PlayerPawn
-
 	SceneManager::GetInstance().CreateScene("Level0");
 	SceneManager::GetInstance().CreateScene("Level1");
 	SceneManager::GetInstance().CreateScene("Level2");
 	CreatePawns();
 	CreateScene0();
-	CreateScene1();
-	CreateScene2();
 }
 
 void Tron::CreatePawns()
@@ -98,6 +63,22 @@ void Tron::CreatePawns()
 
 	//tronTankBarrel->SetParent(m_pPlayerOnePawn.get());
 #pragma endregion PlayerPawn
+}
+
+void Tron::CreateSceneByIndex(int index)
+{
+	switch (index)
+	{
+	case 0:
+		CreateScene0();
+		break;
+	case 1:
+		CreateScene1();
+		break;
+	case 2:
+		CreateScene2();
+		break;
+	}
 }
 
 void Tron::CreateScene0()

@@ -94,6 +94,8 @@ OpenScene::~OpenScene()
 void OpenScene::Execute(GameObject*)
 {
 	SceneManager::GetInstance().OpenScene(m_SceneIndex);
+	SceneManager::GetInstance().GetScene(m_SceneIndex)->ClearScene();
+	Tron::CreateSceneByIndex(m_SceneIndex);
 }
 //----------------------------------RESETSCENE----------------------------------
 ResetScene::ResetScene()
@@ -106,5 +108,5 @@ ResetScene::~ResetScene()
 void ResetScene::Execute(GameObject* )
 {
 	SceneManager::GetInstance().GetActiveScene()->ClearScene();
-	Tron::CreateScene0();
+	Tron::CreateSceneByIndex(SceneManager::GetInstance().GetActiveSceneIdx());
 }
