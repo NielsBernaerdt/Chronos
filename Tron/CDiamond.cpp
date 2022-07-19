@@ -43,11 +43,6 @@ void CDiamond::TeleportPlayer(GameObject* playerPawn)
 
 	if (dynamic_cast<CCollisionBox*>(playerPawn->GetComponent<CCollisionBox>())->GetOverlappingObjects(CollisionGroup::Wall).empty() == false)
 	{
-		std::cout << "Hello is this working?\n";
 		TeleportPlayer(playerPawn);
-	}
-	else
-	{
-		std::cout << "Okayy\n";
 	}
 }

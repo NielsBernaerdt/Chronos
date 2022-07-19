@@ -12,6 +12,11 @@ GameObject::GameObject(std::string name)
 }
 GameObject::~GameObject()
 {
+	for(auto c : m_pChildren)
+	{
+		delete c;
+	}
+	m_pChildren.clear();
 }
 
 void GameObject::Initialize()

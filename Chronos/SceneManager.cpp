@@ -70,3 +70,8 @@ Scene* SceneManager::GetActiveScene()
 	}
 	return nullptr;
 }
+
+void SceneManager::OpenScene(int idx)
+{
+	m_Scenes[idx % m_Scenes.size()]->SetActive(true);
+}

@@ -50,8 +50,19 @@ void Scene::RemoveObject(GameObject* gameObject)
 	m_ObjectsToDelete.push_back(gameObject);
 }
 
+void Scene::ClearScene()
+{
+	for(const auto& object : m_Objects)
+	{
+		m_ObjectsToDelete.push_back(object.get());
+	}
+}
+
 void Scene::EraseObjects()
 {
+	if (m_ObjectsToDelete.empty())
+		return;
+
 	for(auto obj : m_ObjectsToDelete)
 	{
 		std::vector<std::shared_ptr<GameObject>>::iterator i =	std::find_if(m_Objects.begin(), m_Objects.end(),

@@ -28,6 +28,9 @@ void CTankTron::Initialize()
 {
 	m_pCollision = dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>());
 	//m_State = new IdleState{};
+
+	//auto barrelCRender = dynamic_cast<CRender*>(m_OwnerObject->GetChildren()[0]->GetComponent<CRender>());
+	//barrelCRender->SetTexture(ResourceManager::GetInstance().LoadEmptyTexture());
 }
 void CTankTron::Update(float deltaTime)
 {
@@ -42,29 +45,32 @@ void CTankTron::Update(float deltaTime)
 	//renderComp->RotateTexture(15 * int(m_AccTime));
 
 	m_AccTimeShooting += deltaTime;
-	//LET BARREL ROTATE
-	auto child = m_OwnerObject->GetChildren()[0];
-	auto baseComp = child->GetComponent<CRender>();
-	auto renderComp = dynamic_cast<CRender*>(baseComp);
+	if (m_OwnerObject->GetChildren().empty() == false)
+	{
+		//LET BARREL ROTATE
+		auto child = m_OwnerObject->GetChildren()[0];
+		std::cout << child->GetName() << std::endl;
+		auto baseComp = child->GetComponent<CRender>();
+		auto renderComp = dynamic_cast<CRender*>(baseComp);
 
-	//MATH HERE//
-	float angle{};
-	glm::vec2 mousePos = InputManager::GetMousePos();
+		//MATH HERE//
+		float angle{};
+		glm::vec2 mousePos = InputManager::GetMousePos();
 
-	mousePos.x -= m_OwnerObject->GetTransform()->GetPosition().x;
-	mousePos.y -= m_OwnerObject->GetTransform()->GetPosition().y;
+		mousePos.x -= m_OwnerObject->GetTransform()->GetPosition().x;
+		mousePos.y -= m_OwnerObject->GetTransform()->GetPosition().y;
 
-	//
-	m_BarrelDirection = { mousePos.x, mousePos.y, 0 };
-	//
+		//
+		m_BarrelDirection = { mousePos.x, mousePos.y, 0 };
+		//
 
-	angle = atanf(mousePos.y/ mousePos.x);
-	angle = float(angle * 180 / 3.14159265358979323846264338327950288);
-	//std::cout << "Float angle: " << angle << std::endl;
-	//std::cout << "Int time: " << int(angle) << std::endl;
-	//
-	renderComp->RotateTexture(int(angle));
-
+		angle = atanf(mousePos.y / mousePos.x);
+		angle = float(angle * 180 / 3.14159265358979323846264338327950288);
+		//std::cout << "Float angle: " << angle << std::endl;
+		//std::cout << "Int time: " << int(angle) << std::endl;
+		//
+		renderComp->RotateTexture(int(angle));
+	}
 
 	//STATES//
 	//PlayerState* state = m_State->Update(this->m_OwnerObject, this);
@@ -117,7 +123,7 @@ void CTankTron::Shoot()
 	std::unique_ptr<CRender> bulletCRender = std::make_unique<CRender>(bullet.get(), bulletTexture, true);
 	bullet->AddComponent(std::move(bulletCRender));
 
-	std::unique_ptr<CCollisionBox> bulletCCollision = std::make_unique<CCollisionBox>(bullet.get(), CollisionGroup::Wall);
+	std::unique_ptr<CCollisionBox> bulletCCollision = std::make_unique<CCollisionBox>(bullet.get(), CollisionGroup::Bullet);
 	bullet->AddComponent(std::move(bulletCCollision));
 
 	//todo why does this not work correctly

@@ -2,6 +2,9 @@
 #include <GameObject.h>
 #include <iostream>
 #include "CTankTron.h"
+#include "Scene.h"
+#include "SceneManager.h"
+#include "Tron.h"
 
 //----------------------------------MOVERIGHT----------------------------------
 MoveHorizontal::MoveHorizontal(bool moveRight)
@@ -78,4 +81,30 @@ void Shoot::Execute(GameObject* actor)
 
 		m_CTron->Shoot();
 	}
+}
+//----------------------------------OPENSCENE----------------------------------
+OpenScene::OpenScene(int sceneIdx)
+	: BCommand()
+	, m_SceneIndex(sceneIdx)
+{
+}
+OpenScene::~OpenScene()
+{
+}
+void OpenScene::Execute(GameObject*)
+{
+	SceneManager::GetInstance().OpenScene(m_SceneIndex);
+}
+//----------------------------------RESETSCENE----------------------------------
+ResetScene::ResetScene()
+	: BCommand()
+{
+}
+ResetScene::~ResetScene()
+{
+}
+void ResetScene::Execute(GameObject* )
+{
+	SceneManager::GetInstance().GetActiveScene()->ClearScene();
+	Tron::CreateScene0();
 }

@@ -5,5 +5,6 @@ enum class CollisionGroup
 	Pawn,
 	NPC,
 	Bullet,
-	Wall
+	Wall,
+	Diamond
 };

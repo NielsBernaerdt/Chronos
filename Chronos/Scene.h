@@ -17,6 +17,7 @@ public:
 
 	void RemoveObject(GameObject* gameObject);
 	void EraseObjects();
+	void ClearScene();
 
 	~Scene();
 	Scene(const Scene& other) = delete;

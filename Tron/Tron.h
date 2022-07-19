@@ -12,17 +12,17 @@ class GameState;
 class Tron : public Game
 {
 private:
-	GameObject* m_pPlayerOnePawn = nullptr;
-	GameObject* m_pPlayerTwoPawn = nullptr;
-
 	bool ReadFromFile();
 	void CreateScenes();
 
-	void CreateScene0();
+public:
+	static std::shared_ptr<GameObject> m_pPlayerOnePawn;
+
+	void CreatePawns();
+	static void CreateScene0();
 	void CreateScene1();
 	void CreateScene2();
 
-public:
 	bool SetupGameScenes() override {
 		const bool invalidFile = ReadFromFile();
 		if (invalidFile) return true;

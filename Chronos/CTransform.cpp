@@ -59,6 +59,7 @@ void CTransform:: UpdateRelativeTransform()
 	for(const auto child : m_OwnerObject->GetChildren())
 	{
 		CTransform* childCTransform = child->GetTransform();
-		childCTransform->UpdateRelativeTransform();
+		if(childCTransform)
+			childCTransform->UpdateRelativeTransform();
 	}
 }

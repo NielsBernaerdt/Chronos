@@ -44,3 +44,24 @@ private:
 	bool m_IsPlayerPawn;
 	CTankTron* m_CTron = nullptr;
 };
+//----------------------------------NEXTSCENE----------------------------------
+class OpenScene : public BCommand
+{
+public:
+	OpenScene(int sceneIdx);
+	~OpenScene() override;
+
+	void Execute(GameObject* actor) override;
+
+private:
+	int m_SceneIndex{};
+};
+//----------------------------------RESETSCENE----------------------------------
+class ResetScene : public BCommand
+{
+public:
+	ResetScene();
+	~ResetScene() override;
+
+	void Execute(GameObject* actor) override;
+};
