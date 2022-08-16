@@ -79,5 +79,8 @@
     <ClInclude Include="CHUDElement.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="HighScore.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

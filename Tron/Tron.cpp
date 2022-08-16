@@ -33,6 +33,8 @@ void Tron::CreateScenes()
 	SceneManager::GetInstance().CreateScene("Level0");
 	SceneManager::GetInstance().CreateScene("Level1");
 	SceneManager::GetInstance().CreateScene("Level2");
+	SceneManager::GetInstance().CreateScene("Main Menu");
+	SceneManager::GetInstance().CreateScene("Score Menu");
 	CreatePawns();
 	CreateScene0();
 }
@@ -55,9 +57,10 @@ void Tron::CreatePawns()
 	tronTank->AddComponent(std::move(tronCCollision));
 
 	std::unique_ptr<CPoints> tronCPoints = std::make_unique<CPoints>(tronTank.get());
+	tronCPoints->SetPoints(300);
 	tronTank->AddComponent(std::move(tronCPoints));
 
-	std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTank.get(), 1);
+	std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTank.get(), 3);
 	tronTank->AddComponent(std::move(tronCHealth));
 
 	m_pPlayerOnePawn = tronTank;

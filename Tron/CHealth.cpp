@@ -2,6 +2,8 @@
 #include <GameObject.h>
 #include <SceneManager.h>
 #include "Scene.h"
+#include "HighScore.h"
+#include "CPoints.h"
 
 void CHealth::SetHealth(int hp)
 {
@@ -15,6 +17,10 @@ void CHealth::SetHealth(int hp)
 
 void CHealth::Damage()
 {
+	int points = dynamic_cast<CPoints*>(m_OwnerObject->GetComponent<CPoints>())->GetPoints();
+	WriteScoreToFile(points);
+
+
 	--m_Health;
 	if(m_Health <= 0)
 		SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
