@@ -27,7 +27,7 @@ void PrintSDLVersion()
 void Chronos::Initialize()
 {
 	PrintSDLVersion();
-	
+
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
@@ -111,6 +111,7 @@ void Chronos::Run()
 			sceneManager.Update(deltaTime);
 			renderer.Render();
 			sceneManager.EraseObjects();
+			sceneManager.AddSpawnedObjects();
 			auto sleepTime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime + std::chrono::milliseconds(m_MsPerFrame) - std::chrono::high_resolution_clock::now());
 			std::this_thread::sleep_for(sleepTime);
 		}

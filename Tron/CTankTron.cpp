@@ -122,8 +122,8 @@ void CTankTron::Shoot()
 
 	//todo why does this not work correctly
 	glm::normalize(m_BarrelDirection);
-	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), m_BarrelDirection);
+	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), m_BarrelDirection, CollisionGroup::Pawn);
 	bullet->AddComponent(std::move(bulletCBullet));
 
-	SceneManager::GetInstance().GetActiveScene()->Add(bullet);
+	SceneManager::GetInstance().GetActiveScene()->SpawnObject(bullet);
 }

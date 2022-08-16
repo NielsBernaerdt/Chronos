@@ -1,9 +1,10 @@
 #if _DEBUG
-#if __has_include(<vld.h>)
-#include <vld.h>
-#endif
+	#if __has_include(<vld.h>)
+		#include <vld.h>
+	#endif
 #endif
 
+#include <iostream>
 #include "Tron.h"
 #include "Chronos.h"
 

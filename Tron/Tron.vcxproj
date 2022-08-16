@@ -162,6 +162,7 @@
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CDiamond.cpp" />
     <ClCompile Include="CHealth.cpp" />
+    <ClCompile Include="CHUDElement.cpp" />
     <ClCompile Include="CTankNPC.cpp" />
     <ClCompile Include="CTankTron.cpp" />
     <ClCompile Include="InputCommands.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CDiamond.h" />
     <ClInclude Include="CHealth.h" />
+    <ClInclude Include="CHUDElement.h" />
     <ClInclude Include="CollisionGroups.h" />
     <ClInclude Include="CPoints.h" />
     <ClInclude Include="CTankNPC.h" />

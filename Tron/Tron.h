@@ -14,6 +14,7 @@ class Tron : public Game
 private:
 	bool ReadFromFile();
 	void CreateScenes();
+	void PrintStartMessage();
 
 public:
 	static std::shared_ptr<GameObject> m_pPlayerOnePawn;
@@ -27,6 +28,7 @@ public:
 	bool SetupGameScenes() override {
 		const bool invalidFile = ReadFromFile();
 		if (invalidFile) return true;
+		PrintStartMessage();
 		return false;
 	}
 	InputManager* ConfigureInput() override;

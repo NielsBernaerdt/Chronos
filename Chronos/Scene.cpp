@@ -48,6 +48,10 @@ void Scene::SetActive(bool active)
 void Scene::RemoveObject(GameObject* gameObject)
 {
 	m_ObjectsToDelete.push_back(gameObject);
+	for (auto child : gameObject->GetChildren())
+	{
+		m_ObjectsToDelete.push_back(child.get());
+	}
 }
 
 void Scene::ClearScene()
@@ -71,4 +75,18 @@ void Scene::EraseObjects()
 		m_Objects.erase(i);
 	}
 	m_ObjectsToDelete = std::vector <GameObject*>{};
+}
+
+void Scene::SpawnObject(std::shared_ptr<GameObject> gameObject)
+{
+	m_ObjectsToSpawn.push_back(gameObject);
+}
+
+void Scene::AddSpawnedObjects()
+{
+	for (auto obj : m_ObjectsToSpawn)
+	{
+		Add(obj);
+	}
+	m_ObjectsToSpawn.clear();
 }

@@ -11,6 +11,7 @@ public:
 	void Update(float deltaTime);
 	void Render();
 	void EraseObjects();
+	void AddSpawnedObjects();
 
 	std::vector<std::shared_ptr<Scene>>& GetScenes() { return m_Scenes; }
 	Scene* GetScene(int index) { return m_Scenes[index].get(); }

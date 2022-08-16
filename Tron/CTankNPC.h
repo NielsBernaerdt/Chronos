@@ -33,12 +33,13 @@ private:
 	glm::vec3 m_PrevPosition{};
 	glm::vec3 m_AccMovement{};
 
-	glm::vec3 m_BarrelDirection{};
-	float m_AccTimeShooting{ 1.f };
+	glm::vec3 m_BarrelDirection{-10,0,0};
+	float m_AccTimeShooting{ 0.f };
 	float m_ShootingCooldown{ 1.f };
 
 	CTransform* m_PawnTransform = nullptr;
 	CCollisionBox* m_pCollision = nullptr;
 
 	void SetupTankType();
+	void Shoot();
 };

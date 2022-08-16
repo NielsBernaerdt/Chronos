@@ -15,6 +15,9 @@
 #include "CTankNPC.h"
 #include "CTankTron.h"
 #include "InputCommands.h"
+#include <CText.h>
+#include "CHUDElement.h"
+#include "CPoints.h"
 
 std::shared_ptr<GameObject> Tron::m_pPlayerOnePawn = nullptr;
 
@@ -50,6 +53,12 @@ void Tron::CreatePawns()
 
 	std::unique_ptr<CCollisionBox> tronCCollision = std::make_unique<CCollisionBox>(tronTank.get(), CollisionGroup::Pawn);
 	tronTank->AddComponent(std::move(tronCCollision));
+
+	std::unique_ptr<CPoints> tronCPoints = std::make_unique<CPoints>(tronTank.get());
+	tronTank->AddComponent(std::move(tronCPoints));
+
+	std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTank.get(), 1);
+	tronTank->AddComponent(std::move(tronCHealth));
 
 	m_pPlayerOnePawn = tronTank;
 
@@ -98,6 +107,23 @@ void Tron::CreateScene0()
 		scene->Add(m_pPlayerOnePawn->GetChildren()[0]);
 	}
 #pragma endregion PlayerPawns
+	const auto playerHud = std::make_shared<GameObject>(std::string{ "playerHud" });
+	playerHud->GetTransform()->SetPosition(200, 0);
+
+	std::unique_ptr<CText> hudText = std::make_unique<CText>(playerHud.get(), "HelloWorldItsaMe", 36);
+	playerHud->AddComponent(std::move(hudText));
+
+	std::unique_ptr<CHUDElement> hudCHud = std::make_unique<CHUDElement>(playerHud.get(), m_pPlayerOnePawn.get());
+	playerHud->AddComponent(std::move(hudCHud));
+
+	const auto hudTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	std::unique_ptr<CRender> hudRender = std::make_unique<CRender>(playerHud.get(), hudTexture, false);
+	playerHud->AddComponent(std::move(hudRender));
+
+	scene->Add(playerHud);
+#pragma region UI
+
+#pragma endregion UI
 
 #pragma region NPC
 	const auto npc = std::make_shared<GameObject>("blueTank0");
@@ -246,4 +272,11 @@ InputManager* Tron::ConfigureInput()
 	inputManager->AddController(4, m_pPlayerOnePawn.get());
 
 	return inputManager;
+}
+
+void Tron::PrintStartMessage()
+{
+	std::cout << "Level 0\t:\tPress '0'\n";
+	std::cout << "Level 1\t:\tPress '1'\n";
+	std::cout << "Level 2\t:\tPress '2'\n";
 }

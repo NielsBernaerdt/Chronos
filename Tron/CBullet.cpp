@@ -8,9 +8,10 @@
 #include "Scene.h"
 #include "SceneManager.h"
 
-CBullet::CBullet(GameObject* gameObject, glm::vec3 velocity)
+CBullet::CBullet(GameObject* gameObject, glm::vec3 velocity, CollisionGroup collisionGroup)
 	: CBase(gameObject)
 	, m_Velocity(velocity)
+	, m_OwnerCollision(collisionGroup)
 {
 	if (m_OwnerObject)
 		m_PawnTransform = m_OwnerObject->GetTransform();
@@ -28,15 +29,7 @@ void CBullet::Update(float deltaTime)
 	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Wall).empty() == false)
 	{
 		m_PawnTransform->SetPosition(m_PrevPosition);
-	}
-	else
-	{
-		m_PrevPosition = m_PawnTransform->GetPosition();
-		m_PawnTransform->SetPosition(m_PawnTransform->GetPosition() + (m_Velocity * deltaTime));
-	}
 
-	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Wall).empty() == false)
-	{
 		if (m_NrBounces < m_MaxNrBounces)
 		{
 			BounceBullet();
@@ -47,15 +40,38 @@ void CBullet::Update(float deltaTime)
 			SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
 		}
 	}
+	else
+	{
+		m_PrevPosition = m_PawnTransform->GetPosition();
+		m_PawnTransform->SetPosition(m_PawnTransform->GetPosition() + (m_Velocity * deltaTime));
+	}
 
 	auto enemies = m_pCollision->GetOverlappingObjects(CollisionGroup::NPC);
 	if (enemies.empty() == false)
 	{
 		for(const auto& e : enemies)
 		{
-			dynamic_cast<CHealth*>(e->GetComponent<CHealth>())->Damage();
+			if (m_OwnerCollision != CollisionGroup::NPC)
+			{
+				
+				dynamic_cast<CHealth*>(e->GetComponent<CHealth>())->Damage();
+				SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
+			}
 		}
-		SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
+	}
+	auto players = m_pCollision->GetOverlappingObjects(CollisionGroup::Pawn);
+	if (players.empty() == false)
+	{
+		for (const auto& e : players)
+		{
+			if (m_OwnerCollision != CollisionGroup::Pawn)
+			{
+				//TP player
+				e->GetTransform()->SetPosition(0, 0);
+				dynamic_cast<CHealth*>(e->GetComponent<CHealth>())->Damage();
+				SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
+			}
+		}
 	}
 }
 

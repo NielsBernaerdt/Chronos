@@ -42,6 +42,14 @@ void SceneManager::EraseObjects()
 	}
 }
 
+void SceneManager::AddSpawnedObjects()
+{
+	for (const auto& scene : m_Scenes)
+	{
+		scene->AddSpawnedObjects();
+	}
+}
+
 Scene& SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));

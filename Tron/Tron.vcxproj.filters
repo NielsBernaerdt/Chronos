@@ -44,6 +44,9 @@
     <ClCompile Include="CDiamond.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="CHUDElement.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tron.h">
@@ -71,6 +74,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="CDiamond.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CHUDElement.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

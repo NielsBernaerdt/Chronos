@@ -17,6 +17,8 @@ public:
 
 	void RemoveObject(GameObject* gameObject);
 	void EraseObjects();
+	void SpawnObject(std::shared_ptr<GameObject> gameObject);
+	void AddSpawnedObjects();
 	void ClearScene();
 
 	~Scene();
@@ -32,6 +34,7 @@ private:
 	bool m_IsActive{ false };
 	std::vector < std::shared_ptr<GameObject>> m_Objects{};
 	std::vector <GameObject*> m_ObjectsToDelete{};
+	std::vector < std::shared_ptr<GameObject>> m_ObjectsToSpawn{};
 
 	static unsigned int m_IdCounter;
 };
