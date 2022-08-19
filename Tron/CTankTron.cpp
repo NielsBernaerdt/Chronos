@@ -59,10 +59,10 @@ void CTankTron::Update(float deltaTime)
 		//
 		m_BarrelDirection = { mousePos.x, mousePos.y, 0 };
 		//
-
 		angle = atanf(mousePos.y / mousePos.x);
 		angle = float(angle * 180 / 3.14159265358979323846264338327950288);
-
+		if (mousePos.x < 0)
+			angle += 180;
 		renderComp->RotateTexture(int(angle));
 	}
 
@@ -74,15 +74,29 @@ void CTankTron::Update(float deltaTime)
 	//	m_State = state;
 	//}
 
-	//MOVEMENT//
+	//MOVEMENT// 
+//CHECK IF STUCK//
 	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Wall).empty() == false)
 	{
-		m_AccMovement = { 0, 0, 0 };
 		m_PawnTransform->SetPosition(m_PrevPosition);
 	}
 	m_PrevPosition = m_PawnTransform->GetPosition();
-	m_PawnTransform->SetPosition(m_PawnTransform->GetPosition() + (m_AccMovement * deltaTime));
-	m_AccMovement = { 0,0,0 };
+//IF NOT: CHANGE POS//
+	const auto newPosY = m_PawnTransform->GetPosition() + glm::vec3{ 0, m_AccMovement.y, 0 } *deltaTime;
+	const Rect newRectY{ (int)newPosY.x, (int)newPosY.y, (int)m_PawnTransform->GetScale().x, (int)m_PawnTransform->GetScale().y };
+	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Wall, newRectY).empty())
+	{
+		m_PrevPosition = m_PawnTransform->GetPosition();
+		m_PawnTransform->SetPosition(newPosY);
+	}
+	const auto newPosX = m_PawnTransform->GetPosition() + glm::vec3{ m_AccMovement.x, 0, 0 } *deltaTime;
+	const Rect newRectX{ (int)newPosX.x, (int)newPosX.y, (int)m_PawnTransform->GetScale().x, (int)m_PawnTransform->GetScale().y };
+	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Wall, newRectX).empty())
+	{
+		m_PrevPosition = m_PawnTransform->GetPosition();
+		m_PawnTransform->SetPosition(newPosX);
+	}
+	m_AccMovement = { 0, 0, 0 };
 }
 
 void CTankTron::MoveHorizontally(int moveRight)
