@@ -19,6 +19,12 @@
 #include "CHUDElement.h"
 #include "CPoints.h"
 
+//json
+#include <rapidjson/rapidjson.h>
+#include <rapidjson/document.h>
+#include <rapidjson/stream.h>
+#include <rapidjson/filereadstream.h>
+
 std::shared_ptr<GameObject> Tron::m_pPlayerOnePawn = nullptr;
 
 bool Tron::ReadFromFile()
@@ -44,7 +50,7 @@ void Tron::CreatePawns()
 #pragma region PlayerPawn
 	const auto tronTank = std::make_shared<GameObject>(std::string{ "TronPawnOne" });
 	tronTank->GetTransform()->SetPosition(150, 150);
-	tronTank->GetTransform()->SetScale(44, 44);
+	tronTank->GetTransform()->SetScale(38, 38);
 
 	const auto tronTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankRed.png");
 	std::unique_ptr<CRender> tronCRender = std::make_unique<CRender>(tronTank.get(), tronTexture, true);
@@ -67,10 +73,10 @@ void Tron::CreatePawns()
 
 	/////////////////TANKBARREL////////////////////
 	const auto tronTankBarrel = std::make_shared<GameObject>(std::string{ "TronPawnOneBarrel" });
-	tronTankBarrel->GetTransform()->SetPosition(22, 22);
-	tronTankBarrel->GetTransform()->SetScale(40, 10);
+	tronTankBarrel->GetTransform()->SetPosition(-11, 13);
+	tronTankBarrel->GetTransform()->SetScale(60, 20);
 
-	const auto tronBarrelTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	const auto tronBarrelTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/TankBarrel.png");
 	std::unique_ptr<CRender> tronBarrelCRender = std::make_unique<CRender>(tronTankBarrel.get(), tronBarrelTexture, true);
 	tronTankBarrel->AddComponent(std::move(tronBarrelCRender));
 
@@ -106,7 +112,7 @@ void Tron::CreateScene0()
 	if (m_pPlayerOnePawn)
 	{
 		scene->Add(m_pPlayerOnePawn);
-		m_pPlayerOnePawn->GetTransform()->SetPosition(150, 150);
+		m_pPlayerOnePawn->GetTransform()->SetPosition(23, 65);
 		scene->Add(m_pPlayerOnePawn->GetChildren()[0]);
 	}
 #pragma endregion PlayerPawns
@@ -151,10 +157,10 @@ void Tron::CreateScene0()
 
 #pragma region GameplayObjects
 	const auto diamond = std::make_shared<GameObject>(std::string{ "Diamond" });
-	diamond->GetTransform()->SetPosition(225, 300);
-	diamond->GetTransform()->SetScale(60, 60);
+	diamond->GetTransform()->SetPosition(273, 294);
+	diamond->GetTransform()->SetScale(84, 84);
 
-	const auto diamondTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	const auto diamondTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/Diamond.png");
 	std::unique_ptr<CRender> diamondCRender = std::make_unique<CRender>(diamond.get(), diamondTexture, true);
 	diamond->AddComponent(std::move(diamondCRender));
 
@@ -168,55 +174,50 @@ void Tron::CreateScene0()
 #pragma endregion GameplayObjects
 
 #pragma region Terrain
-	const auto wallTexture = ResourceManager::GetInstance().LoadEmptyTexture();
-	//0//
-	const auto wall = std::make_shared<GameObject>(std::string{ "Wall00" });
-	//CTRANSFORM
-	wall->GetTransform()->SetPosition(100, 100);
-	wall->GetTransform()->SetScale(300, 30);
-	//TEX + CRENDER
-	std::unique_ptr<CRender> wallCRender = std::make_unique<CRender>(wall.get(), wallTexture, true);
-	wall->AddComponent(std::move(wallCRender));
-	//CCOLLISION
-	std::unique_ptr<CCollisionBox> wallCCollision = std::make_unique<CCollisionBox>(wall.get(), CollisionGroup::Wall);
-	wall->AddComponent(std::move(wallCCollision));
-	scene->Add(wall);
-	//1//
-	const auto wall2 = std::make_shared<GameObject>(std::string{ "Wall01" });
-	//CTRANSFORM
-	wall2->GetTransform()->SetPosition(400, 100);
-	wall2->GetTransform()->SetScale(30, 300);
-	//TEX + CRENDER
-	std::unique_ptr<CRender> wallCRender2 = std::make_unique<CRender>(wall2.get(), wallTexture, true);
-	wall2->AddComponent(std::move(wallCRender2));
-	//CCOLLISION
-	std::unique_ptr<CCollisionBox> wallCCollision2 = std::make_unique<CCollisionBox>(wall2.get(), CollisionGroup::Wall);
-	wall2->AddComponent(std::move(wallCCollision2));
-	scene->Add(wall2);
-	//2//
-	const auto wall3 = std::make_shared<GameObject>(std::string{ "Wall02" });
-	//CTRANSFORM
-	wall3->GetTransform()->SetPosition(100, 400);
-	wall3->GetTransform()->SetScale(300, 30);
-	//TEX + CRENDER
-	std::unique_ptr<CRender> wallCRender3 = std::make_unique<CRender>(wall3.get(), wallTexture, true);
-	wall3->AddComponent(std::move(wallCRender3));
-	//CCOLLISION
-	std::unique_ptr<CCollisionBox> wallCCollision3 = std::make_unique<CCollisionBox>(wall3.get(), CollisionGroup::Wall);
-	wall3->AddComponent(std::move(wallCCollision3));
-	scene->Add(wall3);
-	//3//
-	const auto wall4 = std::make_shared<GameObject>(std::string{ "Wall03" });
-	//CTRANSFORM
-	wall4->GetTransform()->SetPosition(100, 100);
-	wall4->GetTransform()->SetScale(30, 300);
-	//TEX + CRENDER
-	std::unique_ptr<CRender> wallCRender4 = std::make_unique<CRender>(wall4.get(), wallTexture, true);
-	wall4->AddComponent(std::move(wallCRender4));
-	//CCOLLISION
-	std::unique_ptr<CCollisionBox> wallCCollision4 = std::make_unique<CCollisionBox>(wall4.get(), CollisionGroup::Wall);
-	wall4->AddComponent(std::move(wallCCollision4));
-	scene->Add(wall4);
+	const auto wallTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/WallGreen.png");
+
+	using rapidjson::Document;
+	Document jsonDoc;
+	FILE * fp = nullptr;
+	fopen_s(&fp, "../Data/levelLayout.json", "rb");
+	
+	if (fp != nullptr)
+	{
+		fseek(fp, 0, SEEK_END);
+		size_t size = ftell(fp);
+		fseek(fp, 0, SEEK_SET);
+		char* readBuffer = new char[size];
+		rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+		jsonDoc.ParseStream(is);
+		delete[] readBuffer;
+		fclose(fp);
+
+		using rapidjson::Value;
+
+		for (Value::ConstValueIterator itr = jsonDoc.Begin();
+			itr != jsonDoc.End(); ++itr)
+		{
+			const Value& position = *itr;
+			const Value& name = position["Name"];
+			const Value& posX = position["PosX"];
+			const Value& posY = position["PosY"];
+			const Value& scaleX = position["ScaleX"];
+			const Value& scaleY = position["ScaleY"];
+
+			const auto wall = std::make_shared<GameObject>(name.GetString());
+			//CTRANSFORM
+			wall->GetTransform()->SetPosition(posX.GetInt(), posY.GetInt());
+			wall->GetTransform()->SetScale(scaleX.GetInt(), scaleY.GetInt());
+			//TEX + CRENDER
+			std::unique_ptr<CRender> wallCRender = std::make_unique<CRender>(wall.get(), wallTexture, true);
+			wall->AddComponent(std::move(wallCRender));
+			//CCOLLISION
+			std::unique_ptr<CCollisionBox> wallCCollision = std::make_unique<CCollisionBox>(wall.get(), CollisionGroup::Wall);
+			wall->AddComponent(std::move(wallCCollision));
+			scene->Add(wall);
+		}
+	}
+
 #pragma endregion Terrain
 }
 

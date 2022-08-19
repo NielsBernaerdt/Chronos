@@ -43,7 +43,7 @@ void CTankNPC::Initialize()
 void CTankNPC::Update(float deltaTime)
 {
 	m_AccTimeShooting += deltaTime;
-	Shoot();
+	//Shoot();
 }
 
 void CTankNPC::Shoot()
