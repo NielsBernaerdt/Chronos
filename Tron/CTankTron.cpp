@@ -27,6 +27,8 @@ CTankTron::CTankTron(GameObject* gameObject)
 void CTankTron::Initialize()
 {
 	m_pCollision = dynamic_cast<CCollisionBox*>(m_OwnerObject->GetComponent<CCollisionBox>());
+	m_BulletCollisionGroup = m_pCollision->GetCollisionGroup();
+
 	//m_State = new IdleState{};
 }
 void CTankTron::Update(float deltaTime)
@@ -136,7 +138,7 @@ void CTankTron::Shoot()
 
 	//todo why does this not work correctly
 	glm::normalize(m_BarrelDirection);
-	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), m_BarrelDirection, CollisionGroup::Pawn);
+	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), m_BarrelDirection, m_BulletCollisionGroup);
 	bullet->AddComponent(std::move(bulletCBullet));
 
 	SceneManager::GetInstance().GetActiveScene()->SpawnObject(bullet);

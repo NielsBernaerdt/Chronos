@@ -17,8 +17,9 @@ void CHealth::SetHealth(int hp)
 
 void CHealth::Damage()
 {
-	int points = dynamic_cast<CPoints*>(m_OwnerObject->GetComponent<CPoints>())->GetPoints();
-	WriteScoreToFile(points);
+	//todo somewhere else
+	//int points = dynamic_cast<CPoints*>(m_OwnerObject->GetComponent<CPoints>())->GetPoints();
+	//WriteScoreToFile(points);
 
 
 	--m_Health;

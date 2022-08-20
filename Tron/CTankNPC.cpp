@@ -43,10 +43,10 @@ void CTankNPC::Initialize()
 void CTankNPC::Update(float deltaTime)
 {
 	m_AccTimeShooting += deltaTime;
-	//Shoot();
+	//AutomaticShooting();
 }
 
-void CTankNPC::Shoot()
+void CTankNPC::AutomaticShooting()
 {
 	if (m_AccTimeShooting <= m_ShootingCooldown)
 		return;

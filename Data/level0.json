@@ -1,10 +1,11 @@
 {
-  "_commentLevel": "0 - 1 - 2",
-  "Level": 0,
-  "_commentGameMode": "Singleplayer - Versus - Coop",
-  "GameMode": "Singleplayer",
-  "_commentNrEnemies": "0 <= X <= 6",
-  "NrEnemies": 6,
+  "diamond": {
+    "Name": "Diamond",
+    "PosX": 275,
+    "PosY": 292,
+    "ScaleX": 83,
+    "ScaleY": 83
+  },
   "walls": [
     {
       "Name": "OuterWallLeft",
@@ -402,13 +403,33 @@
   "enemies": [
     {
       "Name": "Enemy0",
-      "PosX": 100,
-      "PosY": 43
+      "PosX": 506,
+      "PosY": 65
     },
     {
       "Name": "Enemy1",
-      "PosX": 200,
-      "PosY": 609
+      "PosX": 275,
+      "PosY": 126
+    },
+    {
+      "Name": "Enemy2",
+      "PosX": 150,
+      "PosY": 254
+    },
+    {
+      "Name": "Enemy3",
+      "PosX": 506,
+      "PosY": 315
+    },
+    {
+      "Name": "Enemy4",
+      "PosX": 212,
+      "PosY": 420
+    },
+    {
+      "Name": "Enem54",
+      "PosX": 380,
+      "PosY": 504
     }
   ]
 }

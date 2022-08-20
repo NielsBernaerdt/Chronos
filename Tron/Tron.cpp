@@ -26,10 +26,34 @@
 #include <rapidjson/filereadstream.h>
 
 std::shared_ptr<GameObject> Tron::m_pPlayerOnePawn = nullptr;
+std::shared_ptr<GameObject> Tron::m_pPlayerTwoPawn = nullptr;
+int Tron::m_NrEnemies{ 2 };
 
 bool Tron::ReadFromFile()
 {
 	//READ FILE, RETURN TRUE IF INVALID
+	rapidjson::Document jsonDoc{};
+	if (ParseJSON("../Data/GameConfiguration.json", jsonDoc))
+	{
+		using rapidjson::Value;
+		m_GameMode = jsonDoc["GameMode"].GetString();
+		if (m_GameMode == "Versus")
+			m_NrEnemies = 0;
+		else
+			m_NrEnemies = jsonDoc["NrEnemies"].GetInt();
+		if (m_GameMode != "Singleplayer" && m_GameMode != "SinglePlayer"
+			&& m_GameMode != "Versus"
+			&& m_GameMode != "Coop")
+		{
+			std::cout << "WRONG GAMEMODE\n";
+			return true;
+		}
+		if (m_NrEnemies < 0 || m_NrEnemies >= 7)
+		{
+			std::cout << "INVALID NUMBER OF ENEMIES\n";
+			return true;
+		}
+	}
 	CreateScenes();
 	return false;
 }
@@ -67,41 +91,122 @@ bool Tron::ParseJSON(const char* fileName, rapidjson::Document& jsonDoc)
 
 void Tron::CreatePawns()
 {
-#pragma region PlayerPawn
-	const auto tronTank = std::make_shared<GameObject>(std::string{ "TronPawnOne" });
-	tronTank->GetTransform()->SetPosition(150, 150);
-	tronTank->GetTransform()->SetScale(38, 38);
+#pragma region PlayerPawnOne
+	{
+		const auto tronTank = std::make_shared<GameObject>(std::string{ "TronPawnOne" });
+		tronTank->GetTransform()->SetPosition(150, 150);
+		tronTank->GetTransform()->SetScale(38, 38);
 
-	const auto tronTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankRed.png");
-	std::unique_ptr<CRender> tronCRender = std::make_unique<CRender>(tronTank.get(), tronTexture, true);
-	tronTank->AddComponent(std::move(tronCRender));
+		const auto tronTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankRed.png");
+		std::unique_ptr<CRender> tronCRender = std::make_unique<CRender>(tronTank.get(), tronTexture, true);
+		tronTank->AddComponent(std::move(tronCRender));
 
-	std::unique_ptr<CTankTron> tronCTankTron = std::make_unique<CTankTron>(tronTank.get());
-	tronTank->AddComponent(std::move(tronCTankTron));
+		std::unique_ptr<CTankTron> tronCTankTron = std::make_unique<CTankTron>(tronTank.get());
+		tronTank->AddComponent(std::move(tronCTankTron));
 
-	std::unique_ptr<CCollisionBox> tronCCollision = std::make_unique<CCollisionBox>(tronTank.get(), CollisionGroup::Pawn);
-	tronTank->AddComponent(std::move(tronCCollision));
+		std::unique_ptr<CCollisionBox> tronCCollision = std::make_unique<CCollisionBox>(tronTank.get(), CollisionGroup::Pawn);
+		tronTank->AddComponent(std::move(tronCCollision));
 
-	std::unique_ptr<CPoints> tronCPoints = std::make_unique<CPoints>(tronTank.get());
-	tronCPoints->SetPoints(300);
-	tronTank->AddComponent(std::move(tronCPoints));
+		std::unique_ptr<CPoints> tronCPoints = std::make_unique<CPoints>(tronTank.get());
+		tronCPoints->SetPoints(300);
+		tronTank->AddComponent(std::move(tronCPoints));
 
-	std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTank.get(), 3);
-	tronTank->AddComponent(std::move(tronCHealth));
+		std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTank.get(), 3);
+		tronTank->AddComponent(std::move(tronCHealth));
 
-	m_pPlayerOnePawn = tronTank;
+		m_pPlayerOnePawn = tronTank;
 
-	/////////////////TANKBARREL////////////////////
-	const auto tronTankBarrel = std::make_shared<GameObject>(std::string{ "TronPawnOneBarrel" });
-	tronTankBarrel->GetTransform()->SetPosition(-11, 13);
-	tronTankBarrel->GetTransform()->SetScale(60, 20);
+		/////////////////TANKBARREL////////////////////
+		const auto tronTankBarrel = std::make_shared<GameObject>(std::string{ "TronPawnOneBarrel" });
+		tronTankBarrel->GetTransform()->SetPosition(-11, 13);
+		tronTankBarrel->GetTransform()->SetScale(60, 20);
 
-	const auto tronBarrelTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/TankBarrel.png");
-	std::unique_ptr<CRender> tronBarrelCRender = std::make_unique<CRender>(tronTankBarrel.get(), tronBarrelTexture, true);
-	tronTankBarrel->AddComponent(std::move(tronBarrelCRender));
+		const auto tronBarrelTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/TankBarrel.png");
+		std::unique_ptr<CRender> tronBarrelCRender = std::make_unique<CRender>(tronTankBarrel.get(), tronBarrelTexture, true);
+		tronTankBarrel->AddComponent(std::move(tronBarrelCRender));
 
-	tronTankBarrel->SetParent(m_pPlayerOnePawn.get(), tronTankBarrel);
-#pragma endregion PlayerPawn
+		tronTankBarrel->SetParent(m_pPlayerOnePawn.get(), tronTankBarrel);
+	}
+#pragma endregion PlayerPawnOne
+
+#pragma region PlayerPawnTwoCoop
+	if (m_GameMode == "Coop")
+	{
+		const auto tronTwoTank = std::make_shared<GameObject>(std::string{ "TronPawnTwo" });
+		tronTwoTank->GetTransform()->SetPosition(150, 150);
+		tronTwoTank->GetTransform()->SetScale(38, 38);
+
+		const auto tronTwoTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankGreen.png");
+		std::unique_ptr<CRender> tronCRender = std::make_unique<CRender>(tronTwoTank.get(), tronTwoTexture, true);
+		tronTwoTank->AddComponent(std::move(tronCRender));
+
+		std::unique_ptr<CTankTron> tronCTankTron = std::make_unique<CTankTron>(tronTwoTank.get());
+		tronTwoTank->AddComponent(std::move(tronCTankTron));
+
+		std::unique_ptr<CCollisionBox> tronCCollision = std::make_unique<CCollisionBox>(tronTwoTank.get(), CollisionGroup::Pawn);
+		tronTwoTank->AddComponent(std::move(tronCCollision));
+
+		std::unique_ptr<CPoints> tronCPoints = std::make_unique<CPoints>(tronTwoTank.get());
+		tronCPoints->SetPoints(300);
+		tronTwoTank->AddComponent(std::move(tronCPoints));
+
+		std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTwoTank.get(), 3);
+		tronTwoTank->AddComponent(std::move(tronCHealth));
+
+		m_pPlayerTwoPawn = tronTwoTank;
+
+		/////////////////TANKBARREL////////////////////
+		const auto tronTwoTankBarrel = std::make_shared<GameObject>(std::string{ "TronPawnTwoBarrel" });
+		tronTwoTankBarrel->GetTransform()->SetPosition(-11, 13);
+		tronTwoTankBarrel->GetTransform()->SetScale(60, 20);
+
+		const auto tronBarrelTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/TankBarrel.png");
+		std::unique_ptr<CRender> tronBarrelCRender = std::make_unique<CRender>(tronTwoTankBarrel.get(), tronBarrelTexture, true);
+		tronTwoTankBarrel->AddComponent(std::move(tronBarrelCRender));
+
+		tronTwoTankBarrel->SetParent(m_pPlayerTwoPawn.get(), tronTwoTankBarrel);
+	}
+#pragma region PlayerPawnTwoCoop
+
+#pragma region PlayerPawnTwoVersus
+	if (m_GameMode == "Versus")
+	{
+		const auto tronTwoTank = std::make_shared<GameObject>(std::string{ "TronPawnTwo" });
+		tronTwoTank->GetTransform()->SetPosition(150, 150);
+		tronTwoTank->GetTransform()->SetScale(38, 38);
+
+		const auto tronTwoTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankGreen.png");
+		std::unique_ptr<CRender> tronCRender = std::make_unique<CRender>(tronTwoTank.get(), tronTwoTexture, true);
+		tronTwoTank->AddComponent(std::move(tronCRender));
+
+		std::unique_ptr<CTankTron> tronCTankTron = std::make_unique<CTankTron>(tronTwoTank.get());
+		tronTwoTank->AddComponent(std::move(tronCTankTron));
+
+		std::unique_ptr<CCollisionBox> tronCCollision = std::make_unique<CCollisionBox>(tronTwoTank.get(), CollisionGroup::NPC);
+		tronTwoTank->AddComponent(std::move(tronCCollision));
+
+		std::unique_ptr<CPoints> tronCPoints = std::make_unique<CPoints>(tronTwoTank.get());
+		tronCPoints->SetPoints(300);
+		tronTwoTank->AddComponent(std::move(tronCPoints));
+
+		std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTwoTank.get(), 3);
+		tronTwoTank->AddComponent(std::move(tronCHealth));
+
+		m_pPlayerTwoPawn = tronTwoTank;
+
+		/////////////////TANKBARREL////////////////////
+		const auto tronTwoTankBarrel = std::make_shared<GameObject>(std::string{ "TronPawnTwoBarrel" });
+		tronTwoTankBarrel->GetTransform()->SetPosition(-11, 13);
+		tronTwoTankBarrel->GetTransform()->SetScale(60, 20);
+
+		const auto tronBarrelTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/TankBarrel.png");
+		std::unique_ptr<CRender> tronBarrelCRender = std::make_unique<CRender>(tronTwoTankBarrel.get(), tronBarrelTexture, true);
+		tronTwoTankBarrel->AddComponent(std::move(tronBarrelCRender));
+
+		tronTwoTankBarrel->SetParent(m_pPlayerTwoPawn.get(), tronTwoTankBarrel);
+	}
+#pragma region PlayerPawnTwoVersus
+
 }
 
 void Tron::CreateSceneByIndex(int index)
@@ -135,7 +240,13 @@ void Tron::CreateScene0()
 		m_pPlayerOnePawn->GetTransform()->SetPosition(23, 65);
 		scene->Add(m_pPlayerOnePawn->GetChildren()[0]);
 	}
-#pragma endregion PlayerPawns
+	if (m_pPlayerTwoPawn)
+	{
+		scene->Add(m_pPlayerTwoPawn);
+		m_pPlayerTwoPawn->GetTransform()->SetPosition(420, 65);
+		scene->Add(m_pPlayerTwoPawn->GetChildren()[0]);
+	}
+//HUD//
 	const auto playerHud = std::make_shared<GameObject>(std::string{ "playerHud" });
 	playerHud->GetTransform()->SetPosition(200, 0);
 
@@ -150,78 +261,59 @@ void Tron::CreateScene0()
 	playerHud->AddComponent(std::move(hudRender));
 
 	scene->Add(playerHud);
-#pragma region UI
+#pragma endregion PlayerPawns
 
-#pragma endregion UI
-
-#pragma region NPC
-	//const auto npc = std::make_shared<GameObject>("blueTank0");
-	//npc->GetTransform()->SetPosition(350, 150);
-	//npc->GetTransform()->SetScale(44, 44);
-
-	//const auto blueTankTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankBlue.png");
-	//std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), blueTankTexture, true);
-	//npc->AddComponent(std::move(npcCRender));
-
-	//std::unique_ptr<CCollisionBox> npcCCollision = std::make_unique<CCollisionBox>(npc.get(), CollisionGroup::NPC);
-	//npc->AddComponent(std::move(npcCCollision));
-
-	//std::unique_ptr<CHealth> npcCHealth = std::make_unique<CHealth>(npc.get());
-	//npc->AddComponent(std::move(npcCHealth));
-
-	//std::unique_ptr<CTankNPC> npcCTankNPC = std::make_unique<CTankNPC>(npc.get(), TankType::BlueTank);
-	//npc->AddComponent(std::move(npcCTankNPC));
-
-	//scene->Add(npc);
-#pragma endregion NPC
-
-#pragma region GameplayObjects
-	const auto diamond = std::make_shared<GameObject>(std::string{ "Diamond" });
-	diamond->GetTransform()->SetPosition(273, 294);
-	diamond->GetTransform()->SetScale(84, 84);
-
-	const auto diamondTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/Diamond.png");
-	std::unique_ptr<CRender> diamondCRender = std::make_unique<CRender>(diamond.get(), diamondTexture, true);
-	diamond->AddComponent(std::move(diamondCRender));
-
-	std::unique_ptr<CCollisionBox> diamondCCollision = std::make_unique<CCollisionBox>(diamond.get(), CollisionGroup::Diamond);
-	diamond->AddComponent(std::move(diamondCCollision));
-
-	std::unique_ptr<CDiamond> diamondCDiamond = std::make_unique<CDiamond>(diamond.get());
-	diamond->AddComponent(std::move(diamondCDiamond));
-
-	scene->Add(diamond);
-#pragma endregion GameplayObjects
-
-#pragma region Terrain
-	const auto wallTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/WallGreen.png");
-
+	using rapidjson::Value;
 	rapidjson::Document jsonDoc{};
 	
-	if (ParseJSON("../Data/levelLayout.json", jsonDoc))
+	if (ParseJSON("../Data/level0.json", jsonDoc))
 	{
-		using rapidjson::Value;
-		
-		int levelIdx = jsonDoc["Level"].GetInt();
-		std::string gameMode = jsonDoc["GameMode"].GetString();
-		int nrEnemies = jsonDoc["NrEnemies"].GetInt();
 
-		std::cout << levelIdx << std::endl;
-		std::cout << gameMode << std::endl;
-		std::cout << nrEnemies << std::endl;
+#pragma region Gameplay Objects
 
+		if (jsonDoc.HasMember("diamond"))
+		{
+			const Value& diamondAttributes = jsonDoc["diamond"];
+
+			std::string wallName = diamondAttributes["Name"].GetString();
+			int wallPosX = diamondAttributes["PosX"].GetInt();
+			int wallPosY = diamondAttributes["PosY"].GetInt();
+			int wallScaleX = diamondAttributes["ScaleX"].GetInt();
+			int wallScaleY = diamondAttributes["ScaleY"].GetInt();
+
+			const auto diamond = std::make_shared<GameObject>(wallName);
+			diamond->GetTransform()->SetPosition(wallPosX, wallPosY);
+			diamond->GetTransform()->SetScale(wallScaleX, wallScaleY);
+
+			const auto diamondTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/Diamond.png");
+			std::unique_ptr<CRender> diamondCRender = std::make_unique<CRender>(diamond.get(), diamondTexture, true);
+			diamond->AddComponent(std::move(diamondCRender));
+
+			std::unique_ptr<CCollisionBox> diamondCCollision = std::make_unique<CCollisionBox>(diamond.get(), CollisionGroup::Diamond);
+			diamond->AddComponent(std::move(diamondCCollision));
+
+			std::unique_ptr<CDiamond> diamondCDiamond = std::make_unique<CDiamond>(diamond.get());
+			diamond->AddComponent(std::move(diamondCDiamond));
+
+			scene->Add(diamond);
+		}
+
+#pragma endregion Gameplay Objects
+
+#pragma region Walls
 		if (jsonDoc.HasMember("walls"))
 		{
-			const Value& attributes = jsonDoc["walls"];
-			for (rapidjson::SizeType i = 0; i < attributes.Size(); ++i)
+			const auto wallTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/WallGreen.png");
+			const Value& wallArray = jsonDoc["walls"];
+			for (rapidjson::SizeType i = 0; i < wallArray.Size(); ++i)
 			{
-				if (attributes[i].IsObject())
+				if (wallArray[i].IsObject())
 				{
-					std::string wallName = attributes[i]["Name"].GetString();
-					int wallPosX = attributes[i]["PosX"].GetInt();
-					int wallPosY = attributes[i]["PosY"].GetInt();
-					int wallScaleX = attributes[i]["ScaleX"].GetInt();
-					int wallScaleY = attributes[i]["ScaleY"].GetInt();
+					std::string wallName = wallArray[i]["Name"].GetString();
+					int wallPosX = wallArray[i]["PosX"].GetInt();
+					int wallPosY = wallArray[i]["PosY"].GetInt();
+					int wallScaleX = wallArray[i]["ScaleX"].GetInt();
+					int wallScaleY = wallArray[i]["ScaleY"].GetInt();
 
 					const auto wall = std::make_shared<GameObject>(wallName);
 					//CTRANSFORM
@@ -237,23 +329,25 @@ void Tron::CreateScene0()
 				}
 			}
 		}
+#pragma endregion Walls
+
+#pragma region Enemies
 		if (jsonDoc.HasMember("enemies"))
 		{
-			const Value& attributes = jsonDoc["enemies"];
-			for (rapidjson::SizeType i = 0; i < attributes.Size(); ++i)
+			const auto blueTankTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankBlue.png");
+			const Value& enemyArray = jsonDoc["enemies"];
+			for (rapidjson::SizeType i = 0; i < static_cast<rapidjson::SizeType>(m_NrEnemies); ++i)
 			{
-				if (attributes[i].IsObject())
+				if (enemyArray[i].IsObject())
 				{
-					std::string enemyName = attributes[i]["Name"].GetString();
-					int enemyPosX = attributes[i]["PosX"].GetInt();
-					int enemyPosY = attributes[i]["PosY"].GetInt();
-
+					std::string enemyName = enemyArray[i]["Name"].GetString();
+					int enemyPosX = enemyArray[i]["PosX"].GetInt();
+					int enemyPosY = enemyArray[i]["PosY"].GetInt();
 
 					const auto npc = std::make_shared<GameObject>(enemyName);
 					npc->GetTransform()->SetPosition(enemyPosX, enemyPosY);
-					npc->GetTransform()->SetScale(44, 44);
+					npc->GetTransform()->SetScale(38, 38);
 
-					const auto blueTankTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankBlue.png");
 					std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), blueTankTexture, true);
 					npc->AddComponent(std::move(npcCRender));
 
@@ -270,35 +364,8 @@ void Tron::CreateScene0()
 				}
 			}
 		}
-
-
-
-
-		//for (Value::ConstValueIterator itr = jsonDoc.Begin();
-		//	itr != jsonDoc.End(); ++itr)
-		//{
-			//const Value& position = *itr;
-			//const Value& name = position["Name"];
-			//const Value& posX = position["PosX"];
-			//const Value& posY = position["PosY"];
-			//const Value& scaleX = position["ScaleX"];
-			//const Value& scaleY = position["ScaleY"];
-
-			//const auto wall = std::make_shared<GameObject>(name.GetString());
-			////CTRANSFORM
-			//wall->GetTransform()->SetPosition(posX.GetInt(), posY.GetInt());
-			//wall->GetTransform()->SetScale(scaleX.GetInt(), scaleY.GetInt());
-			////TEX + CRENDER
-			//std::unique_ptr<CRender> wallCRender = std::make_unique<CRender>(wall.get(), wallTexture, true);
-			//wall->AddComponent(std::move(wallCRender));
-			////CCOLLISION
-			//std::unique_ptr<CCollisionBox> wallCCollision = std::make_unique<CCollisionBox>(wall.get(), CollisionGroup::Wall);
-			//wall->AddComponent(std::move(wallCCollision));
-			//scene->Add(wall);
-		//}
+#pragma endregion Enemies
 	}
-
-#pragma endregion Terrain
 }
 
 void Tron::CreateScene1()
@@ -333,28 +400,56 @@ InputManager* Tron::ConfigureInput()
 {
 	InputManager* inputManager = new InputManager{};
 
-	//INPUT PAWN ONE
-	// GAMEPAD
-	inputManager->BindCommandToButton(ControllerButton::DPadRight, std::make_unique<MoveHorizontal>(true));
-	inputManager->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveHorizontal>(false));
-	inputManager->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<MoveVertical>(true));
-	inputManager->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<MoveVertical>(false));
-	inputManager->AddController(0, m_pPlayerOnePawn.get());
-	//KEYBOARD|MOUSE
-	inputManager->BindCommandToButton(SDL_SCANCODE_D, std::make_unique<MoveHorizontal>(true));
-	inputManager->BindCommandToButton(SDL_SCANCODE_A, std::make_unique<MoveHorizontal>(false));
-	inputManager->BindCommandToButton(SDL_SCANCODE_W, std::make_unique<MoveVertical>(true));
-	inputManager->BindCommandToButton(SDL_SCANCODE_S, std::make_unique<MoveVertical>(false));
-	inputManager->BindCommandToButton(SDL_SCANCODE_KP_0, std::make_unique<OpenScene>(0));
-	inputManager->BindCommandToButton(SDL_SCANCODE_0, std::make_unique<OpenScene>(0));
-	inputManager->BindCommandToButton(SDL_SCANCODE_KP_1, std::make_unique<OpenScene>(1));
-	inputManager->BindCommandToButton(SDL_SCANCODE_1, std::make_unique<OpenScene>(1));
-	inputManager->BindCommandToButton(SDL_SCANCODE_KP_2, std::make_unique<OpenScene>(2));
-	inputManager->BindCommandToButton(SDL_SCANCODE_2, std::make_unique<OpenScene>(2));
-	inputManager->BindCommandToButton(SDL_SCANCODE_R, std::make_unique<ResetScene>());
-	inputManager->BindCommandToButton(SDL_BUTTON_LMASK, std::make_unique<Shoot>(), true);
-	inputManager->AddController(4, m_pPlayerOnePawn.get());
-
+	if (m_GameMode == "Singleplayer" || m_GameMode == "SinglePlayer")
+	{
+		//INPUT PAWN ONE
+		// GAMEPAD
+		inputManager->BindCommandToButton(ControllerButton::DPadRight, std::make_unique<MoveHorizontal>(true));
+		inputManager->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveHorizontal>(false));
+		inputManager->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<MoveVertical>(true));
+		inputManager->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<MoveVertical>(false));
+		inputManager->AddController(0, m_pPlayerOnePawn.get());
+		//KEYBOARD|MOUSE
+		inputManager->BindCommandToButton(SDL_SCANCODE_D, std::make_unique<MoveHorizontal>(true));
+		inputManager->BindCommandToButton(SDL_SCANCODE_A, std::make_unique<MoveHorizontal>(false));
+		inputManager->BindCommandToButton(SDL_SCANCODE_W, std::make_unique<MoveVertical>(true));
+		inputManager->BindCommandToButton(SDL_SCANCODE_S, std::make_unique<MoveVertical>(false));
+		inputManager->BindCommandToButton(SDL_SCANCODE_KP_0, std::make_unique<OpenScene>(0));
+		inputManager->BindCommandToButton(SDL_SCANCODE_0, std::make_unique<OpenScene>(0));
+		inputManager->BindCommandToButton(SDL_SCANCODE_KP_1, std::make_unique<OpenScene>(1));
+		inputManager->BindCommandToButton(SDL_SCANCODE_1, std::make_unique<OpenScene>(1));
+		inputManager->BindCommandToButton(SDL_SCANCODE_KP_2, std::make_unique<OpenScene>(2));
+		inputManager->BindCommandToButton(SDL_SCANCODE_2, std::make_unique<OpenScene>(2));
+		inputManager->BindCommandToButton(SDL_SCANCODE_R, std::make_unique<ResetScene>());
+		inputManager->BindCommandToButton(SDL_BUTTON_LMASK, std::make_unique<Shoot>(), true);
+		inputManager->AddController(4, m_pPlayerOnePawn.get());
+	}
+	if (m_GameMode == "Coop" || m_GameMode == "Versus")
+	{
+		//INPUT PAWN ONE
+		//KEYBOARD|MOUSE
+		inputManager->BindCommandToButton(SDL_SCANCODE_D, std::make_unique<MoveHorizontal>(true));
+		inputManager->BindCommandToButton(SDL_SCANCODE_A, std::make_unique<MoveHorizontal>(false));
+		inputManager->BindCommandToButton(SDL_SCANCODE_W, std::make_unique<MoveVertical>(true));
+		inputManager->BindCommandToButton(SDL_SCANCODE_S, std::make_unique<MoveVertical>(false));
+		inputManager->BindCommandToButton(SDL_SCANCODE_KP_0, std::make_unique<OpenScene>(0));
+		inputManager->BindCommandToButton(SDL_SCANCODE_0, std::make_unique<OpenScene>(0));
+		inputManager->BindCommandToButton(SDL_SCANCODE_KP_1, std::make_unique<OpenScene>(1));
+		inputManager->BindCommandToButton(SDL_SCANCODE_1, std::make_unique<OpenScene>(1));
+		inputManager->BindCommandToButton(SDL_SCANCODE_KP_2, std::make_unique<OpenScene>(2));
+		inputManager->BindCommandToButton(SDL_SCANCODE_2, std::make_unique<OpenScene>(2));
+		inputManager->BindCommandToButton(SDL_SCANCODE_R, std::make_unique<ResetScene>());
+		inputManager->BindCommandToButton(SDL_BUTTON_LMASK, std::make_unique<Shoot>(), true);
+		inputManager->AddController(4, m_pPlayerOnePawn.get());
+		//INPUT PAWN TWO
+		//GAMEPAD
+		inputManager->BindCommandToButton(ControllerButton::DPadRight, std::make_unique<MoveHorizontal>(true));
+		inputManager->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveHorizontal>(false));
+		inputManager->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<MoveVertical>(true));
+		inputManager->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<MoveVertical>(false));
+		inputManager->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<Shoot>());
+		inputManager->AddController(0, m_pPlayerTwoPawn.get());
+	}
 	return inputManager;
 }
 

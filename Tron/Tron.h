@@ -18,9 +18,12 @@ private:
 	void PrintStartMessage();
 	static bool ParseJSON(const char* fileName, rapidjson::Document& jsonDoc);
 
-public:
+	std::string m_GameMode{"Singleplayer"};
+	static int m_NrEnemies;
 	static std::shared_ptr<GameObject> m_pPlayerOnePawn;
+	static std::shared_ptr<GameObject> m_pPlayerTwoPawn;
 
+public:
 	void CreatePawns();
 	static void CreateSceneByIndex(int index);
 	static void CreateScene0();

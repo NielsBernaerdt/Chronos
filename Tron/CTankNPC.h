@@ -41,5 +41,5 @@ private:
 	CCollisionBox* m_pCollision = nullptr;
 
 	void SetupTankType();
-	void Shoot();
+	void AutomaticShooting();
 };

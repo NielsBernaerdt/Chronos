@@ -3,6 +3,7 @@
 #pragma warning(push, 0)
 #include <glm/glm.hpp>
 #pragma warning (pop)
+#include "CollisionGroups.h"
 
 class CTransform;
 class CCollisionBox;
@@ -35,6 +36,7 @@ private:
 
 	CTransform* m_PawnTransform = nullptr;
 	CCollisionBox* m_pCollision = nullptr;
+	CollisionGroup m_BulletCollisionGroup;
 
 	//State
 //private:
