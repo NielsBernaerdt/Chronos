@@ -45,6 +45,26 @@ void Tron::CreateScenes()
 	CreateScene0();
 }
 
+bool Tron::ParseJSON(const char* fileName, rapidjson::Document& jsonDoc)
+{
+	FILE* fp = nullptr;
+	fopen_s(&fp, fileName, "rb");
+
+	if (fp != nullptr)
+	{
+		fseek(fp, 0, SEEK_END);
+		size_t size = ftell(fp);
+		fseek(fp, 0, SEEK_SET);
+		char* readBuffer = new char[size];
+		rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+		jsonDoc.ParseStream(is);
+		delete[] readBuffer;
+		fclose(fp);
+		return true;
+	}
+	return false;
+}
+
 void Tron::CreatePawns()
 {
 #pragma region PlayerPawn
@@ -135,24 +155,24 @@ void Tron::CreateScene0()
 #pragma endregion UI
 
 #pragma region NPC
-	const auto npc = std::make_shared<GameObject>("blueTank0");
-	npc->GetTransform()->SetPosition(350, 150);
-	npc->GetTransform()->SetScale(44, 44);
+	//const auto npc = std::make_shared<GameObject>("blueTank0");
+	//npc->GetTransform()->SetPosition(350, 150);
+	//npc->GetTransform()->SetScale(44, 44);
 
-	const auto blueTankTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankBlue.png");
-	std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), blueTankTexture, true);
-	npc->AddComponent(std::move(npcCRender));
+	//const auto blueTankTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankBlue.png");
+	//std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), blueTankTexture, true);
+	//npc->AddComponent(std::move(npcCRender));
 
-	std::unique_ptr<CCollisionBox> npcCCollision = std::make_unique<CCollisionBox>(npc.get(), CollisionGroup::NPC);
-	npc->AddComponent(std::move(npcCCollision));
+	//std::unique_ptr<CCollisionBox> npcCCollision = std::make_unique<CCollisionBox>(npc.get(), CollisionGroup::NPC);
+	//npc->AddComponent(std::move(npcCCollision));
 
-	std::unique_ptr<CHealth> npcCHealth = std::make_unique<CHealth>(npc.get());
-	npc->AddComponent(std::move(npcCHealth));
+	//std::unique_ptr<CHealth> npcCHealth = std::make_unique<CHealth>(npc.get());
+	//npc->AddComponent(std::move(npcCHealth));
 
-	std::unique_ptr<CTankNPC> npcCTankNPC = std::make_unique<CTankNPC>(npc.get(), TankType::BlueTank);
-	npc->AddComponent(std::move(npcCTankNPC));
+	//std::unique_ptr<CTankNPC> npcCTankNPC = std::make_unique<CTankNPC>(npc.get(), TankType::BlueTank);
+	//npc->AddComponent(std::move(npcCTankNPC));
 
-	scene->Add(npc);
+	//scene->Add(npc);
 #pragma endregion NPC
 
 #pragma region GameplayObjects
@@ -176,46 +196,106 @@ void Tron::CreateScene0()
 #pragma region Terrain
 	const auto wallTexture = ResourceManager::GetInstance().LoadTexture("../Data/Tron/WallGreen.png");
 
-	using rapidjson::Document;
-	Document jsonDoc;
-	FILE * fp = nullptr;
-	fopen_s(&fp, "../Data/levelLayout.json", "rb");
+	rapidjson::Document jsonDoc{};
 	
-	if (fp != nullptr)
+	if (ParseJSON("../Data/levelLayout.json", jsonDoc))
 	{
-		fseek(fp, 0, SEEK_END);
-		size_t size = ftell(fp);
-		fseek(fp, 0, SEEK_SET);
-		char* readBuffer = new char[size];
-		rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
-		jsonDoc.ParseStream(is);
-		delete[] readBuffer;
-		fclose(fp);
-
 		using rapidjson::Value;
+		
+		int levelIdx = jsonDoc["Level"].GetInt();
+		std::string gameMode = jsonDoc["GameMode"].GetString();
+		int nrEnemies = jsonDoc["NrEnemies"].GetInt();
 
-		for (Value::ConstValueIterator itr = jsonDoc.Begin();
-			itr != jsonDoc.End(); ++itr)
+		std::cout << levelIdx << std::endl;
+		std::cout << gameMode << std::endl;
+		std::cout << nrEnemies << std::endl;
+
+		if (jsonDoc.HasMember("walls"))
 		{
-			const Value& position = *itr;
-			const Value& name = position["Name"];
-			const Value& posX = position["PosX"];
-			const Value& posY = position["PosY"];
-			const Value& scaleX = position["ScaleX"];
-			const Value& scaleY = position["ScaleY"];
+			const Value& attributes = jsonDoc["walls"];
+			for (rapidjson::SizeType i = 0; i < attributes.Size(); ++i)
+			{
+				if (attributes[i].IsObject())
+				{
+					std::string wallName = attributes[i]["Name"].GetString();
+					int wallPosX = attributes[i]["PosX"].GetInt();
+					int wallPosY = attributes[i]["PosY"].GetInt();
+					int wallScaleX = attributes[i]["ScaleX"].GetInt();
+					int wallScaleY = attributes[i]["ScaleY"].GetInt();
 
-			const auto wall = std::make_shared<GameObject>(name.GetString());
-			//CTRANSFORM
-			wall->GetTransform()->SetPosition(posX.GetInt(), posY.GetInt());
-			wall->GetTransform()->SetScale(scaleX.GetInt(), scaleY.GetInt());
-			//TEX + CRENDER
-			std::unique_ptr<CRender> wallCRender = std::make_unique<CRender>(wall.get(), wallTexture, true);
-			wall->AddComponent(std::move(wallCRender));
-			//CCOLLISION
-			std::unique_ptr<CCollisionBox> wallCCollision = std::make_unique<CCollisionBox>(wall.get(), CollisionGroup::Wall);
-			wall->AddComponent(std::move(wallCCollision));
-			scene->Add(wall);
+					const auto wall = std::make_shared<GameObject>(wallName);
+					//CTRANSFORM
+					wall->GetTransform()->SetPosition(wallPosX, wallPosY);
+					wall->GetTransform()->SetScale(wallScaleX,wallScaleY);
+					//TEX + CRENDER
+					std::unique_ptr<CRender> wallCRender = std::make_unique<CRender>(wall.get(), wallTexture, true);
+					wall->AddComponent(std::move(wallCRender));
+					//CCOLLISION
+					std::unique_ptr<CCollisionBox> wallCCollision = std::make_unique<CCollisionBox>(wall.get(), CollisionGroup::Wall);
+					wall->AddComponent(std::move(wallCCollision));
+					scene->Add(wall);
+				}
+			}
 		}
+		if (jsonDoc.HasMember("enemies"))
+		{
+			const Value& attributes = jsonDoc["enemies"];
+			for (rapidjson::SizeType i = 0; i < attributes.Size(); ++i)
+			{
+				if (attributes[i].IsObject())
+				{
+					std::string enemyName = attributes[i]["Name"].GetString();
+					int enemyPosX = attributes[i]["PosX"].GetInt();
+					int enemyPosY = attributes[i]["PosY"].GetInt();
+
+
+					const auto npc = std::make_shared<GameObject>(enemyName);
+					npc->GetTransform()->SetPosition(enemyPosX, enemyPosY);
+					npc->GetTransform()->SetScale(44, 44);
+
+					const auto blueTankTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankBlue.png");
+					std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), blueTankTexture, true);
+					npc->AddComponent(std::move(npcCRender));
+
+					std::unique_ptr<CCollisionBox> npcCCollision = std::make_unique<CCollisionBox>(npc.get(), CollisionGroup::NPC);
+					npc->AddComponent(std::move(npcCCollision));
+
+					std::unique_ptr<CHealth> npcCHealth = std::make_unique<CHealth>(npc.get());
+					npc->AddComponent(std::move(npcCHealth));
+
+					std::unique_ptr<CTankNPC> npcCTankNPC = std::make_unique<CTankNPC>(npc.get(), TankType::BlueTank);
+					npc->AddComponent(std::move(npcCTankNPC));
+
+					scene->Add(npc);
+				}
+			}
+		}
+
+
+
+
+		//for (Value::ConstValueIterator itr = jsonDoc.Begin();
+		//	itr != jsonDoc.End(); ++itr)
+		//{
+			//const Value& position = *itr;
+			//const Value& name = position["Name"];
+			//const Value& posX = position["PosX"];
+			//const Value& posY = position["PosY"];
+			//const Value& scaleX = position["ScaleX"];
+			//const Value& scaleY = position["ScaleY"];
+
+			//const auto wall = std::make_shared<GameObject>(name.GetString());
+			////CTRANSFORM
+			//wall->GetTransform()->SetPosition(posX.GetInt(), posY.GetInt());
+			//wall->GetTransform()->SetScale(scaleX.GetInt(), scaleY.GetInt());
+			////TEX + CRENDER
+			//std::unique_ptr<CRender> wallCRender = std::make_unique<CRender>(wall.get(), wallTexture, true);
+			//wall->AddComponent(std::move(wallCRender));
+			////CCOLLISION
+			//std::unique_ptr<CCollisionBox> wallCCollision = std::make_unique<CCollisionBox>(wall.get(), CollisionGroup::Wall);
+			//wall->AddComponent(std::move(wallCCollision));
+			//scene->Add(wall);
+		//}
 	}
 
 #pragma endregion Terrain

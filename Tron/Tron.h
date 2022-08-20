@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 #include "Game.h"
+#include "rapidjson/document.h"
 
 class GameObject;
 class GameState;
@@ -15,6 +16,7 @@ private:
 	bool ReadFromFile();
 	void CreateScenes();
 	void PrintStartMessage();
+	static bool ParseJSON(const char* fileName, rapidjson::Document& jsonDoc);
 
 public:
 	static std::shared_ptr<GameObject> m_pPlayerOnePawn;
