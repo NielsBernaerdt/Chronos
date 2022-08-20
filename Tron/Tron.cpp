@@ -66,7 +66,7 @@ void Tron::CreateScenes()
 	SceneManager::GetInstance().CreateScene("Main Menu");
 	SceneManager::GetInstance().CreateScene("Score Menu");
 	CreatePawns();
-	CreateScene0();
+	CreateSceneByIndex(0);
 }
 
 bool Tron::ParseJSON(const char* fileName, rapidjson::Document& jsonDoc)
@@ -211,27 +211,9 @@ void Tron::CreatePawns()
 
 void Tron::CreateSceneByIndex(int index)
 {
-	switch (index)
-	{
-	case 0:
-		CreateScene0();
-		break;
-	case 1:
-		CreateScene1();
-		break;
-	case 2:
-		CreateScene2();
-		break;
-	default:
-		std::cout << "Incorrect given index\n";
-		break;
-	}
-}
-
-void Tron::CreateScene0()
-{
-	auto scene = SceneManager::GetInstance().GetScene(0);
+	auto scene = SceneManager::GetInstance().GetScene(index);
 	scene->SetActive(true);
+	std::string fileName{ "../Data/level" + std::to_string(index) + ".json" };
 
 #pragma region PlayerPawns
 	if (m_pPlayerOnePawn)
@@ -246,7 +228,7 @@ void Tron::CreateScene0()
 		m_pPlayerTwoPawn->GetTransform()->SetPosition(420, 65);
 		scene->Add(m_pPlayerTwoPawn->GetChildren()[0]);
 	}
-//HUD//
+	//HUD//
 	const auto playerHud = std::make_shared<GameObject>(std::string{ "playerHud" });
 	playerHud->GetTransform()->SetPosition(200, 0);
 
@@ -265,8 +247,8 @@ void Tron::CreateScene0()
 
 	using rapidjson::Value;
 	rapidjson::Document jsonDoc{};
-	
-	if (ParseJSON("../Data/level0.json", jsonDoc))
+
+	if (ParseJSON(fileName.c_str(), jsonDoc))
 	{
 
 #pragma region Gameplay Objects
@@ -318,7 +300,7 @@ void Tron::CreateScene0()
 					const auto wall = std::make_shared<GameObject>(wallName);
 					//CTRANSFORM
 					wall->GetTransform()->SetPosition(wallPosX, wallPosY);
-					wall->GetTransform()->SetScale(wallScaleX,wallScaleY);
+					wall->GetTransform()->SetScale(wallScaleX, wallScaleY);
 					//TEX + CRENDER
 					std::unique_ptr<CRender> wallCRender = std::make_unique<CRender>(wall.get(), wallTexture, true);
 					wall->AddComponent(std::move(wallCRender));
@@ -366,34 +348,6 @@ void Tron::CreateScene0()
 		}
 #pragma endregion Enemies
 	}
-}
-
-void Tron::CreateScene1()
-{
-	auto scene = SceneManager::GetInstance().GetScene(1);
-
-#pragma region PlayerPawns
-	if (m_pPlayerOnePawn)
-	{
-		scene->Add(m_pPlayerOnePawn);
-		m_pPlayerOnePawn->GetTransform()->SetPosition(350, 150);
-		scene->Add(m_pPlayerOnePawn->GetChildren()[0]);
-	}
-#pragma endregion PlayerPawns
-}
-
-void Tron::CreateScene2()
-{
-	auto scene = SceneManager::GetInstance().GetScene(2);
-
-#pragma region PlayerPawns
-	if (m_pPlayerOnePawn)
-	{
-		scene->Add(m_pPlayerOnePawn);
-		m_pPlayerOnePawn->GetTransform()->SetPosition(150, 350);
-		scene->Add(m_pPlayerOnePawn->GetChildren()[0]);
-	}
-#pragma endregion PlayerPawns
 }
 
 InputManager* Tron::ConfigureInput()

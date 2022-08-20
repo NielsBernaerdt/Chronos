@@ -1,6 +1,6 @@
 {
   "_commentGameMode": "Singleplayer - Versus - Coop",
-  "GameMode": "Versus",
+  "GameMode": "Singleplayer",
   "_commentNrEnemies": "0 <= X <= 6",
   "NrEnemies": 6
 }
