@@ -80,9 +80,6 @@
     <ClInclude Include="BCommand.h">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="BObserver.h">
-      <Filter>Base</Filter>
-    </ClInclude>
     <ClInclude Include="BState.h">
       <Filter>Base</Filter>
     </ClInclude>

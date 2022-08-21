@@ -159,17 +159,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BPublisher.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CDiamond.cpp" />
     <ClCompile Include="CHealth.cpp" />
     <ClCompile Include="CHUDElement.cpp" />
     <ClCompile Include="CTankNPC.cpp" />
     <ClCompile Include="CTankTron.cpp" />
+    <ClCompile Include="BObserver.cpp" />
     <ClCompile Include="InputCommands.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Tron.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BPublisher.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CDiamond.h" />
     <ClInclude Include="CHealth.h" />
@@ -178,6 +181,7 @@
     <ClInclude Include="CPoints.h" />
     <ClInclude Include="CTankNPC.h" />
     <ClInclude Include="CTankTron.h" />
+    <ClInclude Include="BObserver.h" />
     <ClInclude Include="HighScore.h" />
     <ClInclude Include="InputCommands.h" />
     <ClInclude Include="Tron.h" />

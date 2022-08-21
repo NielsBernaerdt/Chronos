@@ -2,29 +2,28 @@
 #include <GameObject.h>
 #include <SceneManager.h>
 #include "Scene.h"
-#include "HighScore.h"
 #include "CPoints.h"
+#include "BPublisher.h"
+#include "BObserver.h"
+#include "CTankNPC.h"
 
 void CHealth::SetHealth(int hp)
 {
 	m_Health = hp;
-	if (m_Health <= 0)
-	{
-		//m_OwnerObject->Notify(m_OwnerObject, Event::ActorDied);
-		SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
-	}
 }
 
 void CHealth::Damage()
 {
-	//todo somewhere else
-	//int points = dynamic_cast<CPoints*>(m_OwnerObject->GetComponent<CPoints>())->GetPoints();
-	//WriteScoreToFile(points);
-
-
 	--m_Health;
-	if(m_Health <= 0)
+	if (m_pPublisher)
+	{
+		m_pPublisher->Notify(m_OwnerObject, Event::ActorDamaged);
+	}
+	if (m_Health <= 0)
+	{
 		SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
+		m_pPublisher->Notify(m_OwnerObject, Event::ActorDied);
+	}
 
 	//auto peterComp = dynamic_cast<CPeterPepper*>(m_OwnerObject->GetComponent<CPeterPepper>());
 	//if (peterComp != nullptr)

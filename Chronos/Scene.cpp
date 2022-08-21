@@ -60,6 +60,7 @@ void Scene::ClearScene()
 	{
 		m_ObjectsToDelete.push_back(object.get());
 	}
+	EraseObjects();
 }
 
 void Scene::EraseObjects()

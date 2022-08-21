@@ -209,7 +209,6 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Chronos.h" />
     <ClInclude Include="ChronosPCH.h" />
-    <ClInclude Include="BObserver.h" />
     <ClInclude Include="rapidjson\allocators.h" />
     <ClInclude Include="rapidjson\cursorstreamwrapper.h" />
     <ClInclude Include="rapidjson\document.h" />

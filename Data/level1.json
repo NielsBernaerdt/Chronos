@@ -400,34 +400,41 @@
       "ScaleY": 21
     }
   ],
+  "_commentEnemyType": "0 == blue tank, 1 == recognizer",
   "enemies": [
     {
       "Name": "Enemy0",
+      "Type": 1,
       "PosX": 506,
       "PosY": 65
     },
     {
       "Name": "Enemy1",
+      "Type": 0,
       "PosX": 275,
       "PosY": 126
     },
     {
       "Name": "Enemy2",
+      "Type": 0,
       "PosX": 150,
       "PosY": 254
     },
     {
       "Name": "Enemy3",
+      "Type": 1,
       "PosX": 506,
       "PosY": 315
     },
     {
       "Name": "Enemy4",
+      "Type": 0,
       "PosX": 212,
       "PosY": 420
     },
     {
-      "Name": "Enem54",
+      "Name": "Enemy5",
+      "Type": 1,
       "PosX": 380,
       "PosY": 504
     }

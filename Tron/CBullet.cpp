@@ -67,7 +67,7 @@ void CBullet::Update(float deltaTime)
 			if (m_OwnerCollision != CollisionGroup::Pawn)
 			{
 				//TP player
-				e->GetTransform()->SetPosition(0, 0);
+				e->GetTransform()->SetPosition(23, 65);
 				dynamic_cast<CHealth*>(e->GetComponent<CHealth>())->Damage();
 				SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
 			}

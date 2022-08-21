@@ -18,11 +18,6 @@ CTankTron::CTankTron(GameObject* gameObject)
 	if (m_OwnerObject)
 		m_PawnTransform = m_OwnerObject->GetTransform();
 }
-//CTankTron::~CTankTron()
-//{
-//	delete m_State;
-//	m_State = nullptr;
-//}
 
 void CTankTron::Initialize()
 {

@@ -25,7 +25,7 @@ private:
 
 public:
 	void CreatePawns();
-	static void CreateSceneByIndex(int index);
+	static void LoadSceneByIndex(int index);
 
 	bool SetupGameScenes() override {
 		const bool invalidFile = ReadFromFile();

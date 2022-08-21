@@ -18,6 +18,8 @@
 #include <CText.h>
 #include "CHUDElement.h"
 #include "CPoints.h"
+#include "BPublisher.h"
+#include "BObserver.h"
 
 //json
 #include <rapidjson/rapidjson.h>
@@ -66,7 +68,7 @@ void Tron::CreateScenes()
 	SceneManager::GetInstance().CreateScene("Main Menu");
 	SceneManager::GetInstance().CreateScene("Score Menu");
 	CreatePawns();
-	CreateSceneByIndex(0);
+	LoadSceneByIndex(0);
 }
 
 bool Tron::ParseJSON(const char* fileName, rapidjson::Document& jsonDoc)
@@ -111,7 +113,16 @@ void Tron::CreatePawns()
 		tronCPoints->SetPoints(300);
 		tronTank->AddComponent(std::move(tronCPoints));
 
-		std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTank.get(), 3);
+
+		/// <summary>
+		/// //
+		/// </summary>
+		std::shared_ptr<BPublisher> publisher = std::make_shared<BPublisher>();
+
+
+
+
+		std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTank.get(), 3, publisher);
 		tronTank->AddComponent(std::move(tronCHealth));
 
 		m_pPlayerOnePawn = tronTank;
@@ -126,6 +137,14 @@ void Tron::CreatePawns()
 		tronTankBarrel->AddComponent(std::move(tronBarrelCRender));
 
 		tronTankBarrel->SetParent(m_pPlayerOnePawn.get(), tronTankBarrel);
+
+
+
+		/// <summary>
+		/// /
+		/// </summary>
+		std::shared_ptr<BObserver> gameStateObserver = std::make_shared<BObserver>();
+		publisher->AddObserver(gameStateObserver);
 	}
 #pragma endregion PlayerPawnOne
 
@@ -209,7 +228,7 @@ void Tron::CreatePawns()
 
 }
 
-void Tron::CreateSceneByIndex(int index)
+void Tron::LoadSceneByIndex(int index)
 {
 	auto scene = SceneManager::GetInstance().GetScene(index);
 	scene->SetActive(true);
@@ -317,12 +336,14 @@ void Tron::CreateSceneByIndex(int index)
 		if (jsonDoc.HasMember("enemies"))
 		{
 			const auto blueTankTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankBlue.png");
+			const auto recognizer = ResourceManager::GetInstance().LoadEmptyTexture();
 			const Value& enemyArray = jsonDoc["enemies"];
 			for (rapidjson::SizeType i = 0; i < static_cast<rapidjson::SizeType>(m_NrEnemies); ++i)
 			{
 				if (enemyArray[i].IsObject())
 				{
 					std::string enemyName = enemyArray[i]["Name"].GetString();
+					TankType enemyType = static_cast<TankType>(enemyArray[i]["Type"].GetInt());
 					int enemyPosX = enemyArray[i]["PosX"].GetInt();
 					int enemyPosY = enemyArray[i]["PosY"].GetInt();
 
@@ -330,8 +351,16 @@ void Tron::CreateSceneByIndex(int index)
 					npc->GetTransform()->SetPosition(enemyPosX, enemyPosY);
 					npc->GetTransform()->SetScale(38, 38);
 
-					std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), blueTankTexture, true);
-					npc->AddComponent(std::move(npcCRender));
+					if (enemyType == TankType::BlueTank)
+					{
+						std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), blueTankTexture, true);
+						npc->AddComponent(std::move(npcCRender));
+					}
+					else if(enemyType == TankType::Recognizer)
+					{
+						std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), recognizer, true);
+						npc->AddComponent(std::move(npcCRender));
+					}
 
 					std::unique_ptr<CCollisionBox> npcCCollision = std::make_unique<CCollisionBox>(npc.get(), CollisionGroup::NPC);
 					npc->AddComponent(std::move(npcCCollision));
@@ -339,7 +368,7 @@ void Tron::CreateSceneByIndex(int index)
 					std::unique_ptr<CHealth> npcCHealth = std::make_unique<CHealth>(npc.get());
 					npc->AddComponent(std::move(npcCHealth));
 
-					std::unique_ptr<CTankNPC> npcCTankNPC = std::make_unique<CTankNPC>(npc.get(), TankType::BlueTank);
+					std::unique_ptr<CTankNPC> npcCTankNPC = std::make_unique<CTankNPC>(npc.get(), enemyType);
 					npc->AddComponent(std::move(npcCTankNPC));
 
 					scene->Add(npc);

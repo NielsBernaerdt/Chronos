@@ -7,7 +7,6 @@
 
 class CRender;
 enum class Event;
-class BObserver;
 class CTransform;
 
 class GameObject final
@@ -47,16 +46,6 @@ private:
 	std::vector<std::shared_ptr<GameObject>> m_pChildren;
 	CTransform* m_pCTransform = nullptr;
 	CRender* m_pRender = nullptr;
-
-	//Observers
-public:
-	void AddObserver(std::shared_ptr<BObserver> observer);
-	void RemoveObserver(std::shared_ptr<BObserver> observer);
-
-	void Notify(GameObject* gameObject, Event event) const;
-
-private:
-	std::vector<std::shared_ptr<BObserver>> m_pObservers;
 };
 
 template <typename T>

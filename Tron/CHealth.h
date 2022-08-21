@@ -1,10 +1,13 @@
 #pragma once
 #include <CBase.h>
+#include <memory>
+
+class BPublisher;
 
 class CHealth : public CBase
 {
 public:
-	CHealth(GameObject* gameObject, int health = 3) : CBase(gameObject), m_Health(health) {}
+	CHealth(GameObject* gameObject, int health = 3, std::shared_ptr<BPublisher> publisher = nullptr) : CBase(gameObject), m_Health(health), m_pPublisher(publisher) {}
 	~CHealth() override = default;
 	CHealth(const CHealth & other) = delete;
 	CHealth(CHealth && other) noexcept = delete;
@@ -17,4 +20,6 @@ public:
 
 private:
 	int m_Health{};
+
+	std::shared_ptr<BPublisher> m_pPublisher;
 };

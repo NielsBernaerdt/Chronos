@@ -47,6 +47,12 @@
     <ClCompile Include="CHUDElement.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="BObserver.cpp">
+      <Filter>Observers</Filter>
+    </ClCompile>
+    <ClCompile Include="BPublisher.cpp">
+      <Filter>Observers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tron.h">
@@ -81,6 +87,12 @@
     </ClInclude>
     <ClInclude Include="HighScore.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="BObserver.h">
+      <Filter>Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="BPublisher.h">
+      <Filter>Observers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,6 +9,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "CollisionGroups.h"
+#include "CHealth.h"
 
 CTankNPC::CTankNPC(GameObject* gameObject, TankType type = TankType::BlueTank)
 	: CBase(gameObject)
@@ -42,8 +43,24 @@ void CTankNPC::Initialize()
 
 void CTankNPC::Update(float deltaTime)
 {
-	m_AccTimeShooting += deltaTime;
-	//AutomaticShooting();
+	if (m_Type == TankType::BlueTank)
+	{
+		m_AccTimeShooting += deltaTime;
+		AutomaticShooting();
+	}
+	else
+	{
+		auto players = m_pCollision->GetOverlappingObjects(CollisionGroup::Pawn);
+		if (players.empty() == false)
+		{
+			for (const auto& e : players)
+			{
+				//TP player
+				e->GetTransform()->SetPosition(23, 65);
+				dynamic_cast<CHealth*>(e->GetComponent<CHealth>())->Damage();
+			}
+		}
+	}
 }
 
 void CTankNPC::AutomaticShooting()
