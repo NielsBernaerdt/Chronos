@@ -41,4 +41,6 @@ public:
 
 	static glm::vec2 GetMousePos();
 	static void SetMousePos(int x, int y);
+	static glm::vec2 GetJoyStickPos();
+	static void SetJoyStickPos(float x, float y);
 };

@@ -19,13 +19,18 @@
 #include "CHUDElement.h"
 #include "CPoints.h"
 #include "BPublisher.h"
-#include "BObserver.h"
+#include "GameState.h"
 
 //json
 #include <rapidjson/rapidjson.h>
 #include <rapidjson/document.h>
 #include <rapidjson/stream.h>
 #include <rapidjson/filereadstream.h>
+//txt
+#include <algorithm>
+#include <string>
+#include <fstream>
+#include <iostream>
 
 std::shared_ptr<GameObject> Tron::m_pPlayerOnePawn = nullptr;
 std::shared_ptr<GameObject> Tron::m_pPlayerTwoPawn = nullptr;
@@ -65,7 +70,6 @@ void Tron::CreateScenes()
 	SceneManager::GetInstance().CreateScene("Level0");
 	SceneManager::GetInstance().CreateScene("Level1");
 	SceneManager::GetInstance().CreateScene("Level2");
-	SceneManager::GetInstance().CreateScene("Main Menu");
 	SceneManager::GetInstance().CreateScene("Score Menu");
 	CreatePawns();
 	LoadSceneByIndex(0);
@@ -93,6 +97,7 @@ bool Tron::ParseJSON(const char* fileName, rapidjson::Document& jsonDoc)
 
 void Tron::CreatePawns()
 {
+	std::shared_ptr<BPublisher> publisher = std::make_shared<BPublisher>();
 #pragma region PlayerPawnOne
 	{
 		const auto tronTank = std::make_shared<GameObject>(std::string{ "TronPawnOne" });
@@ -110,17 +115,7 @@ void Tron::CreatePawns()
 		tronTank->AddComponent(std::move(tronCCollision));
 
 		std::unique_ptr<CPoints> tronCPoints = std::make_unique<CPoints>(tronTank.get());
-		tronCPoints->SetPoints(300);
 		tronTank->AddComponent(std::move(tronCPoints));
-
-
-		/// <summary>
-		/// //
-		/// </summary>
-		std::shared_ptr<BPublisher> publisher = std::make_shared<BPublisher>();
-
-
-
 
 		std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTank.get(), 3, publisher);
 		tronTank->AddComponent(std::move(tronCHealth));
@@ -137,16 +132,11 @@ void Tron::CreatePawns()
 		tronTankBarrel->AddComponent(std::move(tronBarrelCRender));
 
 		tronTankBarrel->SetParent(m_pPlayerOnePawn.get(), tronTankBarrel);
-
-
-
-		/// <summary>
-		/// /
-		/// </summary>
-		std::shared_ptr<BObserver> gameStateObserver = std::make_shared<BObserver>();
-		publisher->AddObserver(gameStateObserver);
 	}
 #pragma endregion PlayerPawnOne
+
+	std::shared_ptr<GameState> gameStateObserver = std::make_shared<GameState>(m_pPlayerOnePawn.get());
+	publisher->AddObserver(std::dynamic_pointer_cast<BObserver>(gameStateObserver));
 
 #pragma region PlayerPawnTwoCoop
 	if (m_GameMode == "Coop")
@@ -166,10 +156,9 @@ void Tron::CreatePawns()
 		tronTwoTank->AddComponent(std::move(tronCCollision));
 
 		std::unique_ptr<CPoints> tronCPoints = std::make_unique<CPoints>(tronTwoTank.get());
-		tronCPoints->SetPoints(300);
 		tronTwoTank->AddComponent(std::move(tronCPoints));
 
-		std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTwoTank.get(), 3);
+		std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTwoTank.get(), 3, publisher);
 		tronTwoTank->AddComponent(std::move(tronCHealth));
 
 		m_pPlayerTwoPawn = tronTwoTank;
@@ -194,7 +183,7 @@ void Tron::CreatePawns()
 		tronTwoTank->GetTransform()->SetPosition(150, 150);
 		tronTwoTank->GetTransform()->SetScale(38, 38);
 
-		const auto tronTwoTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankGreen.png");
+		const auto tronTwoTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankBlue.png");
 		std::unique_ptr<CRender> tronCRender = std::make_unique<CRender>(tronTwoTank.get(), tronTwoTexture, true);
 		tronTwoTank->AddComponent(std::move(tronCRender));
 
@@ -205,10 +194,9 @@ void Tron::CreatePawns()
 		tronTwoTank->AddComponent(std::move(tronCCollision));
 
 		std::unique_ptr<CPoints> tronCPoints = std::make_unique<CPoints>(tronTwoTank.get());
-		tronCPoints->SetPoints(300);
 		tronTwoTank->AddComponent(std::move(tronCPoints));
 
-		std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTwoTank.get(), 3);
+		std::unique_ptr<CHealth> tronCHealth = std::make_unique<CHealth>(tronTwoTank.get(), 3, publisher);
 		tronTwoTank->AddComponent(std::move(tronCHealth));
 
 		m_pPlayerTwoPawn = tronTwoTank;
@@ -234,6 +222,8 @@ void Tron::LoadSceneByIndex(int index)
 	scene->SetActive(true);
 	std::string fileName{ "../Data/level" + std::to_string(index) + ".json" };
 
+	std::shared_ptr<GameState> gameStateObserver = std::make_shared<GameState>(m_pPlayerOnePawn.get());
+
 #pragma region PlayerPawns
 	if (m_pPlayerOnePawn)
 	{
@@ -249,12 +239,12 @@ void Tron::LoadSceneByIndex(int index)
 	}
 	//HUD//
 	const auto playerHud = std::make_shared<GameObject>(std::string{ "playerHud" });
-	playerHud->GetTransform()->SetPosition(200, 0);
+	playerHud->GetTransform()->SetPosition(175, 0);
 
-	std::unique_ptr<CText> hudText = std::make_unique<CText>(playerHud.get(), "HelloWorldItsaMe", 36);
+	std::unique_ptr<CText> hudText = std::make_unique<CText>(playerHud.get(), " ", 36);
 	playerHud->AddComponent(std::move(hudText));
 
-	std::unique_ptr<CHUDElement> hudCHud = std::make_unique<CHUDElement>(playerHud.get(), m_pPlayerOnePawn.get());
+	std::unique_ptr<CHUDElement> hudCHud = std::make_unique<CHUDElement>(playerHud.get(), m_pPlayerOnePawn.get(), m_pPlayerTwoPawn.get());
 	playerHud->AddComponent(std::move(hudCHud));
 
 	const auto hudTexture = ResourceManager::GetInstance().LoadEmptyTexture();
@@ -335,6 +325,7 @@ void Tron::LoadSceneByIndex(int index)
 #pragma region Enemies
 		if (jsonDoc.HasMember("enemies"))
 		{
+			std::shared_ptr<BPublisher> publisher = std::make_shared<BPublisher>();
 			const auto blueTankTexture = ResourceManager::GetInstance().LoadTexture("Tron/TankBlue.png");
 			const auto recognizer = ResourceManager::GetInstance().LoadEmptyTexture();
 			const Value& enemyArray = jsonDoc["enemies"];
@@ -356,7 +347,7 @@ void Tron::LoadSceneByIndex(int index)
 						std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), blueTankTexture, true);
 						npc->AddComponent(std::move(npcCRender));
 					}
-					else if(enemyType == TankType::Recognizer)
+					else if (enemyType == TankType::Recognizer)
 					{
 						std::unique_ptr<CRender> npcCRender = std::make_unique<CRender>(npc.get(), recognizer, true);
 						npc->AddComponent(std::move(npcCRender));
@@ -365,7 +356,7 @@ void Tron::LoadSceneByIndex(int index)
 					std::unique_ptr<CCollisionBox> npcCCollision = std::make_unique<CCollisionBox>(npc.get(), CollisionGroup::NPC);
 					npc->AddComponent(std::move(npcCCollision));
 
-					std::unique_ptr<CHealth> npcCHealth = std::make_unique<CHealth>(npc.get());
+					std::unique_ptr<CHealth> npcCHealth = std::make_unique<CHealth>(npc.get(), 3, publisher);
 					npc->AddComponent(std::move(npcCHealth));
 
 					std::unique_ptr<CTankNPC> npcCTankNPC = std::make_unique<CTankNPC>(npc.get(), enemyType);
@@ -374,8 +365,40 @@ void Tron::LoadSceneByIndex(int index)
 					scene->Add(npc);
 				}
 			}
+			publisher->AddObserver(std::dynamic_pointer_cast<BObserver>(gameStateObserver));
 		}
 #pragma endregion Enemies
+	}
+}
+
+void Tron::LoadScoreMenu()
+{
+	auto scene = SceneManager::GetInstance().GetScene(3);
+	scene->SetActive(true);
+
+	const std::string fileName{ "../Data/HighScores.txt" };
+
+	std::vector<int> highScores;
+	std::ifstream readFile{ fileName };
+	//Firstly get all the scores currently in the file
+	std::string str;
+	/*discard first line :*/ std::getline(readFile, str);
+	int posY{ 100 };
+	while (std::getline(readFile, str))
+	{
+		const auto playerHud = std::make_shared<GameObject>(std::string{ "playerHud" });
+		playerHud->GetTransform()->SetPosition(200, posY);
+
+		std::unique_ptr<CText> hudText = std::make_unique<CText>(playerHud.get(), str, 36);
+		playerHud->AddComponent(std::move(hudText));
+
+		const auto hudTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+		std::unique_ptr<CRender> hudRender = std::make_unique<CRender>(playerHud.get(), hudTexture, false);
+		playerHud->AddComponent(std::move(hudRender));
+
+		scene->Add(playerHud);
+
+		posY += 50;
 	}
 }
 
@@ -391,6 +414,8 @@ InputManager* Tron::ConfigureInput()
 		inputManager->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveHorizontal>(false));
 		inputManager->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<MoveVertical>(true));
 		inputManager->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<MoveVertical>(false));
+		//inputManager->BindCommandToButton(ControllerButton::RightShoulder, std::make_unique<Shoot>());
+		//inputManager->BindCommandToButton(ControllerButton::RightThumb, std::make_unique<MoveBarrel>(false));
 		inputManager->AddController(0, m_pPlayerOnePawn.get());
 		//KEYBOARD|MOUSE
 		inputManager->BindCommandToButton(SDL_SCANCODE_D, std::make_unique<MoveHorizontal>(true));
@@ -405,6 +430,7 @@ InputManager* Tron::ConfigureInput()
 		inputManager->BindCommandToButton(SDL_SCANCODE_2, std::make_unique<OpenScene>(2));
 		inputManager->BindCommandToButton(SDL_SCANCODE_R, std::make_unique<ResetScene>());
 		inputManager->BindCommandToButton(SDL_BUTTON_LMASK, std::make_unique<Shoot>(), true);
+		inputManager->BindCommandToButton(SDL_MOUSEMOTION, std::make_unique<MoveBarrel>(), true);
 		inputManager->AddController(4, m_pPlayerOnePawn.get());
 	}
 	if (m_GameMode == "Coop" || m_GameMode == "Versus")
@@ -423,6 +449,7 @@ InputManager* Tron::ConfigureInput()
 		inputManager->BindCommandToButton(SDL_SCANCODE_2, std::make_unique<OpenScene>(2));
 		inputManager->BindCommandToButton(SDL_SCANCODE_R, std::make_unique<ResetScene>());
 		inputManager->BindCommandToButton(SDL_BUTTON_LMASK, std::make_unique<Shoot>(), true);
+		inputManager->BindCommandToButton(SDL_MOUSEMOTION, std::make_unique<MoveBarrel>(), true);
 		inputManager->AddController(4, m_pPlayerOnePawn.get());
 		//INPUT PAWN TWO
 		//GAMEPAD
@@ -430,7 +457,8 @@ InputManager* Tron::ConfigureInput()
 		inputManager->BindCommandToButton(ControllerButton::DPadLeft, std::make_unique<MoveHorizontal>(false));
 		inputManager->BindCommandToButton(ControllerButton::DPadUp, std::make_unique<MoveVertical>(true));
 		inputManager->BindCommandToButton(ControllerButton::DPadDown, std::make_unique<MoveVertical>(false));
-		inputManager->BindCommandToButton(ControllerButton::ButtonX, std::make_unique<Shoot>());
+		inputManager->BindCommandToButton(ControllerButton::RightShoulder, std::make_unique<Shoot>());
+		inputManager->BindCommandToButton(ControllerButton::RightThumb, std::make_unique<MoveBarrel>(false));
 		inputManager->AddController(0, m_pPlayerTwoPawn.get());
 	}
 	return inputManager;

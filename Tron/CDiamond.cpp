@@ -2,7 +2,7 @@
 #include <GameObject.h>
 #include <CCollisionBox.h>
 #include <iostream>
-
+#include <AudioManager.h>
 #include "CollisionGroups.h"
 #include "Renderer.h"
 
@@ -24,6 +24,7 @@ void CDiamond::Update(float)
 		for (const auto& p : collidingPlayers)
 		{
 			TeleportPlayer(p);
+			AudioManager::GetInstance().PlaySound("AudioFiles/TeleportSound.wav", 30);
 		}
 	}
 }

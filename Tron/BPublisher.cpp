@@ -26,6 +26,6 @@ void BPublisher::Notify(GameObject* gameObject, Event event) const
 {
 	for (const auto& observer : m_pObservers)
 	{
-		observer->Notify(gameObject, event);
+		observer->HandleEvent(gameObject, event);
 	}
 }

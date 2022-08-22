@@ -1,27 +1,16 @@
 #pragma once
-
 class GameObject;
-
-enum class Event
-{
-	ActorDied,
-	ActorDamaged,
-	NPCKilled,
-	BurgerCompleted,
-};
+enum class Event;
 
 class BObserver
 {
 public:
 	BObserver() = default;
-	~BObserver() = default;
+	virtual ~BObserver() = default;
 	BObserver(const BObserver& other) = delete;
 	BObserver(BObserver&& other) noexcept = delete;
 	BObserver& operator=(const BObserver& other) = delete;
 	BObserver& operator=(BObserver&& other) noexcept = delete;
 
-	void Notify(GameObject* object, Event event);
-
-private:
-	void CheckPlayerVictory();
+	virtual void HandleEvent(GameObject* object, Event event) = 0;
 };

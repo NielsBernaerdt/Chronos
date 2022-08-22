@@ -6,6 +6,7 @@
 #include <memory>
 #include "Game.h"
 #include "rapidjson/document.h"
+#include "AudioManager.h"
 
 class GameObject;
 class GameState;
@@ -26,11 +27,13 @@ private:
 public:
 	void CreatePawns();
 	static void LoadSceneByIndex(int index);
+	static void LoadScoreMenu();
 
 	bool SetupGameScenes() override {
 		const bool invalidFile = ReadFromFile();
 		if (invalidFile) return true;
 		PrintStartMessage();
+		AudioManager::GetInstance().PlaySound("AudioFiles/BackgroundMusic.wav", 10, 999);
 		return false;
 	}
 	InputManager* ConfigureInput() override;

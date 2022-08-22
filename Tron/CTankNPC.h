@@ -17,7 +17,7 @@ class CTankNPC : public CBase
 {
 public:
 	CTankNPC(GameObject* gameObject, TankType type);
-	~CTankNPC() override = default;
+	~CTankNPC() override;
 	CTankNPC(const CTankNPC& other) = delete;
 	CTankNPC(CTankNPC&& other) noexcept = delete;
 	CTankNPC& operator=(const CTankNPC& other) = delete;
@@ -25,6 +25,9 @@ public:
 
 	void Initialize() override;
 	void Update(float) override;
+
+	int GetPointsWorth() { return m_PointsWorth; }
+	static int m_NrNPCsAlive;
 
 private:
 	TankType m_Type{};
@@ -39,6 +42,7 @@ private:
 
 	CTransform* m_PawnTransform = nullptr;
 	CCollisionBox* m_pCollision = nullptr;
+
 
 	void SetupTankType();
 	void AutomaticShooting();

@@ -20,6 +20,11 @@ void Scene::Update(float deltaTime)
 {
 	for(auto& object : m_Objects)
 	{
+		if (m_StopUpdate == true)
+		{
+			m_StopUpdate = false;
+			return;
+		}
 		object->Update(deltaTime);
 	}
 }

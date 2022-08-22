@@ -24,6 +24,7 @@ public:
 	void MoveVertically(int moveUp);
 
 	void Shoot();
+	void SetBarrelDirection(glm::vec3  barrelDirection) { m_BarrelDirection = barrelDirection; }
 
 private:
 	float m_MovSpeed{ 200 };

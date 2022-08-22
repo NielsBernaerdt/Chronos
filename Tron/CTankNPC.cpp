@@ -3,6 +3,7 @@
 #include <CCollisionBox.h>
 //Spawn bullet includes
 #include <ResourceManager.h>
+#include <AudioManager.h>
 #include <CRender.h>
 #include <CCollisionBox.h>
 #include "CBullet.h"
@@ -10,6 +11,8 @@
 #include "SceneManager.h"
 #include "CollisionGroups.h"
 #include "CHealth.h"
+
+int CTankNPC::m_NrNPCsAlive = 0;
 
 CTankNPC::CTankNPC(GameObject* gameObject, TankType type = TankType::BlueTank)
 	: CBase(gameObject)
@@ -19,6 +22,13 @@ CTankNPC::CTankNPC(GameObject* gameObject, TankType type = TankType::BlueTank)
 		m_PawnTransform = m_OwnerObject->GetTransform();
 
 	SetupTankType();
+
+	++m_NrNPCsAlive;
+}
+
+CTankNPC::~CTankNPC()
+{
+	--m_NrNPCsAlive;
 }
 
 void CTankNPC::SetupTankType()
@@ -86,4 +96,5 @@ void CTankNPC::AutomaticShooting()
 	bullet->AddComponent(std::move(bulletCBullet));
 
 	SceneManager::GetInstance().GetActiveScene()->SpawnObject(bullet);
+	AudioManager::GetInstance().PlaySound("AudioFiles/Shooting.wav", 30);
 }

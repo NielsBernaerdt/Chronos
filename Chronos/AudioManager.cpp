@@ -28,7 +28,7 @@ void AudioManager::PlaySound(std::string id, int volume, int loops)
 	m_AudioMutex.lock();
 
 	//Aggregation here
-	for (size_t i = m_Head; i != m_Tail; i = (i + 1) % m_MaxPending)
+	for (int i = m_Head; i != m_Tail; i = (i + 1) % m_MaxPending)
 	{
 		if (m_PendingMessages[i]->GetId() == id)
 		{

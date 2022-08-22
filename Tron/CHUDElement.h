@@ -8,7 +8,7 @@ class CHealth;
 class CHUDElement : public CBase
 {
 public:
-	CHUDElement(GameObject* gameObject, GameObject* objectToFollow);
+	CHUDElement(GameObject* gameObject, GameObject* pawnOne, GameObject* pawnTwo = nullptr);
 	~CHUDElement() override = default;
 	CHUDElement(const CHUDElement& other) = delete;
 	CHUDElement(CHUDElement&& other) noexcept = delete;
@@ -19,8 +19,11 @@ public:
 	void Update(float deltaTime) override;
 
 private:
-	GameObject* m_pObjectToFollow = nullptr;
+	GameObject* m_PlayerOnePawn = nullptr;
+	GameObject* m_PlayerTwoPawn = nullptr;
 	CText* m_pTextComponent{};
-	CHealth* m_pHealthComponent = nullptr;
-	CPoints* m_pPointsComponent = nullptr;
+	CHealth* m_pHealthComponentOne = nullptr;
+	CPoints* m_pPointsComponentOne = nullptr;
+	CHealth* m_pHealthComponentTwo = nullptr;
+	CPoints* m_pPointsComponentTwo = nullptr;
 };

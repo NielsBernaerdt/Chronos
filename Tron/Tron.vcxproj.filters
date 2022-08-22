@@ -47,10 +47,10 @@
     <ClCompile Include="CHUDElement.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="BObserver.cpp">
+    <ClCompile Include="BPublisher.cpp">
       <Filter>Observers</Filter>
     </ClCompile>
-    <ClCompile Include="BPublisher.cpp">
+    <ClCompile Include="GameState.cpp">
       <Filter>Observers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,6 +92,9 @@
       <Filter>Observers</Filter>
     </ClInclude>
     <ClInclude Include="BPublisher.h">
+      <Filter>Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
       <Filter>Observers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -44,6 +44,23 @@ private:
 	bool m_IsPlayerPawn;
 	CTankTron* m_CTron = nullptr;
 };
+//----------------------------------MOVEBARREL----------------------------------
+class MoveBarrel : public BCommand
+{
+public:
+	MoveBarrel(bool shouldTrackMouse = true);
+	~MoveBarrel() override;
+
+	void Execute(GameObject* actor) override;
+
+private:
+	bool m_TracksMouse;
+	bool m_IsPlayerPawn;
+	CTankTron* m_CTron = nullptr;
+
+	void TrackMouse(GameObject* actor);
+	void TrackJoyStick(GameObject* actor);
+};
 //----------------------------------NEXTSCENE----------------------------------
 class OpenScene : public BCommand
 {

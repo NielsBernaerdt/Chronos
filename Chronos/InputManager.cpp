@@ -17,6 +17,7 @@ private:
 
 	WORD m_ButtonsPressedThisFrame{};
 	WORD m_ButtonsReleasedThisFrame{};
+	static float m_JoystickX, m_JoystickY;
 
 	using ControllerCommandsMap = std::map<ControllerButton, std::unique_ptr<BCommand>>;
 	ControllerCommandsMap m_ConsoleCommandsGP{};
@@ -63,17 +64,14 @@ public:
 			if (event.type == SDL_QUIT) {
 				return false;
 			}
-			if (event.type == SDL_KEYDOWN) {
-
-			}
-			if (event.type == SDL_MOUSEBUTTONDOWN) {
-
-			}
 		}
 		m_CurrentKeyboardState = SDL_GetKeyboardState(NULL);
 
 		//MOUSE
 		m_CurrentMouseButtons = SDL_GetMouseState(&m_MouseX, &m_MouseY);
+		int mouseX, mouseY;
+		SDL_GetMouseState(&mouseX, &mouseY);
+		InputManager::SetMousePos(mouseX, mouseY);
 
 		//GAMEPAD
 		for (int i{}; i < 4; ++i)
@@ -86,6 +84,10 @@ public:
 				auto buttonChanges = m_CurrentGamepadState.Gamepad.wButtons ^ m_PreviousGamepadState.Gamepad.wButtons;
 				m_ButtonsPressedThisFrame = buttonChanges & m_CurrentGamepadState.Gamepad.wButtons;
 				m_ButtonsReleasedThisFrame = buttonChanges & (~m_CurrentGamepadState.Gamepad.wButtons);
+
+				float joyStickX = fmaxf(-1, (float)m_CurrentGamepadState.Gamepad.sThumbRX / 32767);
+				float joyStickY = fmaxf(-1, (float)m_CurrentGamepadState.Gamepad.sThumbRY / 32767);
+				InputManager::SetJoyStickPos(joyStickX, joyStickY);
 			}
 			else
 			{
@@ -136,6 +138,8 @@ public:
 		{
 			if (Down(static_cast<unsigned int>(gp.first)))
 				gp.second->Execute(m_pPawns[currentControllerIdx]);
+			if(gp.first == ControllerButton::RightThumb)
+				gp.second->Execute(m_pPawns[currentControllerIdx]);
 		}
 	}
 	void HandleKBInput() const
@@ -154,6 +158,10 @@ public:
 		{
 			if ((m_CurrentMouseButtons & mb.first) != 0)
 				mb.second->Execute(m_pPawns.back());
+			if (mb.first == SDL_MOUSEMOTION)
+			{
+				mb.second->Execute(m_pPawns.back());
+			}
 		}
 	}
 	void CommandToButton(ControllerButton button, std::unique_ptr<BCommand> command)
@@ -173,9 +181,9 @@ public:
 	}
 	void Pawn(int controllerIndex, GameObject* pPawn)
 	{
-		for(int i{}; i < m_pPawns.size(); ++i)
+		for(size_t i{}; i < m_pPawns.size(); ++i)
 		{
-			if (i == controllerIndex)
+			if (int(i) == controllerIndex)
 				m_pPawns[i] = pPawn;
 		}
 	}
@@ -188,10 +196,21 @@ public:
 		m_MouseX = x;
 		m_MouseY = y;
 	}
+	static glm::vec2 JoyStickPos()
+	{
+		return glm::vec2{ m_JoystickX, m_JoystickY };
+	}
+	static void SetJoyStick(float x, float y)
+	{
+		m_JoystickX = x;
+		m_JoystickY = y;
+	}
 };
 
 int InputManager::InputManagerImpl::m_MouseX = 0;
 int InputManager::InputManagerImpl::m_MouseY = 0;
+float InputManager::InputManagerImpl::m_JoystickX = 0;
+float InputManager::InputManagerImpl::m_JoystickY = 0;
 
 InputManager::InputManager()
 	:m_pInputManagerImpl{new InputManagerImpl{}}
@@ -226,4 +245,12 @@ glm::vec2 InputManager::GetMousePos()
 void InputManager::SetMousePos(int x, int y)
 {
 	InputManagerImpl::SetMouse(x, y);
+}
+glm::vec2 InputManager::GetJoyStickPos()
+{
+	return InputManagerImpl::JoyStickPos();
+}
+void InputManager::SetJoyStickPos(float x, float y)
+{
+	InputManagerImpl::SetJoyStick(x, y);
 }
