@@ -14,12 +14,12 @@
 
 int CTankNPC::m_NrNPCsAlive = 0;
 
-CTankNPC::CTankNPC(GameObject* gameObject, TankType type = TankType::BlueTank)
-	: CBase(gameObject)
+CTankNPC::CTankNPC(GameObject* pGameObject, TankType type = TankType::BlueTank)
+	: CBase(pGameObject)
 	, m_Type(type)
 {
 	if (m_OwnerObject)
-		m_PawnTransform = m_OwnerObject->GetTransform();
+		m_pPawnTransform = m_OwnerObject->GetTransform();
 
 	SetupTankType();
 
@@ -81,18 +81,18 @@ void CTankNPC::AutomaticShooting()
 
 	const auto bullet = std::make_shared<GameObject>(std::string{ "bullet" });
 	auto startingPos = m_OwnerObject->GetTransform()->GetPosition();
+	startingPos.y += 15;
 	bullet->GetTransform()->SetPosition(startingPos);
-	bullet->GetTransform()->SetScale(20, 20);
+	bullet->GetTransform()->SetScale(10, 10);
 
-	const auto bulletTexture = ResourceManager::GetInstance().LoadEmptyTexture();
+	const auto bulletTexture = ResourceManager::GetInstance().LoadTexture("Tron/Bullet.png");
 	std::unique_ptr<CRender> bulletCRender = std::make_unique<CRender>(bullet.get(), bulletTexture, true);
 	bullet->AddComponent(std::move(bulletCRender));
 
 	std::unique_ptr<CCollisionBox> bulletCCollision = std::make_unique<CCollisionBox>(bullet.get(), CollisionGroup::Bullet);
 	bullet->AddComponent(std::move(bulletCCollision));
 
-	//todo why does this not work correctly
-	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), m_BarrelDirection, CollisionGroup::NPC);
+	std::unique_ptr<CBullet> bulletCBullet = std::make_unique<CBullet>(bullet.get(), normalize(m_BarrelDirection), CollisionGroup::NPC);
 	bullet->AddComponent(std::move(bulletCBullet));
 
 	SceneManager::GetInstance().GetActiveScene()->SpawnObject(bullet);

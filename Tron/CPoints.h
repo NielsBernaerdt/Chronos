@@ -4,7 +4,7 @@
 class CPoints : public CBase
 {
 public:
-	CPoints(GameObject* gameObject) : CBase(gameObject) {}
+	CPoints(GameObject* pGameObject) : CBase(pGameObject) {}
 	~CPoints() override = default;
 	CPoints(const CPoints& other) = delete;
 	CPoints(CPoints&& other) noexcept = delete;

@@ -21,7 +21,6 @@ public:
 	CCollisionBox& operator=(const CCollisionBox& other) = delete;
 	CCollisionBox& operator=(CCollisionBox&& other) noexcept = delete;
 
-	//static std::vector<CCollisionBox*> m_pCollisionBoxes;
 	static std::map<CCollisionBox*, int> m_pCollisionBoxes;
 	std::vector<GameObject*> GetOverlappingObjects(CollisionGroup filter) const;
 	std::vector<GameObject*> GetOverlappingObjects(CollisionGroup filter, const Rect& rectToCompare) const;

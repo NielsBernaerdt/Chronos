@@ -27,11 +27,12 @@ private:
 	int m_NrBounces{};
 	const int m_MaxNrBounces{ 5 };
 	glm::vec3 m_PrevPosition{};
+	const float m_VelocityMultiplier{ 150 };
 	glm::vec3 m_Velocity{};
 	float m_BulletSpeed{ 3 };
 
 	CollisionGroup m_OwnerCollision;
-	CTransform* m_PawnTransform = nullptr;
+	CTransform* m_pPawnTransform = nullptr;
 	CCollisionBox* m_pCollision = nullptr;
 
 	void BounceBullet();

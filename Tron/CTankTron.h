@@ -7,12 +7,13 @@
 
 class CTransform;
 class CCollisionBox;
+class PlayerState;
 
 class CTankTron : public CBase
 {
 public:
-	CTankTron(GameObject* gameObject);
-	~CTankTron() override = default;
+	CTankTron(GameObject* pGameObject);
+	~CTankTron() override;
 	CTankTron(const CTankTron& other) = delete;
 	CTankTron(CTankTron&& other) noexcept = delete;
 	CTankTron& operator=(const CTankTron& other) = delete;
@@ -25,6 +26,9 @@ public:
 
 	void Shoot();
 	void SetBarrelDirection(glm::vec3  barrelDirection) { m_BarrelDirection = barrelDirection; }
+	void SetAnimSpriteRow(int rowNr);
+
+	void DisableWalls();
 
 private:
 	float m_MovSpeed{ 200 };
@@ -35,11 +39,17 @@ private:
 	float m_AccTimeShooting{ 1.f };
 	float m_ShootingCooldown{ 1.f };
 
-	CTransform* m_PawnTransform = nullptr;
+	CTransform* m_pPawnTransform = nullptr;
 	CCollisionBox* m_pCollision = nullptr;
 	CollisionGroup m_BulletCollisionGroup;
 
+	bool m_IgnoreWalls{ false };
+
 	//State
-//private:
-//	PlayerState* m_State = nullptr;
+	int m_SrcLength{ 32 };
+	int m_AnimSpriteRow{ 0 };
+	void SetTexture();
+
+private:
+	PlayerState* m_pState = nullptr;
 };

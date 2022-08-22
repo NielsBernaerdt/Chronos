@@ -4,10 +4,10 @@
 #include "CHealth.h"
 #include "CPoints.h"
 
-CHUDElement::CHUDElement(GameObject* gameObject, GameObject* pawnOne, GameObject* pawnTwo)
-	: CBase(gameObject)
-	, m_PlayerOnePawn(pawnOne)
-	, m_PlayerTwoPawn(pawnTwo)
+CHUDElement::CHUDElement(GameObject* pGameObject, GameObject* pPawnOne, GameObject* pPawnTwo)
+	: CBase(pGameObject)
+	, m_PlayerOnePawn(pPawnOne)
+	, m_PlayerTwoPawn(pPawnTwo)
 {
 }
 

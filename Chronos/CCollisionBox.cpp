@@ -12,8 +12,9 @@ CCollisionBox::CCollisionBox(GameObject* gameObject, CollisionGroup group, bool 
 	, m_UseScale(useScale)
 	, m_Rect(sizeRect)
 {
-	m_pCollisionBoxes.insert(std::make_pair<>(this, 0));
+	m_pCollisionBoxes.insert(std::make_pair<>(this, SceneManager::GetInstance().GetActiveSceneIdx()));
 }
+
 void CCollisionBox::Initialize()
 {
 	auto pos = m_OwnerObject->GetTransform()->GetPosition();
@@ -43,10 +44,12 @@ void CCollisionBox::SetRect(glm::vec2 pos)
 std::vector<GameObject*> CCollisionBox::GetOverlappingObjects(CollisionGroup filter) const
 {
 	std::vector<GameObject*> temp;
+
 	for (const auto e : m_pCollisionBoxes)
 	{
 		if (e.second != SceneManager::GetInstance().GetActiveSceneIdx()
-			|| e.first->m_CollisionGroup != filter) continue;
+			|| e.first->m_CollisionGroup != filter)
+			continue;
 
 		if (IsRectOverlapping(glm::vec2(m_Rect.left, m_Rect.bottom + m_Rect.height)
 			, glm::vec2(m_Rect.left + m_Rect.width, m_Rect.bottom)

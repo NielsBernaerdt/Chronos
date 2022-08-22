@@ -16,7 +16,7 @@ enum class TankType
 class CTankNPC : public CBase
 {
 public:
-	CTankNPC(GameObject* gameObject, TankType type);
+	CTankNPC(GameObject* pGameObject, TankType type);
 	~CTankNPC() override;
 	CTankNPC(const CTankNPC& other) = delete;
 	CTankNPC(CTankNPC&& other) noexcept = delete;
@@ -38,9 +38,9 @@ private:
 
 	glm::vec3 m_BarrelDirection{-10,0,0};
 	float m_AccTimeShooting{ 0.f };
-	float m_ShootingCooldown{ 1.f };
+	float m_ShootingCooldown{ 3.f };
 
-	CTransform* m_PawnTransform = nullptr;
+	CTransform* m_pPawnTransform = nullptr;
 	CCollisionBox* m_pCollision = nullptr;
 
 

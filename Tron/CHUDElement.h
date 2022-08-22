@@ -8,7 +8,7 @@ class CHealth;
 class CHUDElement : public CBase
 {
 public:
-	CHUDElement(GameObject* gameObject, GameObject* pawnOne, GameObject* pawnTwo = nullptr);
+	CHUDElement(GameObject* pGameObject, GameObject* pPawnOne, GameObject* pPawnTwo = nullptr);
 	~CHUDElement() override = default;
 	CHUDElement(const CHUDElement& other) = delete;
 	CHUDElement(CHUDElement&& other) noexcept = delete;

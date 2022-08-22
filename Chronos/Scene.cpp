@@ -20,11 +20,7 @@ void Scene::Update(float deltaTime)
 {
 	for(auto& object : m_Objects)
 	{
-		if (m_StopUpdate == true)
-		{
-			m_StopUpdate = false;
-			return;
-		}
+		if(object)
 		object->Update(deltaTime);
 	}
 }
@@ -53,10 +49,10 @@ void Scene::SetActive(bool active)
 void Scene::RemoveObject(GameObject* gameObject)
 {
 	m_ObjectsToDelete.push_back(gameObject);
-	for (auto child : gameObject->GetChildren())
-	{
-		m_ObjectsToDelete.push_back(child.get());
-	}
+	//for (auto child : gameObject->GetChildren())
+	//{
+	//	m_ObjectsToDelete.push_back(child.get());
+	//}
 }
 
 void Scene::ClearScene()
@@ -78,7 +74,8 @@ void Scene::EraseObjects()
 		std::vector<std::shared_ptr<GameObject>>::iterator i =	std::find_if(m_Objects.begin(), m_Objects.end(),
 				[&](std::shared_ptr<GameObject> e) { return e.get() == obj; });
 
-		m_Objects.erase(i);
+		if(i != m_Objects.end())
+			m_Objects.erase(i);
 	}
 	m_ObjectsToDelete = std::vector <GameObject*>{};
 }

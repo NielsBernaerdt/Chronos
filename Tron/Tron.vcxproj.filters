@@ -53,6 +53,9 @@
     <ClCompile Include="GameState.cpp">
       <Filter>Observers</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tron.h">
@@ -96,6 +99,9 @@
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

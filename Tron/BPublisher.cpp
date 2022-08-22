@@ -1,31 +1,30 @@
 #include "ChronosPCH.h"
-#include "BPublisher.h"
-#include "GameObject.h"
-#include "BObserver.h"
 #include <algorithm>
 #include <iterator>
+#include <GameObject.h>
+#include "BPublisher.h"
+#include "BObserver.h"
 
-
-void BPublisher::AddObserver(std::shared_ptr<BObserver> observer)
+void BPublisher::AddObserver(std::shared_ptr<BObserver> pObserver)
 {
-	m_pObservers.push_back(observer);
+	m_pObservers.push_back(pObserver);
 }
-void BPublisher::RemoveObserver(std::shared_ptr<BObserver>)
+void BPublisher::RemoveObserver(std::shared_ptr<BObserver> pObserver)
 {
-	//const auto it = std::ranges::find(m_pObservers, observer);
+	const auto it = std::find(m_pObservers.begin(), m_pObservers.end(), pObserver);
 
-	//if (it == m_pObservers.end())
-	//{
-	//	std::cout << "GameObject::RemoveObserver - Observer to remove is not attached to this GameObject!" << std::endl;
-	//	return;
-	//}
+	if (it == m_pObservers.end())
+	{
+		std::cout << "GameObject::RemoveObserver - Observer to remove is not attached to this GameObject!" << std::endl;
+		return;
+	}
 
-	//m_pObservers.erase(it);
+	m_pObservers.erase(it);
 }
-void BPublisher::Notify(GameObject* gameObject, Event event) const
+void BPublisher::Notify(GameObject* pGameObject, Event event) const
 {
 	for (const auto& observer : m_pObservers)
 	{
-		observer->HandleEvent(gameObject, event);
+		observer->HandleEvent(pGameObject, event);
 	}
 }

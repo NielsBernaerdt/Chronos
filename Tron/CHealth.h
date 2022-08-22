@@ -7,7 +7,7 @@ class BPublisher;
 class CHealth : public CBase
 {
 public:
-	CHealth(GameObject* gameObject, int health = 3, std::shared_ptr<BPublisher> publisher = nullptr) : CBase(gameObject), m_Health(health), m_pPublisher(publisher) {}
+	CHealth(GameObject* pGameObject, int health = 3, std::shared_ptr<BPublisher> pPublisher = nullptr) : CBase(pGameObject), m_Health(health), m_pPublisher(pPublisher) {}
 	~CHealth() override = default;
 	CHealth(const CHealth & other) = delete;
 	CHealth(CHealth && other) noexcept = delete;

@@ -19,7 +19,7 @@ private:
 	void PrintStartMessage();
 	static bool ParseJSON(const char* fileName, rapidjson::Document& jsonDoc);
 
-	std::string m_GameMode{"Singleplayer"};
+	static std::string m_GameMode;
 	static int m_NrEnemies;
 	static std::shared_ptr<GameObject> m_pPlayerOnePawn;
 	static std::shared_ptr<GameObject> m_pPlayerTwoPawn;

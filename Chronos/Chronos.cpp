@@ -34,7 +34,7 @@ void Chronos::Initialize()
 	}
 
 	m_Window = SDL_CreateWindow(
-		"Programming 4 assignment",
+		"Programming 4 Tron - Niels Bernaerdt",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		630,

@@ -3,18 +3,17 @@
 #include "CollisionGroups.h"
 #include <GameObject.h>
 #include <iostream>
-
 #include "CHealth.h"
 #include "Scene.h"
 #include "SceneManager.h"
 
-CBullet::CBullet(GameObject* gameObject, glm::vec3 velocity, CollisionGroup collisionGroup)
-	: CBase(gameObject)
-	, m_Velocity(velocity)
+CBullet::CBullet(GameObject* pGameObject, glm::vec3 velocity, CollisionGroup collisionGroup)
+	: CBase(pGameObject)
+	, m_Velocity(velocity * m_VelocityMultiplier)
 	, m_OwnerCollision(collisionGroup)
 {
 	if (m_OwnerObject)
-		m_PawnTransform = m_OwnerObject->GetTransform();
+		m_pPawnTransform = m_OwnerObject->GetTransform();
 
 	m_Velocity *= m_BulletSpeed;
 }
@@ -28,7 +27,7 @@ void CBullet::Update(float deltaTime)
 	//MOVEMENT//
 	if (m_pCollision->GetOverlappingObjects(CollisionGroup::Wall).empty() == false)
 	{
-		m_PawnTransform->SetPosition(m_PrevPosition);
+		m_pPawnTransform->SetPosition(m_PrevPosition);
 
 		if (m_NrBounces < m_MaxNrBounces)
 		{
@@ -42,10 +41,10 @@ void CBullet::Update(float deltaTime)
 	}
 	else
 	{
-		m_PrevPosition = m_PawnTransform->GetPosition();
-		m_PawnTransform->SetPosition(m_PawnTransform->GetPosition() + (m_Velocity * deltaTime));
+		m_PrevPosition = m_pPawnTransform->GetPosition();
+		m_pPawnTransform->SetPosition(m_pPawnTransform->GetPosition() + (m_Velocity * deltaTime));
 	}
-
+	//Enemy Hit//
 	auto enemies = m_pCollision->GetOverlappingObjects(CollisionGroup::NPC);
 	if (enemies.empty() == false)
 	{
@@ -53,12 +52,13 @@ void CBullet::Update(float deltaTime)
 		{
 			if (m_OwnerCollision != CollisionGroup::NPC)
 			{
-				
 				dynamic_cast<CHealth*>(e->GetComponent<CHealth>())->Damage();
 				SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
+				return;
 			}
 		}
 	}
+	//Player Hit//
 	auto players = m_pCollision->GetOverlappingObjects(CollisionGroup::Pawn);
 	if (players.empty() == false)
 	{
@@ -70,6 +70,7 @@ void CBullet::Update(float deltaTime)
 				e->GetTransform()->SetPosition(23, 65);
 				dynamic_cast<CHealth*>(e->GetComponent<CHealth>())->Damage();
 				SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
+				return;
 			}
 		}
 	}

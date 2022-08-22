@@ -1,4 +1,7 @@
 #pragma once
+#pragma warning(push, 0)
+#include <glm/glm.hpp>
+#pragma warning (pop)
 #include <BCommand.h>
 
 class CTankTron;
@@ -10,11 +13,10 @@ public:
 	MoveHorizontal(bool moveRight);
 	~MoveHorizontal() override;
 
-	void Execute(GameObject* actor) override;
+	void Execute(GameObject* pActor) override;
 
 private:
 	int m_DirectionValue;
-	bool m_IsPlayerPawn;
 	CTankTron* m_CTron = nullptr;
 };
 //----------------------------------MOVEUP----------------------------------
@@ -24,11 +26,10 @@ public:
 	MoveVertical(bool moveUp);
 	~MoveVertical() override;
 
-	void Execute(GameObject* actor) override;
+	void Execute(GameObject* pActor) override;
 
 private:
 	int m_DirectionValue;
-	bool m_IsPlayerPawn;
 	CTankTron* m_CTron = nullptr;
 };
 //----------------------------------SHOOT----------------------------------
@@ -38,10 +39,9 @@ public:
 	Shoot();
 	~Shoot() override;
 
-	void Execute(GameObject* actor) override;
+	void Execute(GameObject* pActor) override;
 
 private:
-	bool m_IsPlayerPawn;
 	CTankTron* m_CTron = nullptr;
 };
 //----------------------------------MOVEBARREL----------------------------------
@@ -51,15 +51,15 @@ public:
 	MoveBarrel(bool shouldTrackMouse = true);
 	~MoveBarrel() override;
 
-	void Execute(GameObject* actor) override;
+	void Execute(GameObject* pActor) override;
 
 private:
 	bool m_TracksMouse;
-	bool m_IsPlayerPawn;
 	CTankTron* m_CTron = nullptr;
+	glm::vec2 m_PrevMousePos{};
 
-	void TrackMouse(GameObject* actor);
-	void TrackJoyStick(GameObject* actor);
+	void TrackMouse(GameObject* pActor);
+	void TrackJoyStick(GameObject* pActor);
 };
 //----------------------------------NEXTSCENE----------------------------------
 class OpenScene : public BCommand
@@ -68,7 +68,7 @@ public:
 	OpenScene(int sceneIdx);
 	~OpenScene() override;
 
-	void Execute(GameObject* actor) override;
+	void Execute(GameObject* pActor) override;
 
 private:
 	int m_SceneIndex{};
@@ -80,5 +80,14 @@ public:
 	ResetScene();
 	~ResetScene() override;
 
-	void Execute(GameObject* actor) override;
+	void Execute(GameObject* pActor) override;
+};
+//----------------------------------DISABLEWALLSCOLLISION----------------------------------
+class DisableWall : public BCommand
+{
+public:
+	DisableWall();
+	~DisableWall() override;
+
+	void Execute(GameObject* pActor) override;
 };

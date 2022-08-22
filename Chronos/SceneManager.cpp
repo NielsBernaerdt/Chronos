@@ -1,8 +1,7 @@
 #include "ChronosPCH.h"
 #include "SceneManager.h"
-
-#include "GameObject.h"
 #include "Scene.h"
+#include "GameObject.h"
 
 void SceneManager::InitializeObjects()
 {

@@ -18,6 +18,6 @@ private:
 	friend class Singleton<ResourceManager>;
 	ResourceManager() = default;
 	std::string m_DataPath;
-	std::string m_DefaultImage = "Default.png";
+	std::string m_DefaultImage = "Tron/Default.png";
 	std::vector<std::unique_ptr<SoundEffect>> m_SoundEffects;
 };

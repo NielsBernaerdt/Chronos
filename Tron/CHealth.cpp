@@ -24,8 +24,8 @@ void CHealth::Damage()
 	{
 		if (m_Health <= 0)
 		{
-			SceneManager::GetInstance().GetActiveScene()->RemoveObject(m_OwnerObject);
 			m_pPublisher->Notify(m_OwnerObject, Event::ActorDied);
+			m_Health = 3;
 			return;
 		}
 		m_pPublisher->Notify(m_OwnerObject, Event::ActorDamaged);
@@ -39,5 +39,7 @@ void CHealth::Damage()
 			m_pPublisher->Notify(m_OwnerObject, Event::NPCKilled);
 			return;
 		}
+		m_pPublisher->Notify(m_OwnerObject, Event::NPCDamaged);
+		return;
 	}
 }

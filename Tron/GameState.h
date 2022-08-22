@@ -20,10 +20,12 @@ public:
 	GameState& operator=(const GameState& other) = delete;
 	GameState& operator=(GameState&& other) noexcept = delete;
 
-	void HandleEvent(GameObject* object, Event event) override;
+	void HandleEvent(GameObject* pGameObject, Event event) override;
 
 private:
 	GameObject* m_pPlayerPawn;
 
 	void CheckPlayerVictory();
+	void HandlePlayerDeath();
+	void HandleNPCDeath(GameObject* pGameObject);
 };

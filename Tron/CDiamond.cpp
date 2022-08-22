@@ -6,8 +6,8 @@
 #include "CollisionGroups.h"
 #include "Renderer.h"
 
-CDiamond::CDiamond(GameObject* gameObject)
-	:CBase(gameObject)
+CDiamond::CDiamond(GameObject* pGameObject)
+	:CBase(pGameObject)
 {
 }
 
@@ -29,7 +29,7 @@ void CDiamond::Update(float)
 	}
 }
 
-void CDiamond::TeleportPlayer(GameObject* playerPawn)
+void CDiamond::TeleportPlayer(GameObject* pPlayerPawn)
 {
 	int lowerBound = 40;
 	int upperBound = (int)Renderer::GetInstance().GetWindowSize().x;
@@ -39,11 +39,11 @@ void CDiamond::TeleportPlayer(GameObject* playerPawn)
 	int y = lowerBound + (std::rand() % (upperBound - lowerBound + 1));
 
 
-	playerPawn->GetTransform()->SetPosition(x, y);
-	dynamic_cast<CCollisionBox*>(playerPawn->GetComponent<CCollisionBox>())->SetRect(glm::vec2{ x, y });
+	pPlayerPawn->GetTransform()->SetPosition(x, y);
+	dynamic_cast<CCollisionBox*>(pPlayerPawn->GetComponent<CCollisionBox>())->SetRect(glm::vec2{ x, y });
 
-	if (dynamic_cast<CCollisionBox*>(playerPawn->GetComponent<CCollisionBox>())->GetOverlappingObjects(CollisionGroup::Wall).empty() == false)
+	if (dynamic_cast<CCollisionBox*>(pPlayerPawn->GetComponent<CCollisionBox>())->GetOverlappingObjects(CollisionGroup::Wall).empty() == false)
 	{
-		TeleportPlayer(playerPawn);
+		TeleportPlayer(pPlayerPawn);
 	}
 }

@@ -19,5 +19,5 @@ public:
 private:
 	CCollisionBox* m_pCollision = nullptr;
 
-	void TeleportPlayer( GameObject* playerPawn );
+	void TeleportPlayer( GameObject* pPlayerPawn);
 };

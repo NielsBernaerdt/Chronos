@@ -14,7 +14,6 @@ public:
 
 	void SetActive(bool active);
 	bool IsActive() const { return m_IsActive; }
-	void InterruptUpdate() { m_StopUpdate = true; }
 
 	void RemoveObject(GameObject* gameObject);
 	void EraseObjects();
@@ -33,7 +32,6 @@ private:
 
 	std::string m_Name;
 	bool m_IsActive{ false };
-	bool m_StopUpdate{ false };
 	std::vector < std::shared_ptr<GameObject>> m_Objects{};
 	std::vector <GameObject*> m_ObjectsToDelete{};
 	std::vector < std::shared_ptr<GameObject>> m_ObjectsToSpawn{};

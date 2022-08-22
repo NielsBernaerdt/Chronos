@@ -12,7 +12,6 @@
 MoveHorizontal::MoveHorizontal(bool moveRight)
 	: BCommand()
 	, m_DirectionValue(1)
-	, m_IsPlayerPawn(false)
 {
 	if (moveRight == false)
 		m_DirectionValue = -1;
@@ -20,25 +19,15 @@ MoveHorizontal::MoveHorizontal(bool moveRight)
 MoveHorizontal::~MoveHorizontal()
 {
 }
-void MoveHorizontal::Execute(GameObject* actor)
+void MoveHorizontal::Execute(GameObject* pActor)
 {
-	if (m_CTron == nullptr)
-	{
-		if (!actor) return;
-		if (actor->GetComponent<CTankTron>()) m_IsPlayerPawn = true;
-		else m_IsPlayerPawn = false;
-	}
-	if (m_IsPlayerPawn == true)
-	{
-		if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
-		m_CTron->MoveHorizontally(m_DirectionValue);
-	}
+	if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(pActor->GetComponent<CTankTron>());
+	m_CTron->MoveHorizontally(m_DirectionValue);
 }
 //----------------------------------MOVERIGHT----------------------------------
 MoveVertical::MoveVertical(bool moveUp)
 	: BCommand()
 	, m_DirectionValue(1)
-	, m_IsPlayerPawn(false)
 {
 	if (moveUp == false)
 		m_DirectionValue = -1;
@@ -46,24 +35,14 @@ MoveVertical::MoveVertical(bool moveUp)
 MoveVertical::~MoveVertical()
 {
 }
-void MoveVertical::Execute(GameObject* actor)
+void MoveVertical::Execute(GameObject* pActor)
 {
-	if (m_CTron == nullptr)
-	{
-		if (!actor) return;
-		if (actor->GetComponent<CTankTron>()) m_IsPlayerPawn = true;
-		else m_IsPlayerPawn = false;
-	}
-	if (m_IsPlayerPawn == true)
-	{
-		if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
-		m_CTron->MoveVertically(m_DirectionValue);
-	}
+	if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(pActor->GetComponent<CTankTron>());
+	m_CTron->MoveVertically(m_DirectionValue);
 }
 //----------------------------------SHOOT----------------------------------
 Shoot::Shoot()
 	: BCommand()
-	, m_IsPlayerPawn(false)
 {
 }
 Shoot::~Shoot()
@@ -71,24 +50,13 @@ Shoot::~Shoot()
 }
 void Shoot::Execute(GameObject* actor)
 {
-	if (m_CTron == nullptr)
-	{
-		if (!actor) return;
-		if (actor->GetComponent<CTankTron>()) m_IsPlayerPawn = true;
-		else m_IsPlayerPawn = false;
-	}
-	if (m_IsPlayerPawn == true)
-	{
-		if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
+	if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
 
-		m_CTron->Shoot();
-		AudioManager::GetInstance().PlaySound("AudioFiles/Shooting.wav", 15);
-	}
+	m_CTron->Shoot();
 }
 //----------------------------------MoveBarrel----------------------------------
 MoveBarrel::MoveBarrel(bool shouldTrackMouse)
 	: BCommand()
-	, m_IsPlayerPawn(false)
 	, m_TracksMouse(shouldTrackMouse)
 {
 }
@@ -97,21 +65,12 @@ MoveBarrel::~MoveBarrel()
 }
 void MoveBarrel::Execute(GameObject* actor)
 {
-	if (m_CTron == nullptr)
-	{
-		if (!actor) return;
-		if (actor->GetComponent<CTankTron>()) m_IsPlayerPawn = true;
-		else m_IsPlayerPawn = false;
-	}
-	if (m_IsPlayerPawn == true)
-	{
-		if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
+	if (m_CTron == nullptr)	m_CTron = dynamic_cast<CTankTron*>(actor->GetComponent<CTankTron>());
 
-		if (actor->GetChildren().empty() == false)
-		{
-			if (m_TracksMouse) TrackMouse(actor);
-			else TrackJoyStick(actor);
-		}
+	if (actor->GetChildren().empty() == false)
+	{
+		if (m_TracksMouse) TrackMouse(actor);
+		else TrackJoyStick(actor);
 	}
 }
 void MoveBarrel::TrackMouse(GameObject* actor)
@@ -124,6 +83,10 @@ void MoveBarrel::TrackMouse(GameObject* actor)
 	//MATH HERE//
 	float angle{};
 	glm::vec2 mousePos = InputManager::GetMousePos();
+	auto dist = distance(mousePos, m_PrevMousePos);
+	m_PrevMousePos = mousePos;
+	if (dist < 0.1f)
+		return;
 
 	mousePos.x -= actor->GetTransform()->GetPosition().x;
 	mousePos.y -= actor->GetTransform()->GetPosition().y;
@@ -148,6 +111,9 @@ void MoveBarrel::TrackJoyStick(GameObject* actor)
 	float angle{};
 	glm::vec2 mousePos = InputManager::GetJoyStickPos();
 
+	if (abs(mousePos.x) < 0.01f || abs(mousePos.y) < 0.01f)
+		return;
+
 	//
 	m_CTron->SetBarrelDirection({ mousePos.x, mousePos.y, 0 });
 	//
@@ -168,6 +134,7 @@ OpenScene::~OpenScene()
 }
 void OpenScene::Execute(GameObject*)
 {
+	SceneManager::GetInstance().GetActiveScene()->ClearScene();
 	SceneManager::GetInstance().OpenScene(m_SceneIndex);
 	SceneManager::GetInstance().GetScene(m_SceneIndex)->ClearScene();
 	Tron::LoadSceneByIndex(m_SceneIndex);
@@ -184,4 +151,16 @@ void ResetScene::Execute(GameObject* )
 {
 	SceneManager::GetInstance().GetActiveScene()->ClearScene();
 	Tron::LoadSceneByIndex(SceneManager::GetInstance().GetActiveSceneIdx());
+}
+//----------------------------------DISABLEWALLSCOLLISION----------------------------------
+DisableWall::DisableWall()
+	: BCommand()
+{
+}
+DisableWall::~DisableWall()
+{
+}
+void DisableWall::Execute(GameObject* pActor)
+{
+	dynamic_cast<CTankTron*>(pActor->GetComponent<CTankTron>())->DisableWalls();
 }

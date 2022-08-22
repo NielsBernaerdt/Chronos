@@ -16,7 +16,7 @@ public:
 	BPublisher& operator=(const BPublisher& other) = delete;
 	BPublisher& operator=(BPublisher&& other) noexcept = delete;
 
-	void Notify(GameObject* gameObject, Event event) const;
+	void Notify(GameObject* pGameObject, Event event) const;
 	void AddObserver(std::shared_ptr<BObserver> observer);
 	void RemoveObserver(std::shared_ptr<BObserver> observer);
 
