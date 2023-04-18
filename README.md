@@ -14,3 +14,5 @@ The following patterns have been used:
 	
 
 The AudioManager also has its own thread, where it gets passed data via a ringbuffer.
+
+Find more details on my portfolio: https://nielsbernaerdt.be/Chronos.html
